@@ -89,4 +89,11 @@ $(function(){
       comet.doRequest(settings);
       return false;
    });
+
+   /* Semantic ui tools */
+   $('.ui.sidebar').sidebar();
+   $("#show-users").click(function(){
+      $('.ui.sidebar').sidebar('toggle');      
+   });
+   $('.ui.dropdown').dropdown();
 });
