@@ -5,3 +5,5 @@ body {
 	height: 300px;
 	overflow: auto;
 }
+
+.ui.avatar.image { background-image: url('../img/face_avatars.min.png'); background-position: 94px -112.89px; }

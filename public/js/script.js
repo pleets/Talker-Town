@@ -34,14 +34,27 @@ $(function(){
 
             for (var i = data["online_users"].length - 1; i >= 0; i--)
             {
-               var nitem = "<div class='item'>" +
-                           "<img class='ui avatar image' src='public/img/avatar.png'>" +
-                           "<div class='content'>" +
-                           "<div class='header'>" + data["online_users"][i] +  "</div>" +
-                           "</div>" +
-                           "<div>";
+               var user = data["online_users"][i];
+               var bg_x, bg_y; 
 
-               $("#online_users").append(nitem);
+               // Get user's configuration
+               $.getJSON('cache/' + user + '.json', function(data) {
+
+                  var x = parseInt(data["avatar"].toString().charAt(0)) - 1;
+                  var y = parseInt(data["avatar"].toString().charAt(1)) - 1;
+
+                  bg_x = ( -30 * x );
+                  bg_y = ( -28.63 * y ) + 1;
+
+                  var nitem = "<div class='item'>" +
+                              "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
+                              "<div class='content'>" +
+                              "<div class='header'>" + data["username"] +  "</div>" +
+                              "</div>" +
+                              "<div>";
+
+                  $("#online_users").append(nitem);
+               });
             };
          },
          error: function(jqXHR, textStatus, errorThrown)

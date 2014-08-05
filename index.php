@@ -37,8 +37,17 @@
 
 <?php
 # Store username
-if (isset($_POST["username"])) {
+if (isset($_POST["username"])) 
+{
    setcookie("username", $_POST["username"]);
+
+   $user_info = array(
+      "username" => $_POST["username"],
+      "avatar" => isset($_POST["gender"]) ? (int) $_POST["gender"] : 11
+   );
+   file_put_contents('cache/' . $_POST["username"] . '.json', json_encode($user_info));
+
+   setcookie("avatar", $p);
    header("location: .");
 }
 ?>
@@ -59,6 +68,17 @@ if (isset($_POST["username"])) {
                </div>
             </div>
          </div>
+         <div class="field">
+            <div class="ui selection dropdown">
+              <input type="hidden" name="gender" id="gender">
+              <div class="default text">Gender</div>
+              <i class="dropdown icon"></i>
+              <div class="menu">
+                <div class="item" data-value="22">Male</div>
+                <div class="item" data-value="65">Female</div>
+              </div>
+            </div>
+         </div>       
       </form>
       <div class="ui center aligned segment">
          <p>The best city on the Internet</p>
