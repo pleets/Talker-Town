@@ -7,7 +7,7 @@
  * Free to use under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
  *
- * Date: 2014-08-04
+ * Date: 2014-08-05
  */
 ?>
 
@@ -42,9 +42,9 @@ if (isset($_POST["username"])) {
    header("location: .");
 }
 ?>
-<div class="ui grid">
+
    <?php if (!isset($_COOKIE["username"])): ?>
-   <div class="ui sixteen wide column">
+   <div class="ui segment">
       <div class="ui vertical segment">
          <div class="ui huge purple center aligned header">Talker Town</div>
       </div>
@@ -65,7 +65,7 @@ if (isset($_POST["username"])) {
       </div>
    </div>
    <?php else: ?>
-   <div class="ui blue inverted segment">
+   <div class="ui blue inverted">
       <div class="ui tiered menu">
         <div class="menu">
           <a class="item" id="show-users">
@@ -83,10 +83,10 @@ if (isset($_POST["username"])) {
         </div>
       </div>
    </div>
-   <div class="ui thin sidebar sixteen wide column">
-      <div class="ui selection list" id="online_users"></div>
+   <div class="ui thin sidebar segment">
+      <div class="ui animated selection list" id="online_users"></div>
    </div>
-   <div class="ui sixteen wide column">
+   <div class="ui segment">
       <div id="content" class="ui segment"></div>
       <form action="" method="get" id="chat" class="ui form segment">
          <div class="field">
@@ -101,6 +101,6 @@ if (isset($_POST["username"])) {
       </form>
    <?php endif; ?>
    </div>
-</div>
+
 </body>
 </html>
