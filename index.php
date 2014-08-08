@@ -119,6 +119,11 @@ if (isset($_POST["username"]))
             <span id="state">Offline</span>
          </div>
       </form>
+
+      <!-- Notification audio -->
+      <audio id='notification-audio' src='public/audio/notification.wav' style='display: none'>
+         <source src='public/audio/notification.wav' type='audio/wav'>
+      </audio>
    <?php endif; ?>
    </div>
 

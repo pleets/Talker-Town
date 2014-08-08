@@ -130,6 +130,7 @@ else {
 
 // If detects user does not send message
 $response['msg']       = ($currentmodif == $lastmodif) ? '': $data;
+$response['user'] = $last_user;
 $response['timestamp'] = $currentmodif;
 $response['online_users'] = $online_users;
 echo json_encode($response);
