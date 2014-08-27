@@ -3,11 +3,15 @@
 
 Simple chat using Ajax Push (Comet) web application model
 
-### Screenshot
+### Screenshots
+
+Simple and minimalist interface
 
 <p align="center">
   <img src="http://pleets.org/public/img/talker-town-1.png" alt="Screenshot"/>
 </p>
+
+Responsive design
 
 <p align="center">
   <img src="http://pleets.org/public/img/talker-town-2.png" alt="Screenshot"/>
