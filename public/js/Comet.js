@@ -139,6 +139,7 @@ jRender.ajax.Comet.prototype =
 
       set.callback.success = set.callback.success || new Function();
       set.callback.error = set.callback.error || new Function();
+      set.callback.complete = set.callback.complete || new Function();
 
       this.successRequest = set.callback.success;
 
@@ -155,6 +156,10 @@ jRender.ajax.Comet.prototype =
          error: function(jqXHR, textStatus, errorThrown) {
             if (!that.jsonp)
                set.callback.error(jqXHR, textStatus, errorThrown);
+         },
+         complete: function()
+         {
+            set.callback.complete();
          }
       });
    },

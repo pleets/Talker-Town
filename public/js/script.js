@@ -88,19 +88,36 @@ $(function(){
 
       event.preventDefault();
 
+      var message = $('#word').val();
+      $('#word').val('').attr('disabled', 'disabled');
+
+      $('#content').append("<p id='loading-message-status'>" + message + " <i class='loading icon'></i><p>");
+      $('#content')[0].scrollTop = 9999999;
+
       settings = 
       {
          data: {
-            msg: $('#word').val()
+            msg: message
          },
          callback: {
-            success: function(data) {
+            success: function(data) 
+            {
                $('#content').append(data["msg"]);
-               $('#content')[0].scrollTop = 9999999;
-               $('#word').val('');
             },
             error: function(jqXHR, textStatus, errorThrown) {
-               $('#content').append("<p><strong>Error! Try again ...</strong></p>")
+               $('#loading-message-status i').attr('class', 'remove icon');
+               $('#loading-message-status').removeAttr('id');
+               $('#content').append("<div class='ui small compact red message'><strong>Error!</strong> The message was not sent.</div>");
+            },
+            complete: function()
+            {
+               if ($('#loading-message-status i').attr('class') != 'remove icon')
+                  $('#loading-message-status').remove();
+
+               $('#word').removeAttr('disabled');
+
+               $('#content')[0].scrollTop = 9999999;
+               $('#word').focus();
             }
          }
       }
