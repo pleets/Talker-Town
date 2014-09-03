@@ -7,7 +7,7 @@
  * Free to use under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
  *
- * Date: 2014-08-05
+ * Date: 2014-09-02
  */
 ?>
 
@@ -53,11 +53,9 @@ if (isset($_POST["username"]))
 ?>
 
    <?php if (!isset($_COOKIE["username"])): ?>
-   <div class="ui segment">
-      <div class="ui vertical segment">
-         <div class="ui huge purple center aligned header">Talker Town</div>
-      </div>
-      <form action="" method="post" class="ui form segment">
+   <div class="ui segment" style="background: rgb(247, 247, 247); color: silver">
+      <h1 class="ui basic header center aligned">Talker Town</h1>
+      <form action="" method="post" class="ui small form">
          <div class="field">
             <label for="username">Enter your pseudonym</label>
             <div class="ui left labeled icon input">
@@ -78,9 +76,10 @@ if (isset($_POST["username"]))
                 <div class="item" data-value="65">Female</div>
               </div>
             </div>
-         </div>       
+         </div>
+         <input type="submit" value="Login" class="ui submit button" />      
       </form>
-      <div class="ui center aligned segment">
+      <div class="ui basic center aligned segment">
          <p>The best city on the Internet</p>
       </div>
    </div>
@@ -115,7 +114,7 @@ if (isset($_POST["username"]))
             </div>
          </div>
          <div class="field">
-            <input type="submit" name="submit" value="Send" class="ui small blue submit button" />
+            <input type="submit" name="submit" value="Send" class="ui small submit button" />
             <span id="state">Offline</span>
          </div>
       </form>
