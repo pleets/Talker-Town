@@ -29,6 +29,10 @@
    <!-- Commet class -->
    <script type="text/javascript" src="public/js/Comet.js"></script>
 
+   <!-- JScript-Render -->
+   <script type="text/javascript" src="public/libs/JScript-Render/JScriptRender.js"></script>
+   <link rel="stylesheet" type="text/css" href="public/libs/JScript-Render/css/JScriptRender.css" media="all" />
+
    <!-- App -->
    <script type="text/javascript" src="public/js/script.js"></script>
    <link rel="stylesheet" type="text/css" href="public/css/style.css" media="all" />
@@ -53,7 +57,7 @@ if (isset($_POST["username"]))
 ?>
 
    <?php if (!isset($_COOKIE["username"])): ?>
-   <div class="ui segment" style="background: rgb(247, 247, 247); color: silver">
+   <div class="ui segment" style="background: rgb(247, 247, 247); color: #808080">
       <h1 class="ui basic header center aligned">Talker Town</h1>
       <form action="" method="post" class="ui small form">
          <div class="field">
@@ -118,6 +122,13 @@ if (isset($_POST["username"]))
             <span id="state">Offline</span>
          </div>
       </form>
+
+      <input type="file" id="file-reader-onchange" value="" multiple="multiple" />
+      <div id="file-reader-ondrop" class="drop" style="overflow: hidden; min-height: 50px">
+         <span style="color: #C0C0C0; font-size: 25px;">Drop files here</span>
+      </div>
+      <div id="file_reader_ondrop_response"></div>
+      <div id="file_reader_response"></div>
 
       <!-- Notification audio -->
       <audio id='notification-audio' src='public/audio/notification.wav' style='display: none'>

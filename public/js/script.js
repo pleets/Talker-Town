@@ -129,7 +129,36 @@ $(function(){
    /* Semantic ui tools */
    $('.ui.sidebar').sidebar();
    $("#show-users").click(function(){
-      $('.ui.sidebar').sidebar('toggle');      
+      $('.ui.sidebar').sidebar('toggle');
    });
    $('.ui.dropdown').dropdown();
+
+   $j.ready(function(){
+
+      var Reader = $j.reader;
+
+      var _files = new Reader.File({
+         fileBox: document.querySelector("#file-reader-onchange"),      // input[type='file']
+         dropBox: document.querySelector("#file-reader-ondrop"),        // dropbox
+         preview: document.querySelector("#file-reader-ondrop"),        // preview
+         url: 'source/file-upload.php',
+         size: 104857600,
+      });
+
+      _files.addDropEvent(function(files){
+         _files.upload(files);
+      });
+      _files.addChangeEvent(function(files){
+         _files.upload(files, function(uploadedFiles) {
+            uploadedFiles = $.parseJSON(uploadedFiles);
+            var links = "<div>";
+            for (var i = uploadedFiles.length - 1; i >= 0; i--) {
+               links += "<a target='_blank' class='ui basic button' href='public/img/user/" + uploadedFiles[i] + "'>" + uploadedFiles[i] + " </a> ";
+            };
+            links += "</div>";
+            $("#file_reader_response").append(links);
+         });
+      });
+
+   });
 });
