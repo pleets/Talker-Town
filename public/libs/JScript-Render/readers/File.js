@@ -157,7 +157,7 @@ JScriptRender.reader.File.prototype =
          {
             //that.previewBox.innerHTML += xhr.responseText;
             document.querySelector("#JScriptRender-file-progress").parentNode.removeChild(document.querySelector("#JScriptRender-file-progress"));
-            callback(xhr.responseText);
+            allback(xhr.responseText);
          }
          console.info(xhr.readyState + " - " + xhr.status);
       }

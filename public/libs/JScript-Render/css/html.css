@@ -1,0 +1,12 @@
+@charset "utf-8";
+
+/*
+ * JScript Render - Html styles
+ * http://www.pleets.org
+ *
+ * Copyright 2014, Pleets Apps
+ * Free to use under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+ 
+tr.success { background: rgba(0,255,0,0.5); }
