@@ -11,7 +11,11 @@
 
 $files = array();
 
-foreach ($_FILES as $file) {
+foreach ($_FILES as $file) 
+{
+	if (!file_exists('../public/img/user'))
+		mkdir('../public/img/user');
+
 	if (move_uploaded_file($file['tmp_name'], "../public/img/user/". basename($file['tmp_name']) . $file['name']))
 		$files[] = basename($file['tmp_name']) . $file['name'];
 }
