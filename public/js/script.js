@@ -88,41 +88,45 @@ $(function(){
 
       event.preventDefault();
 
-      var message = $('#word').val();
-      $('#word').val('').attr('disabled', 'disabled');
-
-      $('#content').append("<p id='loading-message-status'>" + message + " <i class='loading icon'></i><p>");
-      $('#content')[0].scrollTop = 9999999;
-
-      settings = 
+      if ($('#word').val().trim() != "")
       {
-         data: {
-            msg: message
-         },
-         callback: {
-            success: function(data) 
-            {
-               $('#content').append(data["msg"]);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-               $('#loading-message-status i').attr('class', 'remove icon');
-               $('#loading-message-status').removeAttr('id');
-               $('#content').append("<div class='ui small compact red message'><strong>Error!</strong> The message was not sent.</div>");
-            },
-            complete: function()
-            {
-               if ($('#loading-message-status i').attr('class') != 'remove icon')
-                  $('#loading-message-status').remove();
+         var message = $('#word').val();
+         $('#word').val('').attr('disabled', 'disabled');
 
-               $('#word').removeAttr('disabled');
+         $('#content').append("<p id='loading-message-status'>" + message + " <i class='loading icon'></i><p>");
+         $('#content')[0].scrollTop = 9999999;
 
-               $('#content')[0].scrollTop = 9999999;
-               $('#word').focus();
+         settings = 
+         {
+            data: {
+               msg: message
+            },
+            callback: {
+               success: function(data) 
+               {
+                  $('#content').append(data["msg"]);
+               },
+               error: function(jqXHR, textStatus, errorThrown) {
+                  $('#loading-message-status i').attr('class', 'remove icon');
+                  $('#loading-message-status').removeAttr('id');
+                  $('#content').append("<div class='ui small compact red message'><strong>Error!</strong> The message was not sent.</div>");
+               },
+               complete: function()
+               {
+                  if ($('#loading-message-status i').attr('class') != 'remove icon')
+                     $('#loading-message-status').remove();
+
+                  $('#word').removeAttr('disabled');
+
+                  $('#content')[0].scrollTop = 9999999;
+                  $('#word').focus();
+               }
             }
          }
+
+         comet.doRequest(settings);
       }
 
-      comet.doRequest(settings);
       return false;
    });
 
