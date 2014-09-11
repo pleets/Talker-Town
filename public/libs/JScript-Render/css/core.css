@@ -71,7 +71,7 @@ button[class~="jButton"]
 .file-item .name > span, .file-item .size > span, .file-item .type > span { font-weight: bold; }
 .file-item img { float: left; }
 
-div.item {
+.drop div.item {
     display: inline-block;
     margin: 2px; padding: 5px;
     border: solid 1px rgb(235,235,235);
