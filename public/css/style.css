@@ -7,3 +7,18 @@ body {
 }
 
 .ui.avatar.image { background-image: url('../img/face_avatars.min.png'); background-position: 94px -112.89px; }
+
+.tk-gallery { }
+
+.tk-gallery .item
+{ 
+	height: 74px; width: 77.5px; 
+	border: solid 1px rgb(236,236,236); border-radius: 5px; box-shadow: 0 0 2px rgb(236,236,236); 
+	background-image: url('../img/face_avatars.png'); background-position: 0px -0px; cursor: pointer;
+	display: inline-block;
+}
+
+.tk-gallery .item:hover
+{
+	border: solid 1px rgb(220,220,220); border-radius: 5px; box-shadow: 0 0 2px rgb(220,220,220);
+}

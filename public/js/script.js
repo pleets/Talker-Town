@@ -46,11 +46,14 @@ $(function(){
                // Get user's configuration
                $.getJSON('cache/' + user + '.json', function(data) {
 
-                  var x = parseInt(data["avatar"].toString().charAt(0)) - 1;
-                  var y = parseInt(data["avatar"].toString().charAt(1)) - 1;
+                  var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
+                  var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
+
+                  var x = j;
+                  var y = i;
 
                   bg_x = ( -30 * x );
-                  bg_y = ( -28.63 * y ) + 1;
+                  bg_y = ( -(315/11) * y ) + 1;
 
                   var nitem = "<div class='item'>" +
                               "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
@@ -139,30 +142,42 @@ $(function(){
 
    $j.ready(function(){
 
-      var Reader = $j.reader;
+      if ($("#file_reader_response").length)
+      {
+         var Reader = $j.reader;
 
-      var _files = new Reader.File({
-         fileBox: document.querySelector("#file-reader-onchange"),      // input[type='file']
-         dropBox: document.querySelector("#file-reader-ondrop"),        // dropbox
-         preview: document.querySelector("#file-reader-ondrop"),        // preview
-         url: 'source/file-upload.php',
-         size: 104857600,
-      });
-
-      _files.addDropEvent(function(files){
-         _files.upload(files);
-      });
-      _files.addChangeEvent(function(files){
-         _files.upload(files, function(uploadedFiles) {
-            uploadedFiles = $.parseJSON(uploadedFiles);
-            var links = "<div>";
-            for (var i = uploadedFiles.length - 1; i >= 0; i--) {
-               links += "<a target='_blank' class='ui basic button' href='public/img/user/" + uploadedFiles[i] + "'>" + uploadedFiles[i] + " </a> ";
-            };
-            links += "</div>";
-            $("#file_reader_response").append(links);
+         var _files = new Reader.File({
+            fileBox: document.querySelector("#file-reader-onchange"),      // input[type='file']
+            dropBox: document.querySelector("#file-reader-ondrop"),        // dropbox
+            preview: document.querySelector("#file-reader-ondrop"),        // preview
+            url: 'source/file-upload.php',
+            size: 104857600,
          });
-      });
 
+         _files.addDropEvent(function(files){
+            _files.upload(files);
+         });
+         _files.addChangeEvent(function(files){
+            _files.upload(files, function(uploadedFiles) {
+               uploadedFiles = $.parseJSON(uploadedFiles);
+               var links = "<div>";
+               for (var i = uploadedFiles.length - 1; i >= 0; i--) {
+                  links += "<a target='_blank' class='ui basic button' href='public/img/user/" + uploadedFiles[i] + "'>" + uploadedFiles[i] + " </a> ";
+               };
+               links += "</div>";
+               $("#file_reader_response").append(links);
+            });
+         });
+      }
    });
+
+   $(".tk-gallery.selection").children(".item").click(function(event){
+      event.preventDefault();
+      
+      var input = $(this).parent().attr('data-input');
+
+      $("#"+input).val($(this).attr('data-value'));
+   });
+
+
 });

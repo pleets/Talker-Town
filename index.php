@@ -70,16 +70,24 @@ if (isset($_POST["username"]))
                </div>
             </div>
          </div>
-         <div class="field">
-            <div class="ui selection dropdown">
-              <input type="hidden" name="gender" id="gender">
-              <div class="default text">Gender</div>
-              <i class="dropdown icon"></i>
-              <div class="menu">
-                <div class="item" data-value="22">Male</div>
-                <div class="item" data-value="65">Female</div>
-              </div>
-            </div>
+         <input type="hidden" name="gender" id="gender" value="11">
+         <div class="tk-gallery selection" data-input="gender">
+            <div class="item" data-value="11" style="background-position: calc(1*77.5px) calc(-1*74px);"></div>
+            <div class="item" data-value="12" style="background-position: calc(2*77.5px) calc(-1*74px);"></div>
+            <div class="item" data-value="13" style="background-position: calc(3*77.5px) calc(-1*74px);"></div>
+            <div class="item" data-value="14" style="background-position: calc(4*77.5px) calc(-1*74px);"></div>
+            <div class="item" data-value="15" style="background-position: calc(5*77.5px) calc(-1*74px);"></div>
+            <div class="item" data-value="16" style="background-position: calc(6*77.5px) calc(-1*74px);"></div>
+            <div class="item" data-value="17" style="background-position: calc(7*77.5px) calc(-1*74px);"></div>
+            <div class="item" data-value="18" style="background-position: calc(8*77.5px) calc(-1*74px);"></div>
+            <div class="item" data-value="11" style="background-position: calc(1*77.5px) calc(-2*74px);"></div>
+            <div class="item" data-value="12" style="background-position: calc(2*77.5px) calc(-2*74px);"></div>
+            <div class="item" data-value="13" style="background-position: calc(3*77.5px) calc(-2*74px);"></div>
+            <div class="item" data-value="14" style="background-position: calc(4*77.5px) calc(-2*74px);"></div>
+            <div class="item" data-value="15" style="background-position: calc(5*77.5px) calc(-2*74px);"></div>
+            <div class="item" data-value="16" style="background-position: calc(6*77.5px) calc(-2*74px);"></div>
+            <div class="item" data-value="17" style="background-position: calc(7*77.5px) calc(-2*74px);"></div>
+            <div class="item" data-value="18" style="background-position: calc(8*77.5px) calc(-2*74px);"></div>
          </div>
          <input type="submit" value="Login" class="ui submit button" />      
       </form>
