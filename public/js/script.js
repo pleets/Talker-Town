@@ -176,6 +176,9 @@ $(function(){
       
       var input = $(this).parent().attr('data-input');
 
+      $(".tk-gallery.selection").children(".item").addClass("unselected").removeClass("selected");
+      $(this).removeClass("unselected").addClass("selected");
+
       $("#"+input).val($(this).attr('data-value'));
    });
 

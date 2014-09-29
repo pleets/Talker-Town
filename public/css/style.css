@@ -13,12 +13,22 @@ body {
 .tk-gallery .item
 { 
 	height: 74px; width: 77.5px; 
-	border: solid 1px rgb(236,236,236); border-radius: 5px; box-shadow: 0 0 2px rgb(236,236,236); 
+	border: solid 1px rgb(230,230,230); border-radius: 5px; box-shadow: 0 0 2px rgb(230,230,230); 
 	background-image: url('../img/face_avatars.png'); background-position: 0px -0px; cursor: pointer;
 	display: inline-block;
 }
 
 .tk-gallery .item:hover
 {
-	border: solid 1px rgb(220,220,220); border-radius: 5px; box-shadow: 0 0 2px rgb(220,220,220);
+	border: solid 1px rgb(200,200,200); border-radius: 5px; box-shadow: 0 0 2px rgb(200,200,200);
+}
+
+.tk-gallery .item.selected
+{
+	border: solid 1px silver; border-radius: 5px; box-shadow: 0 0 8px silver;
+}
+
+.tk-gallery .item.unselected
+{
+	opacity: 0.4;
 }

@@ -72,38 +72,11 @@ if (isset($_POST["username"]))
          </div>
          <input type="hidden" name="gender" id="gender" value="11">
          <div class="tk-gallery selection" data-input="gender">
-            <div class="item" data-value="11" style="background-position: calc(-0*77.5px) calc(-0*74px);"></div>
-            <div class="item" data-value="12" style="background-position: calc(-1*77.5px) calc(-0*74px);"></div>
-            <div class="item" data-value="13" style="background-position: calc(-2*77.5px) calc(-0*74px);"></div>
-            <div class="item" data-value="14" style="background-position: calc(-3*77.5px) calc(-0*74px);"></div>
-            <div class="item" data-value="15" style="background-position: calc(-4*77.5px) calc(-0*74px);"></div>
-            <div class="item" data-value="16" style="background-position: calc(-5*77.5px) calc(-0*74px);"></div>
-            <div class="item" data-value="17" style="background-position: calc(-6*77.5px) calc(-0*74px);"></div>
-            <div class="item" data-value="18" style="background-position: calc(-7*77.5px) calc(-0*74px);"></div>
-            <div class="item" data-value="21" style="background-position: calc(-0*77.5px) calc(-1*74px);"></div>
-            <div class="item" data-value="22" style="background-position: calc(-1*77.5px) calc(-1*74px);"></div>
-            <div class="item" data-value="23" style="background-position: calc(-2*77.5px) calc(-1*74px);"></div>
-            <div class="item" data-value="24" style="background-position: calc(-3*77.5px) calc(-1*74px);"></div>
-            <div class="item" data-value="25" style="background-position: calc(-4*77.5px) calc(-1*74px);"></div>
-            <div class="item" data-value="26" style="background-position: calc(-5*77.5px) calc(-1*74px);"></div>
-            <div class="item" data-value="27" style="background-position: calc(-6*77.5px) calc(-1*74px);"></div>
-            <div class="item" data-value="28" style="background-position: calc(-7*77.5px) calc(-1*74px);"></div>
-            <div class="item" data-value="31" style="background-position: calc(-0*77.5px) calc(-2*74px);"></div>
-            <div class="item" data-value="32" style="background-position: calc(-1*77.5px) calc(-2*74px);"></div>
-            <div class="item" data-value="33" style="background-position: calc(-2*77.5px) calc(-2*74px);"></div>
-            <div class="item" data-value="34" style="background-position: calc(-3*77.5px) calc(-2*74px);"></div>
-            <div class="item" data-value="35" style="background-position: calc(-4*77.5px) calc(-2*74px);"></div>
-            <div class="item" data-value="36" style="background-position: calc(-5*77.5px) calc(-2*74px);"></div>
-            <div class="item" data-value="37" style="background-position: calc(-6*77.5px) calc(-2*74px);"></div>
-            <div class="item" data-value="37" style="background-position: calc(-7*77.5px) calc(-2*74px);"></div>
-            <div class="item" data-value="41" style="background-position: calc(-0*77.5px) calc(-3*74px);"></div>
-            <div class="item" data-value="42" style="background-position: calc(-1*77.5px) calc(-3*74px);"></div>
-            <div class="item" data-value="43" style="background-position: calc(-2*77.5px) calc(-3*74px);"></div>
-            <div class="item" data-value="44" style="background-position: calc(-3*77.5px) calc(-3*74px);"></div>
-            <div class="item" data-value="45" style="background-position: calc(-4*77.5px) calc(-3*74px);"></div>
-            <div class="item" data-value="46" style="background-position: calc(-5*77.5px) calc(-3*74px);"></div>
-            <div class="item" data-value="47" style="background-position: calc(-6*77.5px) calc(-3*74px);"></div>             
-            <div class="item" data-value="47" style="background-position: calc(-7*77.5px) calc(-3*74px);"></div>             
+         <?php for($k = 1; $k<=11; $k++): ?>
+            <?php for($i = 1; $i<=8; $i++): ?>
+               <div class="item" data-value="<?= $k.$i ?>" style="background-position: calc(-<?= ($i - 1) ?>*77.4px) calc(-<?= ($k - 1) ?>*74px);"></div>
+            <?php endfor; ?>
+         <?php endfor; ?>
          </div>
          <input type="submit" value="Login" class="ui submit button" />      
       </form>
