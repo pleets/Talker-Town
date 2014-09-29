@@ -30,53 +30,47 @@ function getFiles($path)
    return $files;
 }
 
-$message = dirname(dirname(__FILE__)).'/message.txt';
-$username  = dirname(dirname(__FILE__)).'/username.txt';
+// Files that store the last message and its respective user
+$message_file = dirname(dirname(__FILE__)).'/message.txt';
+$username_file  = dirname(dirname(__FILE__)).'/username.txt';
 
-// store new message in the file
-$msg = isset($_GET['msg']) ? $_GET['msg'] : '';
-$user = isset($_COOKIE['username']) ? $_COOKIE['username'] : 'anonymous';
+// Get username and message to store
+$message = isset($_GET['msg']) ? trim($_GET['msg']) : '';
+$username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
 
-$lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;
-$currentmodif = filemtime($message);
+// Get the current and last timestamp of the message file
+$lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;		# The first time the timestamp is equal to zero
+$currentmodif = filemtime($message_file);
 
 // If you are logged
-if (isset($_COOKIE['username']))
+if (isset($_COOKIE['username']) && !empty($_COOKIE['username']))
 {
-	if (!file_exists("../cache"))
-		mkdir("../cache");
-
-	if (!file_exists("../cache/users"))
-		mkdir("../cache/users");
-
-	if (!file_exists("../cache/conversations"))
-		mkdir("../cache/conversations");
-
-	if ($msg != '')
+	if (!empty($message))
 	{
-		// Parsing to HTML
-		$msg = "<p id='$currentmodif'>$user ~ $msg</p>";
+		// Convert the current message in HTML
+		$message = "<p id='$currentmodif'>$username ~ $message</p>";
 
-		file_put_contents($message, $msg);
-		file_put_contents($username, $user);
+		// Store message and username
+		file_put_contents($message_file, $message);
+		file_put_contents($username_file, $username);
 
-		// History
+		// Store message in the chat history
 		$hd = fopen("../cache/conversations/history.txt", "a");
-		fwrite($hd, $msg . "\n");
+		fwrite($hd, $message . "\n");
 		fclose($hd);
 	}
 
-	file_put_contents("../cache/users/" .$user, date("Y-m-d H:i:s"));
+	file_put_contents("../cache/users/" .$username, date("Y-m-d H:i:s"));
 }
 
 /* infinite loop until the data file is not modified */
 
-$latest_users = getFiles("../cache/users");
+$last_users = getFiles("../cache/users");
 $online_users = array();
 
-foreach ($latest_users as $_user)
+foreach ($last_users as $_user)
 {
-	if (time() - filemtime($_user) < 3)
+	if (time() - filemtime($_user) < 5)
 		$online_users[] = basename($_user);
 	else
 		unlink($_user);
@@ -85,14 +79,14 @@ foreach ($latest_users as $_user)
 $current_users = getFiles("../cache/users");
 
 // check if the data file has been modified or an user has logged in or logged out
-while ($currentmodif <= $lastmodif && count($current_users) == count($latest_users))
+while ($currentmodif <= $lastmodif && count($current_users) == count($last_users))
 {
 	clearstatcache();
-	$currentmodif = filemtime($message);
+	$currentmodif = filemtime($message_file);
 
 	if (isset($_COOKIE['username']))
 	{
-		file_put_contents("../cache/users/" .$user, date("Y-m-d H:i:s"));
+		file_put_contents("../cache/users/" .$username, date("Y-m-d H:i:s"));
 
 		$current_users = getFiles("../cache/users");
 		$online_users = array();
@@ -106,13 +100,13 @@ while ($currentmodif <= $lastmodif && count($current_users) == count($latest_use
 	}
 }
 
-$last_user = file_get_contents($username);
+$last_user = file_get_contents($username_file);
 
 // return a json array
 $response = array();
 
 if (isset($_GET["doRequest"]))
-	$data = file_get_contents($message);
+	$data = file_get_contents($message_file);
 # First request when the timestamp is zero
 else if ($lastmodif == 0) {
 	if (file_exists("../cache/conversations/history.txt"))
@@ -122,14 +116,14 @@ else if ($lastmodif == 0) {
 }
 else {
 # The user gets the message of other users
-	if ($last_user != $user)
-		$data = file_get_contents($message);
+	if ($last_user != $username)
+		$data = file_get_contents($message_file);
 	else
 		$data = '';
 }
 
 // If detects user does not send message
-$response['msg']       = ($currentmodif == $lastmodif) ? '': $data;
+$response['msg'] = ($currentmodif == $lastmodif) ? '': $data;
 $response['user'] = $last_user;
 $response['timestamp'] = $currentmodif;
 $response['online_users'] = $online_users;

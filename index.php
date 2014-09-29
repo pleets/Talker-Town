@@ -7,7 +7,7 @@
  * Free to use under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
  *
- * Date: 2014-09-02
+ * Date: 2014-09-28
  */
 ?>
 
@@ -40,6 +40,17 @@
 <body>
 
 <?php
+
+# Check folders
+if (!file_exists("cache"))
+   mkdir("cache");
+
+if (!file_exists("cache/users"))
+   mkdir("cache/users");
+
+if (!file_exists("cache/conversations"))
+   mkdir("cache/conversations");
+
 # Store username
 if (isset($_POST["username"])) 
 {
