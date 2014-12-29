@@ -7,8 +7,14 @@
  * Free to use under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
  *
- * Date: 2014-09-28
+ * Date: 2014-12-29
  */
+
+include("public/libs/PHP-FileSystem-Environment/FileSystem/IShellCommands.php");
+include("public/libs/PHP-FileSystem-Environment/FileSystem/Shell.php");
+
+$filesystem = new \Pleets\FileSystem\Shell();
+
 ?>
 
 <!DOCTYPE html>
@@ -51,19 +57,30 @@ if (!file_exists("cache/users"))
 if (!file_exists("cache/conversations"))
    mkdir("cache/conversations");
 
+$error = "";
+
 # Store username
 if (isset($_POST["username"])) 
 {
-   setcookie("username", $_POST["username"]);
+   $current_users = $filesystem->ls('cache/users');
 
-   $user_info = array(
-      "username" => $_POST["username"],
-      "avatar" => isset($_POST["gender"]) ? (int) $_POST["gender"] : 11
-   );
-   file_put_contents('cache/' . $_POST["username"] . '.json', json_encode($user_info));
+   if (in_array($_POST["username"], $current_users))
+   {
+      $error = "The username <strong>".$_POST["username"]."</strong> is already in use";
+   }
+   else {
+      setcookie("username", $_POST["username"]);
 
-   setcookie("avatar", $p);
-   header("location: .");
+      $user_info = array(
+         "username" => $_POST["username"],
+         "avatar" => isset($_POST["gender"]) ? (int) $_POST["gender"] : 11
+      );
+      file_put_contents('cache/' . $_POST["username"] . '.json', json_encode($user_info));
+
+      setcookie("avatar", $p);
+      header("location: .");      
+   }
+
 }
 ?>
 
@@ -80,6 +97,9 @@ if (isset($_POST["username"]))
                   <i class="icon asterisk"></i>
                </div>
             </div>
+            <?php if (!empty($error)):  ?>
+               <?= $error ?>
+            <?php endif; ?>
          </div>
          <input type="hidden" name="gender" id="gender" value="11">
          <div class="tk-gallery selection" data-input="gender">
