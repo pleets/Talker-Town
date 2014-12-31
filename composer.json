@@ -1,0 +1,14 @@
+{
+    "name": "pleetsapps/talker-town",
+    "description": "Simple chat using Ajax push (Comet) web application model",
+    "license": "MIT licence",
+    "keywords": [
+        "talker",
+        "messenger"
+    ],
+    "homepage": "http://pleets.org",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.3.*"
+    }
+}

@@ -1,0 +1,39 @@
+<div class="ui segment">
+
+    <h1 class="ui basic header center aligned">Talker Town</h1>
+    
+    <form action="" method="post" class="ui large form">
+
+        <div class="fields">
+            <div class="required twelve wide field">
+                <label for="username">Enter your pseudonym</label>
+                <div class="ui large left icon input">
+                    <input id="username" name="username" autofocus="autofocus" placeholder="username" type="text">
+                    <i class="user icon"></i>
+                </div>
+            </div>
+            <div class="four wide field">
+                <label>Gender</label>
+                <div tabindex="0" class="ui dropdown selection"><select>
+                    <option value="">Gender</option>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select><i class="dropdown icon"></i><div class="default text">Gender</div><div style="" tabindex="-1" class="menu transition hidden"><div class="item" data-value="1">Male</div><div class="item" data-value="0">Female</div></div></div>
+            </div>
+        </div>
+
+        <input type="hidden" name="gender" id="gender" value="11">
+        <div class="tk-gallery selection" data-input="gender">
+            <?php for($k = 1; $k<=11; $k++): ?>
+                <?php for($i = 1; $i<=8; $i++): ?>
+                    <div class="item" data-value="<?= $k.$i ?>" style="background-position: calc(-<?= ($i - 1) ?>*77.4px) calc(-<?= ($k - 1) ?>*74px);"></div>
+                <?php endfor; ?>
+            <?php endfor; ?>
+        </div>
+        <input type="submit" value="Login" class="ui large submit button" />      
+    </form>
+
+    <div class="ui basic center aligned segment">
+        <p>The best city on the Internet</p>
+    </div>
+</div>
