@@ -46,7 +46,7 @@ body {
 	width: 1000000000%;
 }
 
-.tk-gallery.cyclic .controls 
+.tk-gallery.cyclic .controls
 {
 	overflow: hidden
 }
@@ -59,4 +59,20 @@ body {
 .tk-gallery.cyclic .control-right 
 {
 	float: right;
+}
+
+
+.tk-gallery.cyclic .controls.mobile {
+	display: none;
+}
+
+@media (max-width: 360px) {
+	.tk-gallery.cyclic .controls {
+		display: none;
+	}
+	
+	.tk-gallery.cyclic .controls.mobile {
+		display: block;
+	}
+
 }
