@@ -11,6 +11,7 @@ class User implements InputFilterAwareInterface
 	public $username;
 	public $password;
 	public $roles_id;
+	public $genders_id;
 	public $state;
 
 	protected $inputFilter;
@@ -20,6 +21,7 @@ class User implements InputFilterAwareInterface
 		$this->username = (isset($data["username"])) ? $data["username"] : null;
 		$this->password = (isset($data["password"])) ? $data["password"] : null;
 		$this->roles_id = (isset($data["roles_id"])) ? $data["roles_id"] : null;
+		$this->genders_id = (isset($data["genders_id"])) ? $data["genders_id"] : null;
 		$this->state = (isset($data["state"])) ? $data["state"] : null;
 	}
 
@@ -65,7 +67,15 @@ class User implements InputFilterAwareInterface
 				'name' => 'roles_id',
 				'required' => false,
 				'validators' => array(
-					'Digits' => new \Zend\Validator\Digits(),,
+					'Digits' => new \Zend\Validator\Digits(),
+				),
+			));
+
+			$inputFilter->add(array(
+				'name' => 'genders_id',
+				'required' => false,
+				'validators' => array(
+					'Digits' => new \Zend\Validator\Digits(),
 				),
 			));
 

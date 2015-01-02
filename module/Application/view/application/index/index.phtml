@@ -14,7 +14,7 @@
     $form = $this->form->prepare();
 
     $form->setAttributes(array(
-        'action' => $this->formAction . '/index/index',
+        'action' => $this->url('application') . '/index/login',
         'class' => 'ui large form',
         'method' => 'post',
     ));
@@ -41,20 +41,22 @@
                 <div class="six wide field">
                     <label><?= $this->translate("Gender") ?></label>
                     <div class="ui selection dropdown">
-                        <input name="gender" type="hidden">
+                        <input name="genders_id" type="hidden">
                         <div class="default text"><?= $this->translate("Gender") ?></div>
                         <i class="dropdown icon"></i>
                         <div class="menu">
-                            <div class="item" data-value="1">Male</div>
-                            <div class="item" data-value="0">Female</div>
+                            <?php
+                                foreach ($genders as $gender) {
+                                    ?><div class="item" data-value="<?= $gender["genders_id"] ?>"><?= $this->translate($gender["name"]) ?></div><?php
+                                }
+                            ?>
                         </div>
                     </div>                    
                 </div>
-
             </div>
 
-            <input type="hidden" name="gender" id="gender" value="11">
-            <div class="tk-gallery selectable cyclic" data-input="gender">
+            <input type="hidden" name="avatar" id="avatar" value="11">
+            <div class="tk-gallery selectable cyclic" data-input="avatar">
                 <div class="items">
                     <?php for($k = 1; $k<=11; $k++): ?>
                         <?php for($i = 1; $i<=8; $i++): ?>

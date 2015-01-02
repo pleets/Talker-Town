@@ -13,15 +13,35 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+
 use Auth\Form\UserForm;
+use Auth\Model\Entity\User;
+
+use Zend\Authentication\AuthenticationService;
+use Zend\Session\Container;
 
 class IndexController extends AbstractActionController
 {
-    private function getUsersTable()
+    private $gendersTable;
+    private $anonymousIdentity;
+
+    private function getGendersTable()
     {
-        if (!$this->usersTable)
-            $this->usersTable = $this->getServiceLocator()->get('Users\Model\Entity\UsersTable');
-        return $this->usersTable;
+        if (!$this->gendersTable)
+            $this->gendersTable = $this->getServiceLocator()->get('Application\Model\Entity\GendersTable');
+        return $this->gendersTable;
+    }
+
+    private function getAnonymousIdentity()
+    {
+        $session = new Container('anonymous_identity');
+        return $session->username;
+    }
+
+    private function setAnonymousIdentity($username)
+    {
+        $session = new Container('anonymous_identity');
+        $session->username = $username;        
     }
 
     public function indexAction()
@@ -31,39 +51,32 @@ class IndexController extends AbstractActionController
         $xmlHttpRequest = $this->getRequest()->isXmlHttpRequest();
         $data['xmlHttpRequest'] = $xmlHttpRequest;
 
-        $form = new UserForm();
-        $form->get('submit')->setValue('Login');
-        $data['form'] = $form;
+        var_dump($this->getAnonymousIdentity());
 
-        $request = $this->getRequest();
+        if (!is_null($this->getAnonymousIdentity())) {
+            // redirect to general room
+        }
 
-        if ($request->isPost()) 
-        {
-            try {
-                $user = new User();
-                $form->setInputFilter($user->getInputFilter());
-                $form->setData($request->getPost());
+        try {
+            $form = new UserForm();
+            $form->get('submit')->setValue('Login');
+            $data['form'] = $form;
 
-                if ($form->isValid())
-                {
-                    /* Login validation */
+            $gendersTable = $this->getGendersTable();
+            $data["genders"] = $gendersTable->fetchAll()->toArray();
+        }
+        catch (\Exception $e) {
 
-                    $data['Success'] = true;
-                }
-            }
-            catch (\Exception $e) {
-                
-                $data['Exception'] = $e->getMessage();
-                $view = new ViewModel($data);
-                
-                if ($xmlHttpRequest)
-                    $view->setTerminal(true);
-                return $view;
-            }      
+            $data['Exception'] = $e->getMessage();
+            $view = new ViewModel($data);
+
+            if ($xmlHttpRequest)
+                $view->setTerminal(true);
+            return $view;
         }
 
         $view = new ViewModel($data);
-            
+
         if ($xmlHttpRequest)
             $view->setTerminal(true);
         return $view;
@@ -71,8 +84,44 @@ class IndexController extends AbstractActionController
 
     public function loginAction()
     {
-    	
-    	
-        return new ViewModel();
+        $data = array();
+
+        $request = $this->getRequest();
+
+        if (!$request->isPost())
+            return $this->redirect()->toRoute('home');
+
+        if (!is_null($this->getAnonymousIdentity()))
+            return $this->redirect()->toRoute('home');
+        else
+        {
+            $form_data = $this->request->getPost();
+
+            try {
+                $user = new User();
+                $form = new UserForm($this);
+
+                $form->setValidationGroup('username', 'genders_id');
+                $form->setInputFilter($user->getInputFilter());
+                $form->setData($request->getPost());
+
+                if ($form->isValid())
+                {
+                    $this->setAnonymousIdentity($form_data->username);
+                    return $this->redirect()->toRoute('home');
+                }
+            }
+            catch (\Exception $e) {
+                $data['Exception'] = $e->getMessage();
+                $view = new ViewModel($data);
+                return $view;
+            }
+        }
+    }
+
+    public function generalRoomAction()
+    {
+        $view = new ViewModel($data);
+        return $view;
     }
 }
