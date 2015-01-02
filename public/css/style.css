@@ -8,7 +8,10 @@ body {
 
 .ui.avatar.image { background-image: url('../img/face_avatars.min.png'); background-position: 94px -112.89px; }
 
-.tk-gallery { }
+.tk-gallery 
+{
+	position: relative;
+}
 
 .tk-gallery .item
 { 
@@ -31,4 +34,29 @@ body {
 .tk-gallery .item.unselected
 {
 	opacity: 0.4;
+}
+
+.tk-gallery.cyclic 
+{
+	overflow: hidden;
+}
+
+.tk-gallery.cyclic .items
+{
+	width: 1000%;
+}
+
+.tk-gallery.cyclic .controls 
+{
+	overflow: hidden
+}
+
+.tk-gallery.cyclic .control-left
+{
+	float: left;
+}
+
+.tk-gallery.cyclic .control-right 
+{
+	float: right;
 }

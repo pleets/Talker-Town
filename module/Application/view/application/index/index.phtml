@@ -1,39 +1,94 @@
+<?php if (isset($Exception)): ?>
+<div class="alert alert-danger alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong><span class="glyphicon glyphicon-exclamation-sign"></span></strong> <?= $Exception ?>
+</div>
+<?php endif; ?>
+
+<?php $title = $this->translate('User Login'); $this->headTitle($title); ?>
+
+<?php 
+    $formLabel = $this->plugin('formLabel');
+    $username = $form->get('username');
+
+    $form = $this->form->prepare();
+
+    $form->setAttributes(array(
+        'action' => $this->formAction . '/index/index',
+        'class' => 'ui large form',
+        'method' => 'post',
+    ));
+
+?>
+
 <div class="ui segment">
 
-    <h1 class="ui basic header center aligned">Talker Town</h1>
-    
-    <form action="" method="post" class="ui large form">
+    <h1 class="ui basic header center aligned"><?= $this->escapeHtml($title) ?></h1>
 
-        <div class="fields">
-            <div class="required twelve wide field">
-                <label for="username">Enter your pseudonym</label>
-                <div class="ui large left icon input">
-                    <input id="username" name="username" autofocus="autofocus" placeholder="username" type="text">
-                    <i class="user icon"></i>
+    <?php if (isset($form)): ?>
+        
+        <?= $this->form()->openTag($form) ?>
+            
+            <div class="fields">
+                <div class="required twelve wide field">
+                    <?= $formLabel->openTag() . $username->getOption('label') . $formLabel->closeTag() ?>
+                    <div class="ui large left icon input">
+                        <?= $this->formInput($username) ?>
+                        <?= $this->formElementErrors($username) ?>
+                        <i class="user icon"></i>
+                    </div>
+                </div>
+                <div class="four wide field">
+                    <label>Gender</label>
+                    <div tabindex="0" class="ui dropdown selection"><select>
+                        <option value="">Gender</option>
+                        <option value="1">Male</option>
+                        <option value="0">Female</option>
+                    </select><i class="dropdown icon"></i><div class="default text">Gender</div><div style="" tabindex="-1" class="menu transition hidden"><div class="item" data-value="1">Male</div><div class="item" data-value="0">Female</div></div></div>
                 </div>
             </div>
-            <div class="four wide field">
-                <label>Gender</label>
-                <div tabindex="0" class="ui dropdown selection"><select>
-                    <option value="">Gender</option>
-                    <option value="1">Male</option>
-                    <option value="0">Female</option>
-                </select><i class="dropdown icon"></i><div class="default text">Gender</div><div style="" tabindex="-1" class="menu transition hidden"><div class="item" data-value="1">Male</div><div class="item" data-value="0">Female</div></div></div>
-            </div>
-        </div>
 
-        <input type="hidden" name="gender" id="gender" value="11">
-        <div class="tk-gallery selection" data-input="gender">
-            <?php for($k = 1; $k<=11; $k++): ?>
-                <?php for($i = 1; $i<=8; $i++): ?>
-                    <div class="item" data-value="<?= $k.$i ?>" style="background-position: calc(-<?= ($i - 1) ?>*77.4px) calc(-<?= ($k - 1) ?>*74px);"></div>
-                <?php endfor; ?>
-            <?php endfor; ?>
-        </div>
-        <input type="submit" value="Login" class="ui large submit button" />      
-    </form>
+            <input type="hidden" name="gender" id="gender" value="11">
+            <div class="tk-gallery selectable cyclic" data-input="gender">
+                <div class="items">
+                    <?php for($k = 1; $k<=11; $k++): ?>
+                        <?php for($i = 1; $i<=8; $i++): ?>
+                            <div class="item" data-value="<?= $k.$i ?>" style="background-position: calc(-<?= ($i - 1) ?>*77.4px) calc(-<?= ($k - 1) ?>*74px);"></div>
+                        <?php endfor; ?>
+                    <?php endfor; ?>                    
+                </div>
 
-    <div class="ui basic center aligned segment">
-        <p>The best city on the Internet</p>
-    </div>
+                <div class="controls">
+                    <button class="ui left labeled icon button control-left" type="button">
+                        <i class="left arrow icon"></i>
+                        Prev
+                    </button>
+
+                    <button class="ui right labeled icon button control-right" type="button">
+                        <i class="right arrow icon"></i>
+                        Next
+                    </button>                    
+                </div>
+            </div><br />
+
+            <?php if (!$xmlHttpRequest): ?>
+                <?= $this->formSubmit($form->get('submit')) ?>
+            <?php endif; ?>
+
+        <?= $this->form()->closeTag() ?>
+
+        <div class="ui basic center aligned segment">
+            <p><?= $this->translate("The best city on the Internet") ?></p>
+        </div>        
+    <?php endif; ?>
+
+</div>
+
+<div class="ui segment">
+    <?php if (!$xmlHttpRequest): ?>
+        <?= $this->translate("You can register to obtain some advantages here! ") ?> 
+        <a href="<?= $this->url('application') . '/index/index'; ?>" class="ui inverted green button">
+            <?= $this->translate('Register') ?>
+        </a>
+    <?php endif; ?>    
 </div>

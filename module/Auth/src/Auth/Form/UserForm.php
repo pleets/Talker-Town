@@ -4,8 +4,8 @@ namespace Auth\Form;
 
 use Zend\Form\Form;
 use Zend\Db\ResultSet\ResultSet;
-use Auth\Model\Entity\Profile;
-use Auth\Model\Entity\ProfileTable;
+use Auth\Model\Entity\Roles;
+use Auth\Model\Entity\RolesTable;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\ServiceManager\ServiceManager;
 
@@ -13,7 +13,7 @@ class UserForm extends Form
 {
     public function __construct($controller = null)
     {
-        parent::__construct('users');
+        parent::__construct('frmUsers');
 
         /*$dbAdapter = $controller->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
         $tableGateway = new TableGateway('roles', $dbAdapter);
@@ -23,10 +23,10 @@ class UserForm extends Form
 
         $rolesTable = new RolesTable($tableGateway, $dbAdapter, null, $resultSetPrototype);
 
-        $result = $rolesTable->fetchAll()->toArray();
+        $result = $rolesTable->fetchAll()->toArray();*/
 
         $roles = array();
-        foreach ($result as $role) {
+        /*foreach ($result as $role) {
             $roles[$role["roles_id"]] = $role["rolename"];
         }*/
 
@@ -51,6 +51,7 @@ class UserForm extends Form
             ),
             'attributes' => array(
                 'placeholder' => 'username',
+                'autofocus' => 'autofocus',
                 'required' => 'required',
                 'minlength' => '3',
                 'maxlength' => '25',
@@ -76,7 +77,7 @@ class UserForm extends Form
             'type' => 'select',
             'options' => array(
                 'label' => 'Role',
-                'value_options' => array(),
+                'value_options' => $roles,
             ),
             'attributes' => array(
                 'value' => '1',
