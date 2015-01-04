@@ -3,7 +3,7 @@ var comet;
 $(function(){
 
    comet = new jRender.ajax.Comet({
-      url: "./source/backend.php"
+      url: "./index/backend"
       /* For remote requests (Cross domain) */
       //url:  "http://www.example.com/backend.php",
       //jsonp: true

@@ -1,0 +1,52 @@
+<div class="ui aligned grid">
+	<div class="left floated left aligned six wide column">
+		<div class="ui labeled icon button" id="show-users">
+			<i class="content icon"></i>
+			Users
+		</div>		
+	</div>
+	<div class="right floated right aligned six wide column">
+		<a href="<?= $this->url('application') . '/index/logout' ?>" class="ui labeled icon button">
+		 	<i class="power icon"></i>
+		 	Logout
+		</a>		
+	</div>
+</div>
+
+
+<div class="ui thin segment sidebar">
+ 	<div class="ui animated selection list" id="online_users">
+		<div class="item">
+			<img class="ui avatar image" style="background-position: 0px 1px">
+			<div class="content"><div class="header"><?= $username ?></div></div>
+		</div> 		
+ 	</div>	
+</div>
+
+<div class="ui segment">
+  	<div id="content" class="ui segment"></div>
+  	<form action="" method="get" id="chat" class="ui form segment">
+     	<div class="field">
+        	<div class="ui small icon input">
+           	<input type="text" name="word" id="word" autofocus="autofocus" placeholder="message" />
+        	</div>
+     	</div>
+     	<div class="field">
+        	<input type="submit" name="submit" value="Send" class="ui small submit button" />
+        	<span id="state">Offline</span>
+     	</div>
+  	</form>
+
+  	<input type="file" id="file-reader-onchange" value="" multiple="multiple" />
+  	<div id="file-reader-ondrop" class="drop" style="overflow: hidden; min-height: 50px">
+     	<span style="color: #C0C0C0; font-size: 25px;">Drop files here</span>
+  	</div>
+  	
+  	<div id="file_reader_ondrop_response"></div>
+  	<div id="file_reader_response"></div>
+
+	<!-- Notification audio -->
+	<audio id='notification-audio' src='public/audio/notification.wav' style='display: none'>
+		<source src='<?= $this->basePath() . 'public/audio/notification.wav' ?>' type='audio/wav'>
+	</audio>
+</div>

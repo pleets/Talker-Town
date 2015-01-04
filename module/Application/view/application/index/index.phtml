@@ -40,18 +40,26 @@
 
                 <div class="six wide field">
                     <label><?= $this->translate("Gender") ?></label>
-                    <div class="ui selection dropdown">
-                        <input name="genders_id" type="hidden">
-                        <div class="default text"><?= $this->translate("Gender") ?></div>
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <?php
-                                foreach ($genders as $gender) {
-                                    ?><div class="item" data-value="<?= $gender["genders_id"] ?>"><?= $this->translate($gender["name"]) ?></div><?php
-                                }
-                            ?>
-                        </div>
-                    </div>                    
+                    <?php if (isset($genders)): ?>
+                        <?php if (!count($genders)): ?>
+                            <div class="ui selection dropdown">
+                                <input name="genders_id" type="hidden">
+                                <div class="default text"><?= $this->translate("Gender") ?></div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <?php
+                                        foreach ($genders as $gender) {
+                                            ?><div class="item" data-value="<?= $gender["genders_id"] ?>"><?= $this->translate($gender["name"]) ?></div><?php
+                                        }
+                                    ?>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <?= $this->translate("Genders table is empty!") ?>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <i class="cancel icon"></i><?= $this->translate("No genders available") ?>         
+                    <?php endif; ?>
                 </div>
             </div>
 

@@ -32,6 +32,9 @@ jRender.ajax.Comet = function(settings)
    this.aborted = false;
    this.timestamp = 0;
 
+   this.errorAttemps = 3;
+   this.attemps = 0;
+
    // Cross domain callbacks
    this.successRequest = new Function();
    this.successConnection = new Function();
@@ -91,15 +94,31 @@ jRender.ajax.Comet.prototype =
                {
                	console.info("The connection has been lost!, trying to reconnect ...");
                   setTimeout(function(){
-                     that.connect(settings);
-                     that.checkRequest({
-                        success: function() { console.info('Connected'); },
-                        error: function() { console.info('Could not connect!'); }
-                     });
-                  }, 500);                  
+                     
+                     if (that.attemps < 3)
+                     {
+                        that.connect(settings);
+
+                        that.checkRequest({
+                           success: function() { 
+                              console.info('Connected');
+                              that.attemps = 0;
+                           },
+                           error: function() { 
+                              console.info('Could not connect!');
+                              that.attemps++;
+                           }
+                        });
+                     }
+                     else {
+                        console.info("Exceeded the maximum number of requests");
+                        that.disconnect();
+                     }
+
+                  }, 500);
                }
                else
-                  console.info("Connection aborted by user");
+                  console.info("The connection has been aborted");
             }
             else
                that.connect(settings);

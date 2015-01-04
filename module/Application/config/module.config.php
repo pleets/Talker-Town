@@ -18,6 +18,10 @@ return array(
                         'controller' => 'Application\Controller\Index',
                         'action'     => 'index',
                     ),
+                    'constraints' => array(
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    )
                 ),
             ),
             // The following is a route to simplify getting started creating
@@ -45,6 +49,20 @@ return array(
                                 'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
+                            ),
+                        ),
+                    ),
+                    'talker' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/talker[/:action]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'index',
+                                'action' => 'talker'
                             ),
                         ),
                     ),
