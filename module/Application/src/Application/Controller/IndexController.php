@@ -264,8 +264,9 @@ class IndexController extends AbstractActionController
         {
             clearstatcache();
             $currentmodif = filemtime($message_file);
+            session_write_close();
 
-            if (!is_null($this->getAnonymousIdentity()) && !empty($this->getAnonymousIdentity()))
+            if (!is_null($username) && !empty($username))
             {
                 file_put_contents("data/cache/users/" . $username, date("Y-m-d H:i:s"));
 
