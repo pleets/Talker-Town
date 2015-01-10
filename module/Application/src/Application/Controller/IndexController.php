@@ -105,6 +105,14 @@ class IndexController extends AbstractActionController
                 if ($form->isValid())
                 {
                     $this->setAnonymousIdentity($form_data->username);
+
+                    /* create json file with users settings */
+                    $user_info = array(
+                        "username" => $form_data->username,
+                        "avatar" => $form_data->avatar
+                    );
+                    file_put_contents('data/cache/' . $form_data->username . '.json', json_encode($user_info));                    
+
                     return $this->redirect()->toRoute('home');
                 }
             }
@@ -136,6 +144,23 @@ class IndexController extends AbstractActionController
         return $this->redirect()->toRoute('home');
     }
 
+    public function getIdentityInformationAction()
+    {
+        $data = array(
+            "username" => $this->getAnonymousIdentity()
+        );
+
+        $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
+        return $response;
+
+        /*$response = \Zend\Json\Json::encode( $data );
+
+        if (file_put_contents($buffer, $response) === false)
+            throw new \Exception("Processing error!", 1);
+
+        $data = \Zend\Json\Json::decode( file_get_contents($buffer) );*/
+    }
+
     public function backendAction()
     {
         function getFiles($path)
@@ -159,20 +184,47 @@ class IndexController extends AbstractActionController
            return $files;
         }
 
+
+        /*$basePath = $this->getServiceLocator()->get('Zend\ServiceManager\ServiceManager')->get('ViewHelperManager')->get('basePath');   
+        $file = $basePath->getView()->basePath('foo');*/
+
+
+        /* create some folders */
+
+        if (!file_exists('data/cache/conversations'))
+            mkdir('data/cache/conversations');
+
+        if (!file_exists('data/cache/users'))
+            mkdir('data/cache/users');
+
+
         // Files that store the last message and its respective user
-        $message_file = dirname(dirname(__FILE__)).'/message.txt';
-        $username_file  = dirname(dirname(__FILE__)).'/username.txt';
+        $message_file = 'data/cache/message.txt';
+        $username_file  = 'data/cache/username.txt';
+
+
+        /* create message_file and username_file */
+
+        if (!file_exists($message_file))
+            file_put_contents($message_file, '');
+
+        if (!file_exists($username_file))
+            file_put_contents($username_file, '');
+
+        if (!file_exists('data/cache/conversations/history.txt'))
+            file_put_contents('data/cache/conversations/history.txt', '');
+
 
         // Get username and message to store
         $message = isset($_GET['msg']) ? trim($_GET['msg']) : '';
-        $username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
+        $username = $this->getAnonymousIdentity();
 
         // Get the current and last timestamp of the message file
         $lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;     # The first time the timestamp is equal to zero
         $currentmodif = filemtime($message_file);
 
         // If you are logged
-        if (isset($_COOKIE['username']) && !empty($_COOKIE['username']))
+        if (!is_null($username) && !empty($username))
         {
             if (!empty($message))
             {
@@ -184,17 +236,17 @@ class IndexController extends AbstractActionController
                 file_put_contents($username_file, $username);
 
                 // Store message in the chat history
-                $hd = fopen("../cache/conversations/history.txt", "a");
+                $hd = fopen("data/cache/conversations/history.txt", "a");
                 fwrite($hd, $message . "\n");
                 fclose($hd);
             }
 
-            file_put_contents("../cache/users/" .$username, date("Y-m-d H:i:s"));
+            file_put_contents("data/cache/users/" . $username, date("Y-m-d H:i:s"));
         }
 
         /* infinite loop until the data file is not modified */
 
-        $last_users = getFiles("../cache/users");
+        $last_users = getFiles("data/cache/users");
         $online_users = array();
 
         foreach ($last_users as $_user)
@@ -205,7 +257,7 @@ class IndexController extends AbstractActionController
                 unlink($_user);
         }
 
-        $current_users = getFiles("../cache/users");
+        $current_users = getFiles("data/cache/users");
 
         // check if the data file has been modified or an user has logged in or logged out
         while ($currentmodif <= $lastmodif && count($current_users) == count($last_users))
@@ -213,11 +265,11 @@ class IndexController extends AbstractActionController
             clearstatcache();
             $currentmodif = filemtime($message_file);
 
-            if (isset($_COOKIE['username']))
+            if (!is_null($this->getAnonymousIdentity()) && !empty($this->getAnonymousIdentity()))
             {
-                file_put_contents("../cache/users/" .$username, date("Y-m-d H:i:s"));
+                file_put_contents("data/cache/users/" . $username, date("Y-m-d H:i:s"));
 
-                $current_users = getFiles("../cache/users");
+                $current_users = getFiles("data/cache/users");
                 $online_users = array();
 
                 foreach ($current_users as $_user) {
@@ -238,8 +290,8 @@ class IndexController extends AbstractActionController
             $data = file_get_contents($message_file);
         # First request when the timestamp is zero
         else if ($lastmodif == 0) {
-            if (file_exists("../cache/conversations/history.txt"))
-                $data = file_get_contents("../cache/conversations/history.txt");
+            if (file_exists("data/cache/conversations/history.txt"))
+                $data = file_get_contents("data/cache/conversations/history.txt");
             else
                 $data = "";
         }
@@ -256,12 +308,8 @@ class IndexController extends AbstractActionController
         $response['user'] = $last_user;
         $response['timestamp'] = $currentmodif;
         $response['online_users'] = $online_users;
-        echo json_encode($response);
-        flush();
 
-        $view = new ViewModel($data);
-        $view->setTerminal(true);
-        return $view;
-
+        $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $response ));
+        return $response;
     }
 }

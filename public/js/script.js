@@ -1,15 +1,50 @@
+/* this variable represents the current script element */
+var me = {};
+
+/* relative path to the element whose script is currently being processed.*/
+if (typeof document.currentScript != "undefined" && document.currentScript != null)
+{
+   var str = document.currentScript.src;
+   me.path = (str.lastIndexOf("/") == -1) ? "." : str.substring(0, str.lastIndexOf("/"));
+}
+else {
+   /* alternative method to get the currentScript (older browsers) */
+       // ...
+   /* else get the URL path */
+   me.path = '.';
+}
+
+
+/* Get index path based on current script url and requested url */
+
+var indexPath = '';
+
+var size = me.path.length - 1;
+
+for (var i = 0; i <= size; i++) 
+{
+	if (me.path[i] == document.URL[i])
+		indexPath += me.path[i];
+}
+
+
+/* Get dirname of index path based on public folder */
+
+var rootPath = 'http://localhost:8080/git/Talker-Town/';		/* Security BUG */
+
+
 var comet;
 
 $(function(){
 
    comet = new jRender.ajax.Comet({
-      url: "./index/backend"
+      url: indexPath + "application/index/backend"
       /* For remote requests (Cross domain) */
       //url:  "http://www.example.com/backend.php",
       //jsonp: true
    });
 
-   var settings = 
+   var settings =
    {
       data: {},
       callback: {
@@ -44,7 +79,7 @@ $(function(){
                var bg_x, bg_y; 
 
                // Get user's configuration
-               $.getJSON('cache/' + user + '.json', function(data) {
+               $.getJSON(rootPath + 'data/cache/' + user + '.json', function(data) {
 
                   var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
                   var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
@@ -87,6 +122,21 @@ $(function(){
    if (typeof $.cookie('username') != 'undefined')
       comet.connect(settings);
 
+   // Connect only if the session exists
+   $.ajax({
+   	url: indexPath +  'application/index/getIdentityInformation',
+   	dataType: 'json',
+   	success: function(data) {
+            
+         if (typeof data != "object")
+         	data = $.parseJSON(data);
+
+   		if (data.username != null)
+   			comet.connect(settings);
+
+   	}
+   })
+
    $("#chat").submit(function(event){
 
       event.preventDefault();
@@ -96,7 +146,7 @@ $(function(){
          var message = $('#word').val();
          $('#word').val('').attr('disabled', 'disabled');
 
-         $('#content').append("<p id='loading-message-status'>" + message + " <i class='loading icon'></i><p>");
+         $('#content').append("<p id='loading-message-status'>" + message + " <i class='spinner icon'></i><p>");
          $('#content')[0].scrollTop = 9999999;
 
          settings = 
