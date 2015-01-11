@@ -227,7 +227,7 @@ $(function(){
    $("body").delegate(".tk-gallery.selectable .item", "click", function(event){
       event.preventDefault();
       
-      var input = $(this).parent().attr('data-input');
+      var input = $(this).parent().parent().attr('data-input');
 
       $(".tk-gallery.selectable").find(".item").addClass("unselected").removeClass("selected");
       $(this).removeClass("unselected").addClass("selected");
