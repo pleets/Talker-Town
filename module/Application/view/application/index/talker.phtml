@@ -1,18 +1,17 @@
-<div class="ui aligned grid">
-	<div class="left floated left aligned six wide column">
-		<div class="ui labeled icon button" id="show-users">
+<div class="row">
+	<div class="col-xs-6 col-sm-6 text-left">
+		<button type="button" class="ui labeled icon button" id="show-users">
 			<i class="content icon"></i>
 			Users
-		</div>		
+		</button>		
 	</div>
-	<div class="right floated right aligned six wide column">
+	<div class="col-xs-6 col-sm-6 text-right">
 		<a href="<?= $this->url('application') . '/index/logout' ?>" class="ui labeled icon button">
 		 	<i class="power icon"></i>
 		 	Logout
-		</a>		
+		</a>			
 	</div>
 </div>
-
 
 <div class="ui thin segment sidebar">
  	<div class="ui animated selection list" id="online_users">
