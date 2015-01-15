@@ -110,15 +110,15 @@ $(function(){
                      var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
                      var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
 
-                     var x = j;
-                     var y = i;
+                     var x = i;
+                     var y = j;
 
-                     bg_x = ( -30 * x );
-                     bg_y = ( -(315/11) * y ) + 1;
+                     bg_x = ( -32 * x ) + 3;
+                     bg_y = ( -(336/11) * y ) + 2;
 
                      var nitem = "<div class='item'>" +
                                  "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
-                                 "<div class='content'>" +
+                                 "<div class='content2>" +
                                  "<div class='header'>" + data["username"] +  "</div>" +
                                  "</div>" +
                                  "<div>";
