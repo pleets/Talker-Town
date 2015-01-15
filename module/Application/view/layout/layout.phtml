@@ -56,10 +56,12 @@
         </nav>
         <div class="container">
             <?php echo $this->content; ?>
-            <hr>
-            <footer>
-                <p>&copy; 2014 by Pleets Apps. <?php echo $this->translate('All rights reserved.') ?></p>
-            </footer>
+            <div id="footer-mobile">
+                <hr />
+                <footer>
+                    <p>&copy; 2014 by Pleets Apps. <?php echo $this->translate('All rights reserved.') ?></p>
+                </footer>
+            </div>
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>
     </body>

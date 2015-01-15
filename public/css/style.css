@@ -8,14 +8,23 @@ body {
 
 @media (max-width: 360px) {
 	#content {
-		height: 250px;
+		height: 230px;
+	}
+	#outer-content {
+		margin: 1em 0px;
+	}
+	#file-reader-ondrop {
+		display: none;
+	}
+	p {
+		margin: 0px 0px 0.5em;
 	}
 }
 @media (max-width: 320px) {
 	#content {
-		height: 180px;
+		height: 140px;
 	}
-	#file-reader-ondrop {
+	#footer-mobile {
 		display: none;
 	}
 }
@@ -92,8 +101,7 @@ body {
 
 }
 
-.semantic.ui.modal 
-{
+.semantic.ui.modal {
 	overflow-x: initial; 
 	overflow-y: initial;
 	bottom: initial;

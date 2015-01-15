@@ -22,33 +22,33 @@
  	</div>	
 </div>
 
-<div class="ui segment">
-  	<div id="content" class="ui segment"></div>
-  	<form action="" method="get" id="chat" class="ui form segment">
-     	<div class="field">
-        	<div class="ui small icon input">
-           	<input type="text" name="word" id="word" autofocus="autofocus" placeholder="message" />
-        	</div>
-     	</div>
-     	<div class="field">
-        	<input type="submit" name="submit" value="Send" class="ui small submit button" />
-        	<span id="state">Offline</span>
-     	</div>
-  	</form>
-
-  	<input type="file" id="file-reader-onchange" value="" multiple="multiple" />
-  	<div id="file-reader-ondrop" class="drop" style="overflow: hidden; min-height: 50px">
-     	<span style="color: #C0C0C0; font-size: 25px;">Drop files here</span>
-  	</div>
-  	
-  	<div id="file_reader_ondrop_response"></div>
-  	<div id="file_reader_response"></div>
-
-	<!-- Notification audio -->
-	<audio id='notification-audio' src='<?= $this->basePath("audio/notification.wav") ?>' style='display: none'>
-		<source src='<?= $this->basePath("audio/notification.wav") ?>' type='audio/wav'>
-	</audio>
+<div class="ui piled segment" id="outer-content">
+	<div id="content"></div>
 </div>
+<form action="" method="get" id="chat" class="ui form segment">
+	<div class="field">
+		<div class="ui small icon input">
+	   		<input type="text" name="word" id="word" autofocus="autofocus" placeholder="message" />
+		</div>
+	</div>
+	<div class="field">
+		<input type="submit" name="submit" value="Send" class="ui small submit button" />
+		<span id="state">Offline</span>
+	</div>
+</form>
+
+<input type="file" id="file-reader-onchange" value="" multiple="multiple" />
+<div id="file-reader-ondrop" class="drop" style="overflow: hidden; min-height: 50px">
+	<span style="color: #C0C0C0; font-size: 25px;">Drop files here</span>
+</div>
+
+<div id="file_reader_ondrop_response"></div>
+<div id="file_reader_response"></div>
+
+<!-- Notification audio -->
+<audio id='notification-audio' src='<?= $this->basePath("audio/notification.wav") ?>' style='display: none'>
+<source src='<?= $this->basePath("audio/notification.wav") ?>' type='audio/wav'>
+</audio>
 
 <div class="semantic ui modal" id="lost-session-message">
 	<i class="close icon"></i>
