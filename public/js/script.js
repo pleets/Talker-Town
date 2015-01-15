@@ -61,7 +61,7 @@ $(function(){
                   
                   /* Lost session */
                   if (parseInt(code) == 101)
-                  {  
+                  {
                      // show lost session message
                      $('#lost-session-message').modal('show');
 
@@ -70,60 +70,65 @@ $(function(){
                      setTimeout(function(){
                         location.reload();
                      }, 5000);
+
+                     comet.disconnect();
                   } 
                   else {
                      //
                   }
                };
-            }
+            } 
+            else {
 
+               $("#state").text("Online");
 
-            $("#state").text("Online");
-
-            if (!($("#" + data["timestamp"]).length))
-            {
-               if ($('#content').length)
+               if (!($("#" + data["timestamp"]).length))
                {
-                  $('#content').append(data["msg"]);
-                  $('#content')[0].scrollTop = 9999999;
-
-                  if (data["user"] !== $.cookie("username"))
+                  if ($('#content').length)
                   {
-                     $("#notification-audio")[0].load();
-                     $("#notification-audio")[0].play();
+                     $('#content').append(data["msg"]);
+                     $('#content')[0].scrollTop = 9999999;
+
+                     if (data["user"] !== $.cookie("username"))
+                     {
+                        $("#notification-audio")[0].load();
+                        $("#notification-audio")[0].play();
+                     }
                   }
                }
+
+               $("#online_users").empty();
+
+               for (var i = data["online_users"].length - 1; i >= 0; i--)
+               {
+                  var user = data["online_users"][i];
+                  var bg_x, bg_y; 
+
+                  // Get user's configuration
+                  $.getJSON(rootPath + 'data/cache/' + user + '.json', function(data) {
+
+                     var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
+                     var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
+
+                     var x = j;
+                     var y = i;
+
+                     bg_x = ( -30 * x );
+                     bg_y = ( -(315/11) * y ) + 1;
+
+                     var nitem = "<div class='item'>" +
+                                 "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
+                                 "<div class='content'>" +
+                                 "<div class='header'>" + data["username"] +  "</div>" +
+                                 "</div>" +
+                                 "<div>";
+
+                     $("#online_users").append(nitem);
+                  });
+               };
             }
 
-            $("#online_users").empty();
 
-            for (var i = data["online_users"].length - 1; i >= 0; i--)
-            {
-               var user = data["online_users"][i];
-               var bg_x, bg_y; 
-
-               // Get user's configuration
-               $.getJSON(rootPath + 'data/cache/' + user + '.json', function(data) {
-
-                  var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
-                  var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
-
-                  var x = j;
-                  var y = i;
-
-                  bg_x = ( -30 * x );
-                  bg_y = ( -(315/11) * y ) + 1;
-
-                  var nitem = "<div class='item'>" +
-                              "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
-                              "<div class='content'>" +
-                              "<div class='header'>" + data["username"] +  "</div>" +
-                              "</div>" +
-                              "<div>";
-
-                  $("#online_users").append(nitem);
-               });
-            };
          },
          error: function(jqXHR, textStatus, errorThrown)
          {
