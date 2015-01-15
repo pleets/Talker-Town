@@ -91,3 +91,10 @@ body {
 	}
 
 }
+
+.semantic.ui.modal 
+{
+	overflow-x: initial; 
+	overflow-y: initial;
+	bottom: initial;
+}

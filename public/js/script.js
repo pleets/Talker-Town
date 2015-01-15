@@ -54,6 +54,30 @@ $(function(){
             if (typeof data != "object")
                data = $.parseJSON(data);
 
+            if (data.errors.length)
+            {
+               for (var i = data.errors.length - 1; i >= 0; i--) {
+                  var code = data.errors[i].code;
+                  
+                  /* Lost session */
+                  if (parseInt(code) == 101)
+                  {  
+                     // show lost session message
+                     $('#lost-session-message').modal('show');
+
+                     $("#word").attr('disabled', 'disabled');
+
+                     setTimeout(function(){
+                        location.reload();
+                     }, 5000);
+                  } 
+                  else {
+                     //
+                  }
+               };
+            }
+
+
             $("#state").text("Online");
 
             if (!($("#" + data["timestamp"]).length))
@@ -184,11 +208,14 @@ $(function(){
    });
 
    /* Semantic ui tools */
+   $('.ui.modal').modal();
    $('.ui.sidebar').sidebar();
+   $('.ui.dropdown').dropdown();
+
    $("#show-users").click(function(){
       $('.ui.sidebar').sidebar('toggle');
    });
-   $('.ui.dropdown').dropdown();
+
 
    $j.ready(function(){
 

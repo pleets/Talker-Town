@@ -189,6 +189,11 @@ class IndexController extends AbstractActionController
         $file = $basePath->getView()->basePath('foo');*/
 
 
+        // return a json array
+        $response = array();
+        $response["errors"] = array();
+
+
         /* create some folders */
 
         if (!file_exists('data/cache/conversations'))
@@ -243,6 +248,13 @@ class IndexController extends AbstractActionController
 
             file_put_contents("data/cache/users/" . $username, date("Y-m-d H:i:s"));
         }
+        else if (is_null($username))
+            $response["errors"][] = array(
+                "code" => 101,
+                "name" => "Lost session",
+                "message" => "The session has been lost!"
+            );
+
 
         /* infinite loop until the data file is not modified */
 
@@ -259,12 +271,21 @@ class IndexController extends AbstractActionController
 
         $current_users = getFiles("data/cache/users");
 
-        // check if the data file has been modified or an user has logged in or logged out
+
+        /* Check the following rules
+         * - The message file has been modified
+         * - An user has logged in or logged out
+         * - The session has been lost
+         */
+
         while ($currentmodif <= $lastmodif && count($current_users) == count($last_users))
         {
             clearstatcache();
             $currentmodif = filemtime($message_file);
             session_write_close();
+
+            /* refresh identity */
+            $username = $this->getAnonymousIdentity();
 
             if (!is_null($username) && !empty($username))
             {
@@ -280,12 +301,19 @@ class IndexController extends AbstractActionController
                         unlink($_user);
                 }
             }
+            else if (is_null($username)) 
+            {
+                $response["errors"][] = array(
+                    "code" => 101,
+                    "name" => "Lost session",
+                    "message" => "The session has been lost!"
+                );
+                break;
+            }
         }
 
         $last_user = file_get_contents($username_file);
 
-        // return a json array
-        $response = array();
 
         if (isset($_GET["doRequest"]))
             $data = file_get_contents($message_file);
