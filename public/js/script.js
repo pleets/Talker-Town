@@ -25,6 +25,8 @@ for (var i = 0; i <= size; i++)
 {
 	if (me.path[i] == document.URL[i])
 		indexPath += me.path[i];
+   else
+      break;
 }
 
 
