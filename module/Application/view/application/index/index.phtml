@@ -1,7 +1,7 @@
 <?php if (isset($Exception)): ?>
-<div class="alert alert-danger alert-dismissable">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <strong><span class="glyphicon glyphicon-exclamation-sign"></span></strong> <?= $Exception ?>
+<div class="ui negative message">
+    <i class="close icon"></i>
+    <?= $Exception ?>
 </div>
 <?php endif; ?>
 

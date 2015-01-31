@@ -1,6 +1,17 @@
 /* this variable represents the current script element */
 var me = {};
 
+function dirname(dir)
+{
+   if (dir.lastIndexOf("/") == dir.length - 1)
+      dir = dir.substring(0, dir.lastIndexOf("/"));
+   
+   if (dir.lastIndexOf("/") == -1)
+      return "";
+   
+   return dir.substring(0, dir.lastIndexOf("/"));
+}
+
 /* relative path to the element whose script is currently being processed.*/
 if (typeof document.currentScript != "undefined" && document.currentScript != null)
 {
@@ -32,7 +43,7 @@ for (var i = 0; i <= size; i++)
 
 /* Get dirname of index path based on public folder */
 
-var rootPath = 'http://localhost:8080/git/Talker-Town/';		/* Security BUG */
+var rootPath = dirname(indexPath) + '/';
 
 
 var comet;
@@ -116,12 +127,13 @@ $(function(){
                      var y = j;
 
                      bg_x = ( -32 * x ) + 3;
-                     bg_y = ( -(336/11) * y ) + 2;
+                     bg_y = ( -(336/11) * y ) + 3;
 
                      var nitem = "<div class='item'>" +
                                  "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
-                                 "<div class='content2>" +
+                                 "<div class='content'>" +
                                  "<div class='header'>" + data["username"] +  "</div>" +
+                                 "<div class='description'><i class='mobile icon'></i><small>3min</small></div>" +
                                  "</div>" +
                                  "<div>";
 
@@ -221,6 +233,10 @@ $(function(){
 
    $("#show-users").click(function(){
       $('.ui.sidebar').sidebar('toggle');
+   });
+
+   $('.message .close').on('click', function() {
+      $(this).closest('.message').fadeOut();
    });
 
 
