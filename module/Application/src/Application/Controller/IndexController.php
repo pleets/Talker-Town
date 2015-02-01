@@ -341,4 +341,22 @@ class IndexController extends AbstractActionController
         $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $response ));
         return $response;
     }
+
+    public function fileUploadAction()
+    {
+
+        $files = array();
+
+        foreach ($_FILES as $file) 
+        {
+            if (!file_exists('data/cache/files'))
+                mkdir('data/cache/files');
+
+            if (move_uploaded_file($file['tmp_name'], "data/cache/files". basename($file['tmp_name']) . $file['name']))
+                $files[] = basename($file['tmp_name']) . $file['name'];
+        }
+
+        $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $files ));
+        return $response;        
+    }
 }
