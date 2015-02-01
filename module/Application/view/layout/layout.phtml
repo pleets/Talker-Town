@@ -35,15 +35,19 @@
     </head>
     <body>
 
+        <div class="ui secondary menu">
+            <a href="<?php echo $this->url('home') ?>" class="item active">
+                <i class="home icon"></i> <?php echo $this->translate('Talker Town') ?>
+            </a>
 
-    <div class="ui text menu grid">
-        <a href="<?php echo $this->url('home') ?>" class="row mobile only item active">
-            <i class="home icon"></i> <?php echo $this->translate('Talker Town') ?>
-        </a>
-    </div>
+            <div class="right menu">
+                <a href="<?= $this->url('application') . '/index/index'; ?>" class="row item">
+                    <i class="users icon"></i> <?php echo $this->translate('Register') ?>
+                </a>    
+            </div>
+        </div>
 
-
-        <div class="" style="padding: 5px">
+        <div class="" style="padding: 0 5px">
             <?php echo $this->content; ?>
             <div id="footer-mobile">
                 <br />

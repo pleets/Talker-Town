@@ -22,7 +22,7 @@
 
 <div class="ui segment">
 
-    <h1 class="ui basic header center aligned"><?= $this->escapeHtml($title) ?></h1>
+    <h2 class="ui basic header center aligned"><?= $this->escapeHtml($title) ?></h2>
 
     <?php if (isset($form)): ?>
         
@@ -108,13 +108,4 @@
         </div>        
     <?php endif; ?>
 
-</div>
-
-<div class="ui segment">
-    <?php if (!$xmlHttpRequest): ?>
-        <?= $this->translate("You can register to obtain some advantages here! ") ?> 
-        <a href="<?= $this->url('application') . '/index/index'; ?>" class="ui inverted green button">
-            <?= $this->translate('Register') ?>
-        </a>
-    <?php endif; ?>    
 </div>
