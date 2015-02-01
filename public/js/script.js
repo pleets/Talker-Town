@@ -123,8 +123,8 @@ $(function(){
                      var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
                      var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
 
-                     var x = i;
-                     var y = j;
+                     var x = j;
+                     var y = i;
 
                      bg_x = ( -32 * x ) + 3;
                      bg_y = ( -(336/11) * y ) + 3;
