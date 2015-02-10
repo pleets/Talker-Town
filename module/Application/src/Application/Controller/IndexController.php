@@ -389,7 +389,7 @@ class IndexController extends AbstractActionController
             if (!file_exists('data/cache/files'))
                 mkdir('data/cache/files');
 
-            if (move_uploaded_file($file['tmp_name'], "data/cache/files". basename($file['tmp_name']) . $file['name']))
+            if (move_uploaded_file($file['tmp_name'], "data/cache/files/". basename($file['tmp_name']) . $file['name']))
                 $files[] = basename($file['tmp_name']) . $file['name'];
         }
 

@@ -45,7 +45,6 @@ for (var i = 0; i <= size; i++)
 
 var rootPath = dirname(indexPath) + '/';
 
-
 var comet;
 
 $(function(){
@@ -247,7 +246,7 @@ $(function(){
             fileBox: document.querySelector("#file-reader-onchange"),      // input[type='file']
             dropBox: document.querySelector("#file-reader-ondrop"),        // dropbox
             preview: document.querySelector("#file-reader-ondrop"),        // preview
-            url: 'source/file-upload.php',
+            url: 'index/fileUpload',
             size: 104857600,
          });
 
@@ -259,7 +258,7 @@ $(function(){
                uploadedFiles = $.parseJSON(uploadedFiles);
                var links = "<div>";
                for (var i = uploadedFiles.length - 1; i >= 0; i--) {
-                  links += "<a target='_blank' class='ui basic button' href='public/img/user/" + uploadedFiles[i] + "'>" + uploadedFiles[i] + " </a> ";
+                  links += "<a target='_blank' class='ui basic button' href='" + rootPath + "data/cache/files/" + uploadedFiles[i] + "'>" + uploadedFiles[i] + " </a> ";
                };
                links += "</div>";
                $("#file_reader_response").append(links);
