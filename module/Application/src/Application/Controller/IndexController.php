@@ -259,28 +259,20 @@ class IndexController extends AbstractActionController
 
         // Get username and message to store
         $message = isset($_GET['msg']) ? trim($_GET['msg']) : '';
-        $username = $this->getAnonymousIdentity();
+        $data_username = $username = $this->getAnonymousIdentity();
 
         // Get the current and last timestamp of the message file
         $lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;     # The first time the timestamp is equal to zero
-        $currentmodif = filemtime($message_file);
+        $data_id = $currentmodif = filemtime($message_file);
 
         // If you are logged
         if (!is_null($username) && !empty($username))
         {
             if (!empty($message))
             {
-                // Convert the current message in HTML
-                $message = "<p id='$currentmodif'>$username ~ $message</p>";
-
                 // Store message and username
                 file_put_contents($message_file, $message);
                 file_put_contents($username_file, $username);
-
-                // Store message in the chat history
-                $hd = fopen("data/cache/conversations/history.txt", "a");
-                fwrite($hd, $message . "\n");
-                fclose($hd);
             }
 
             file_put_contents("data/cache/users/" . $username, date("Y-m-d H:i:s"));
@@ -350,29 +342,50 @@ class IndexController extends AbstractActionController
         }
 
         $last_user = file_get_contents($username_file);
-
-
+        
         if (isset($_GET["doRequest"]))
-            $data = file_get_contents($message_file);
+            $data_contents_message = file_get_contents($message_file);
         # First request when the timestamp is zero
         else if ($lastmodif == 0) {
             if (file_exists("data/cache/conversations/history.txt"))
-                $data = file_get_contents("data/cache/conversations/history.txt");
+                $data_contents_message = file_get_contents("data/cache/conversations/history.txt");
             else
-                $data = "";
+                $data_contents_message = "";
         }
         else {
         # The user gets the message of other users
-            if ($last_user != $username)
-                $data = file_get_contents($message_file);
+            if ($last_user != $username) 
+                $data_contents_message = file_get_contents($message_file);
             else
-                $data = '';
+                $data_contents_message = '';
         }
 
+
         // If detects user does not send message
-        $response['msg'] = ($currentmodif == $lastmodif) ? '': $data;
+        $response['msg'] = ($currentmodif == $lastmodif) ? '': $data_contents_message;
+
+        // Parse msg
+        if (!empty($message))
+        {
+            if (substr($response['msg'], 0, 7) == 'http://')
+            {
+                $response['msg'] = "<a targe='_blank' href='". $response['msg'] ."' >". $response['msg'] ."</a>";
+            }
+            else {
+                // Convert the current message in HTML
+                $response['msg']  = "<p id='$currentmodif'>$last_user ~ $data_contents_message</p>";             
+
+                // Store message in the chat history
+                $hd = fopen("data/cache/conversations/history.txt", "a");
+                fwrite($hd, $response['msg'] . "\n");
+                fclose($hd);
+
+            }
+        }
+
         $response['user'] = $last_user;
         $response['timestamp'] = $currentmodif;
+        $response['firstTimestamp'] = $lastmodif;
         $response['online_users'] = $online_users;
 
         $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $response ));

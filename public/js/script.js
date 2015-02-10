@@ -98,8 +98,19 @@ $(function(){
                {
                   if ($('#content').length)
                   {
-                     $('#content').append(data["msg"]);
-                     $('#content')[0].scrollTop = 9999999;
+
+
+                     if (data["firstTimestamp"] == 0 || data["user"] !== $("#current-session").val())
+                     {
+                        // Parse message
+                        if (data["msg"].substring(0,7) == 'http://')
+                           var msg = "<a targe='_blank' href='" + data["msg"] + "'>" + data["msg"] + "</a>";
+                        else
+                           var msg = "<p id='" + data["timestamp"] + "'>" + data["user"] + " ~ " + data["msg"] + "</p>";
+
+                        $('#content').append(msg);
+                        $('#content')[0].scrollTop = 9999999;                        
+                     }
 
                      // if (data["user"] !== $.cookie("username"))         $.cookie not works
                      if (data["user"] !== $("#current-session").val())
@@ -256,12 +267,38 @@ $(function(){
          _files.addChangeEvent(function(files){
             _files.upload(files, function(uploadedFiles) {
                uploadedFiles = $.parseJSON(uploadedFiles);
-               var links = "<div>";
+               //var links = "<div>";
                for (var i = uploadedFiles.length - 1; i >= 0; i--) {
-                  links += "<a target='_blank' class='ui basic button' href='" + rootPath + "data/cache/files/" + uploadedFiles[i] + "'>" + uploadedFiles[i] + " </a> ";
+                  //links += "<a target='_blank' class='ui basic button' href='" + rootPath + "data/cache/files/" + uploadedFiles[i] + "'>" + uploadedFiles[i] + " </a> ";
+                  comet.doRequest({
+                     data: {
+                        msg: rootPath + "data/cache/files/" + uploadedFiles[i]
+                     },
+                     callback: {
+                        success: function(data) 
+                        {
+                           $('#content').append(data["msg"]);
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                           $('#loading-message-status i').attr('class', 'remove icon');
+                           $('#loading-message-status').removeAttr('id');
+                           $('#content').append("<div class='ui small compact red message'><strong>Error!</strong> The file was not sent.</div>");
+                        },
+                        complete: function()
+                        {
+                           if ($('#loading-message-status i').attr('class') != 'remove icon')
+                              $('#loading-message-status').remove();
+
+                           $('#word').removeAttr('disabled');
+
+                           $('#content')[0].scrollTop = 9999999;
+                           $('#word').focus();
+                        }
+                     }                  
+                  });                  
                };
-               links += "</div>";
-               $("#file_reader_response").append(links);
+               //links += "</div>";
+               //$("#file_reader_response").append(links);
             });
          });
       }
