@@ -102,7 +102,8 @@ $(function(){
                      $('#content').append(data["msg"]);
                      $('#content')[0].scrollTop = 9999999;
 
-                     if (data["user"] !== $.cookie("username"))
+                     // if (data["user"] !== $.cookie("username"))         $.cookie not works
+                     if (data["user"] !== $("#current-session").val())
                      {
                         $("#notification-audio")[0].load();
                         $("#notification-audio")[0].play();
