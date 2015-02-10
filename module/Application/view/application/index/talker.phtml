@@ -25,17 +25,21 @@
 <div class="ui piled segment" id="outer-content">
 	<div id="content"></div>
 </div>
-<form action="" method="get" id="chat" class="ui form segment">
-	<div class="field">
-		<div class="ui small icon input">
-	   		<input type="text" name="word" id="word" autofocus="autofocus" placeholder="message" />
+<form action="" method="get" id="chat" class="ui form">
+	<div class="ui grid">
+		<div class="twelve wide mobile only six wide tablet only column" style='padding-right: 1px'>
+			<div class="ui small icon input">
+		   		<input type="text" name="word" id="word" autofocus="autofocus" placeholder="message" />
+			</div>
 		</div>
-	</div>
-	<div class="field">
-		<input type="submit" name="submit" value="Send" class="ui small submit button" />
-		<span id="state">Offline</span>
+		<div class="four wide column" style='padding-left: 1px'>
+			<button type='sumbit' class="ui small icon submit button"><i class="chevron right icon"></i></button>
+			<!--<input type="submit" name="submit" value="Send" class="ui small submit button" />-->
+		</div>		
 	</div>
 </form>
+
+<span id="state">offline</span>
 
 <input type="file" id="file-reader-onchange" value="" multiple="multiple" />
 <div id="file-reader-ondrop" class="drop" style="overflow: hidden; min-height: 50px">
