@@ -165,7 +165,7 @@ $(function(){
    if (typeof $.cookie('username') != 'undefined')
       comet.connect(settings);
 
-   // Connect only if the session exists
+   // Get identity information
    $.ajax({
    	url: indexPath +  'application/index/getIdentityInformation',
    	dataType: 'json',
