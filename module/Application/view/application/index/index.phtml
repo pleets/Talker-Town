@@ -41,7 +41,7 @@
                 <div class="six wide field">
                     <label><?= $this->translate("Gender") ?></label>
                     <?php if (isset($genders)): ?>
-                        <?php if (!count($genders)): ?>
+                        <?php if (count($genders)): ?>
                             <div class="ui selection dropdown">
                                 <input name="genders_id" type="hidden">
                                 <div class="default text"><?= $this->translate("Gender") ?></div>

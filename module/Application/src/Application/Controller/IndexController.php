@@ -59,6 +59,43 @@ class IndexController extends AbstractActionController
             $form->get('submit')->setValue('Login');
             $data['form'] = $form;
 
+            $data["genders"] = array(
+                array("genders_id" => 1, "name" => "Male"),
+                array("genders_id" => 2, "name" => "Female")
+            );
+        }
+        catch (\Exception $e) {
+
+            $data['Exception'] = $e->getMessage();
+            $view = new ViewModel($data);
+
+            if ($xmlHttpRequest)
+                $view->setTerminal(true);
+            return $view;
+        }
+
+        $view = new ViewModel($data);
+
+        if ($xmlHttpRequest)
+            $view->setTerminal(true);
+        return $view;
+    }
+
+    public function databaseAction()
+    {
+        $data = array();
+
+        $xmlHttpRequest = $this->getRequest()->isXmlHttpRequest();
+        $data['xmlHttpRequest'] = $xmlHttpRequest;
+
+        if (!is_null($this->getAnonymousIdentity()))
+            return $this->redirect()->toRoute('application/talker');
+
+        try {
+            $form = new UserForm();
+            $form->get('submit')->setValue('Login');
+            $data['form'] = $form;
+
             $gendersTable = $this->getGendersTable();
             $data["genders"] = $gendersTable->fetchAll()->toArray();
         }
