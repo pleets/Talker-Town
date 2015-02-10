@@ -1,4 +1,13 @@
 <?php
+
+// Development environment
+if (!ini_get('display_errors')) 
+{
+    ini_set('display_errors', '1');
+    error_reporting(E_ERROR | E_WARNING | E_PARSE);
+    error_reporting(E_ALL);
+}
+
 /**
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.
