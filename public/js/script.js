@@ -102,14 +102,18 @@ $(function(){
 
                      if (data["firstTimestamp"] == 0 || data["user"] !== $("#current-session").val())
                      {
-                        // Parse message
-                        if (data["msg"].substring(0,7) == 'http://')
-                           var msg = "<a targe='_blank' href='" + data["msg"] + "'>" + data["msg"] + "</a>";
-                        else
-                           var msg = "<p id='" + data["timestamp"] + "'>" + data["user"] + " ~ " + data["msg"] + "</p>";
+                        // First load page
+                        if (data["user"].trim() !== '' && data["msg"].trim() !== '')
+                        {
+                           // Parse message
+                           if (data["msg"].substring(0,7) == 'http://')
+                              var msg = "<a targe='_blank' href='" + data["msg"] + "'>" + data["msg"] + "</a>";
+                           else
+                              var msg = "<p id='" + data["timestamp"] + "'>" + data["user"] + " ~ " + data["msg"] + "</p>";
 
-                        $('#content').append(msg);
-                        $('#content')[0].scrollTop = 9999999;                        
+                           $('#content').append(msg);
+                           $('#content')[0].scrollTop = 9999999;                           
+                        }
                      }
 
                      // if (data["user"] !== $.cookie("username"))         $.cookie not works
