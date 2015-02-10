@@ -162,11 +162,7 @@ $(function(){
       }
    }
 
-   // To connect only if the cookie exists
-   if (typeof $.cookie('username') != 'undefined')
-      comet.connect(settings);
-
-   // Get identity information
+   // Get identity information and connect if identityInformatin is not null
    $.ajax({
    	url: indexPath +  'application/index/getIdentityInformation',
    	dataType: 'json',
