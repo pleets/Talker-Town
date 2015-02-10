@@ -23,10 +23,12 @@ JScriptRender.html.Loader = function(settings)
    // Binds an HTMLObject or jQuery selector
    set.context = (typeof set.context !== "undefined" && set.context !== null) ? set.context : null;
    set.height = set.height || 50;
+   set.width = set.width || 100;
 
    // Settings
    this.context = set.context;
    this.height = set.height;
+   this.width = set.width;
 
    this.selector = "JScriptRender-loader-" + Math.random().toFixed(9).substring(2);
    this.overlay = new JScriptRender.html.Overlay();
@@ -70,6 +72,7 @@ JScriptRender.html.Loader.prototype =
          var newCanvas = document.createElement('canvas');
          newCanvas.setAttribute('id', that.selector);
          newCanvas.setAttribute('height', that.height);
+         newCanvas.setAttribute('width', that.width);
          newCanvas.setAttribute('style', 'background: white; box-shadow: 0 0 2px black');
 
          if (!isset_context)

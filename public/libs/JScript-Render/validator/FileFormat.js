@@ -19,19 +19,23 @@ if (!JScriptRender.hasOwnProperty('validator'))
 JScriptRender.validator.FileFormat = function(format)
 {
    JScriptRender.validator.FileFormat.prototype.format = format;
+
+   this.messages = {};
+
+   /* Get language */
+   var language = JScriptRender.settings.general.language;
+   this.languageHelper = JScriptRender.language[language];   
 }
 
 JScriptRender.validator.FileFormat.prototype =
 {
-   Messages: {},
-
    isValid: function(file) 
    {
-      this.Messages = {};
+      this.messages = {};
 
       if (!this.format.test(file.type))
       {
-         this.Messages.InvalidFileFormat = "The file format is invalid!, the current file format is " + this.format;
+         this.messages.invalidFileFormat = this.languageHelper.invalidFileFormat;
          return false;
       }
 
@@ -39,6 +43,6 @@ JScriptRender.validator.FileFormat.prototype =
    },
    getMessages: function()
    {
-      return this.Messages;
+      return this.messages;
    }
 }

@@ -19,19 +19,19 @@ body { font-family: "Open Sans", Helvetica, Arial, sans-serif; font-size: 14px; 
 *[class~="page-header"] { border-bottom: solid 1px rgb(240,240,240); margin-bottom: 12px; }
 *[class~="page-header"] small { color: rgb(190,190,190); font-size: 18px; }
 
-input[class~="jInput"] 
+input[class~="jInput"], select[class~="jInput"]
 {
    margin: 0; padding: 4px; outline: 0;
    border: solid 1px rgb(200,200,200); 
    box-shadow: none;
 }
-input[class~="jInput"]:hover
-{
-   border: solid 1px #F60;
-}
-input[class~="jInput"]:focus
+input[class~="jInput"]:focus, select[class~="jInput"]:focus
 {
    border: solid 1px rgb(0,150,200);    
+}
+input[class~="jInput"]:hover, select[class~="jInput"]:hover
+{
+   border: solid 1px #F60;
 }
 
 button[class~="jButton"] 
@@ -75,4 +75,10 @@ button[class~="jButton"]
     display: inline-block;
     margin: 2px; padding: 5px;
     border: solid 1px rgb(235,235,235);
+}
+
+*[data-log] > span
+{
+  color: red;
+  display: block;
 }

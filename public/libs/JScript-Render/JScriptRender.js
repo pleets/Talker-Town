@@ -5,7 +5,7 @@
  * Free to use under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
  *
- * Date: 2014-08-03
+ * Date: 2015-01-22
  */
 
 /* JScriptRender alias */
@@ -137,45 +137,59 @@ JScriptRender.StdClass =
 }
 
 /* Short alias */
-var $j = JScriptRender;
-for (var f in $j.StdClass) {
-    $j[f] = $j.StdClass[f];
+var $jS = JScriptRender;
+for (var f in $jS.StdClass) {
+    $jS[f] = $jS.StdClass[f];
 };
 
 /* Load classes */
+try {
+    $jS.array_include([
 
-$j.array_include([
+        // Languages
+        'language/en_US.js',
+        'language/es_ES.js',
 
-    // Validators
-    'validator/MathExpression.js',
-    'validator/StringLength.js',
-    'validator/Digits.js',
-    'validator/Alnum.js',
-    'validator/Date.js',
-    'validator/FileFormat.js',
+        // General settings
+        'settings/general.js',
 
-    // Filters
-    'filter/InputFilter.js',
+        // Validators
+        'validator/MathExpression.js',
+        'validator/StringLength.js',
+        'validator/Digits.js',
+        'validator/Alnum.js',
+        'validator/Date.js',
+        'validator/FileFormat.js',
 
-    // Html
-    'html/Html.js',
-    'html/Overlay.js',
-    'html/Loader.js',
-    'html/Dialog.js',
-    'html/Form.js',
+        // Filters
+        'filter/InputFilter.js',
 
-    // Exceptions
-    'exception/Exception.js',
-    
-    // Readers
-    'readers/File.js',
+        // Html
+        'html/Overlay.js',
+        'html/Loader.js',
+        'html/Dialog.js',
+        'html/Form.js',
+        'html/FormValidator.js',
 
-    // jQuery utils
-    'jquery/Ajax.js',
-    'jquery/UI.js',
-    'jquery/Debug.js',
-    'jquery/Animation.js',
+        // Exceptions
+        'exception/Exception.js',
 
-], function(){
-    JScriptRender.STATE = 'complete';
-});
+        // Readers
+        'readers/File.js',
+
+        // jQuery utils
+        'jquery/Ajax.js',
+        'jquery/UI.js',
+        'jquery/Debug.js',
+        'jquery/Animation.js',
+
+        // Utils
+        'utils/DateControl.js',
+
+    ], function(){
+        JScriptRender.STATE = 'complete';
+    });    
+}
+catch (e) {
+    JScriptRender.STATE = 'error';
+}

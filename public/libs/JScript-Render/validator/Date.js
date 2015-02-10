@@ -16,7 +16,12 @@ if (!JScriptRender.hasOwnProperty('validator'))
    JScriptRender.validator = new Object();
 
 /* Date class */
-JScriptRender.validator.Date = new Function();    
+JScriptRender.validator.Date = function() {
+
+   /* Get language */
+   var language = JScriptRender.settings.general.language;
+   this.languageHelper = JScriptRender.language[language];
+};
 
 JScriptRender.validator.Date.prototype = 
 {
@@ -42,13 +47,13 @@ JScriptRender.validator.Date.prototype =
 
             if (!(!newDate || newDate.getFullYear() == date[0] && newDate.getMonth() == date[1] -1 && newDate.getDate() == date[2]))
             {
-               this.Messages.dateInvalidDate = "The input does not appear to be a valid date";                              
+               this.Messages.dateInvalidDate = this.languageHelper.dateInvalidDate;                              
                return false;
             }
          }
       }
       else {
-         this.Messages.dateFalseFormat = "The input does not fit the date format 'Y-m-d'";
+         this.Messages.dateFalseFormat = this.languageHelper.dateFalseFormat;
          return false;
       }
 

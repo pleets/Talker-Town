@@ -81,6 +81,35 @@
     </p>
 
     <div class="page-header">
+      <h1>Utils <small>DOM</small></h1>
+    </div>
+
+    <div class="page-header">    
+      <h3>DateControl</h3>
+    </div>
+
+    <label for="dateControlYear">Select a year</label><br />
+    <select id="dateControlYear" class="jInput">
+      <option value="2015">2015</option>
+      <option value="2014">2014</option>
+    </select>
+    <select id="dateControlMonth" class="jInput">
+      <option value="1">January</option>
+      <option value="1">February</option>
+      <option value="1">March</option>
+      <option value="1">April</option>
+      <option value="1">May</option>
+      <option value="1">June</option>
+      <option value="1">July</option>
+      <option value="1">August</option>
+      <option value="1">September</option>
+      <option value="1">October</option>
+      <option value="1">November</option>
+      <option value="1">December</option>
+    </select>
+
+
+    <div class="page-header">
       <h1>Html <small>DOM</small></h1>
     </div>
 
@@ -119,6 +148,24 @@
     <button class="jButton" id='createForm'>Create Form</button>
     <div id='formArea'></div>
   
+    <h3>+ Html</h3>
+
+   
+    <form action="" id="processForm">
+      <div>
+        <label for="number_form_process">String length. Min 2, Max 5 and Digits</label><br />
+        <input class="jInput" type="text" name='number_form_process' />
+        <div data-log='number_form_process'></div>
+      </div><br />
+      <div>
+        <label for="alnum_form_process">String length. Min 4, Max 8 and Alnum without <em>allowWhiteSpace</em></label><br />
+        <input class="jInput" type="text" name='alnum_form_process' />
+        <div data-log='alnum_form_process'></div>  
+      </div>
+      <button class="jButton" id='html'>Send</button>
+    </form>
+
+
     <div class="page-header">
       <h1>Readers <small>to process multimedia files</small></h1>
     </div>

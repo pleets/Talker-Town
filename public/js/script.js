@@ -236,11 +236,11 @@ $(function(){
    });
 
 
-   $j.ready(function(){
+   $jS.ready(function(){
 
       if ($("#file_reader_response").length)
       {
-         var Reader = $j.reader;
+         var Reader = $jS.reader;
 
          var _files = new Reader.File({
             fileBox: document.querySelector("#file-reader-onchange"),      // input[type='file']

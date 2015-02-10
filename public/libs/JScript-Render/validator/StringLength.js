@@ -18,7 +18,10 @@ if (!JScriptRender.hasOwnProperty('validator'))
 /* StringLength class */
 JScriptRender.validator.StringLength = function(settings)
 {
+   this.messages = {};
+
    var set = settings || {};
+
 
    if (typeof set.min !== "number")
       throw ("The minimun value must be number type");
@@ -31,14 +34,16 @@ JScriptRender.validator.StringLength = function(settings)
    // Get a natural number as parameter grater tha the minumun value or set the maximum value to undefined
    set.max = (set.max > set.min) ? set.max : undefined;
 
-   JScriptRender.validator.StringLength.prototype.min = set.min;
-   JScriptRender.validator.StringLength.prototype.max = set.max;
+   this.min = set.min;
+   this.max = set.max;
+
+   /* Get language */
+   var language = JScriptRender.settings.general.language;
+   this.languageHelper = JScriptRender.language[language];
 }
 
 JScriptRender.validator.StringLength.prototype =
 {
-   Messages: {},
-
    isValid: function(string, whitespaces) 
    {
       // Allow whitespaces
@@ -51,7 +56,7 @@ JScriptRender.validator.StringLength.prototype =
       if (typeof whitespaces !== "boolean")
          throw "The second argument must be boolean type!";
 
-      this.Messages = {};
+      this.messages = {};
 
       if (whitespaces)
       {
@@ -59,19 +64,19 @@ JScriptRender.validator.StringLength.prototype =
          {
             if (string.length < this.min)
             {
-               this.Messages.stringLengthTooShort = "The input is less than " + this.min + " characters long";
+               this.messages.stringLengthTooShort = this.languageHelper.stringLengthTooShort(this.min);
                return false;
             }
             else if (string.length > this.max)
             {
-               this.Messages.stringLengthTooLong = "The input is more than " + this.max + " characters long";
+               this.messages.stringLengthTooLong = this.languageHelper.stringLengthTooLong(this.max);
                return false;
             }
          }
          else {
             if (string.length < this.min)
             {
-               this.Messages.stringLengthTooShort = "The input is less than " + this.min + " characters long";
+               this.messages.stringLengthTooShort = this.languageHelper.stringLengthTooShort(this.min);
                return false;   
             }
          }
@@ -81,19 +86,19 @@ JScriptRender.validator.StringLength.prototype =
          {
             if (string.trim().length < this.min)
             {
-              this.Messages.stringLengthTooShort= "The input is less than " + this.min + " characters long";
+              this.messages.stringLengthTooShort = this.languageHelper.stringLengthTooShort(this.min);
               return false;
             }
             else if (string.trim().length > this.max)
             {
-              this.Messages.stringLengthTooLong = "The input is more than " + this.max + " characters long";
+              this.messages.stringLengthTooLong = this.languageHelper.stringLengthTooLong(this.max);
               return false;
             }
          }
          else {
             if (string.trim().length < this.min)
             {
-              this.Messages.stringLengthTooShort = "The input is less than " + this.min + " characters long";
+              this.messages.stringLengthTooShort = this.languageHelper.stringLengthTooShort(this.min);
               return false;
             }
          }
@@ -102,6 +107,6 @@ JScriptRender.validator.StringLength.prototype =
    },
    getMessages: function()
    {
-      return this.Messages;
+      return this.messages;
    }
 }

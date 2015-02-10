@@ -16,7 +16,12 @@ if (!JScriptRender.hasOwnProperty('validator'))
    JScriptRender.validator = new Object();
 
 /* Alnum class */
-JScriptRender.validator.Alnum = new Function();
+JScriptRender.validator.Alnum = function() {
+
+   /* Get language */
+   var language = JScriptRender.settings.general.language;
+   this.languageHelper = JScriptRender.language[language];
+};
 
 JScriptRender.validator.Alnum.prototype = 
 {
@@ -34,7 +39,7 @@ JScriptRender.validator.Alnum.prototype =
 
       if (!(string.match(RegExpr)))
       {
-         this.Messages.notAlnum = "The input contains characters which are non alphabetic and no digits";
+         this.Messages.notAlnum = this.languageHelper.notAlnum;
          return false;
       }
 

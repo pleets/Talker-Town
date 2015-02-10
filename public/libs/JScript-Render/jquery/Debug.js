@@ -22,7 +22,7 @@ if (!JScriptRender.hasOwnProperty('jquery'))
 JScriptRender.jquery.Debug = function() 
 {
    // API's
-   JScriptRender.jquery.Debug.UI = new $j.jquery.UI();
+   JScriptRender.jquery.Debug.UI = new $jS.jquery.UI();
 };
 
 JScriptRender.jquery.Debug.prototype = 
@@ -48,7 +48,7 @@ JScriptRender.jquery.Debug.prototype =
         errorContent.append("Message: <em>" + e.message +"</em><br />");
         if (set.suggestion.length)
             errorContent.append("Suggestion: <em>" + set.suggestion +"</em><br />");
-        JScriptRender.jquery.Debug.UI({ title: "An error ocurred!", content: errorContent, width: set.width });
+        JScriptRender.jquery.Debug.UI.dialog({ title: "An error ocurred!", content: errorContent, width: set.width });
     },
     phpError: function(phpCode, settings)
     {
@@ -62,7 +62,7 @@ JScriptRender.jquery.Debug.prototype =
         errorContent.append(phpCode);
         if (set.suggestion.length)
             errorContent.append("Suggestion: <em>" + set.suggestion +"</em><br />");
-        JScriptRender.jquery.Debug.UI({ title: "An error ocurred!", content: errorContent, width: set.width });
+        JScriptRender.jquery.Debug.UI.dialog({ title: "An error ocurred!", content: errorContent, width: set.width });
     },
     exception: function(name, message) {
         this.name = name;

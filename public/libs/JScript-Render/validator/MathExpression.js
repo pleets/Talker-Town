@@ -18,6 +18,8 @@ if (!JScriptRender.hasOwnProperty('validator'))
 /* MathExpression class */
 JScriptRender.validator.MathExpression = function(mode) 
 {
+   this.messages = {};
+
    if (['unaryRegEx','multipleRegEx', 'simpleAssociativeRegEx', 'associativeRegEx'].indexOf(mode) == -1 && typeof mode !== "undefined")
       throw "Invalid math expression mode";
    else if (typeof mode == "undefined")
@@ -71,12 +73,14 @@ JScriptRender.validator.MathExpression = function(mode)
    JScriptRender.validator.MathExpression.prototype.associativeRegEx = associativeRegEx;
 
    JScriptRender.validator.MathExpression.prototype.mode = mode;
+
+   /* Get language */
+   var language = JScriptRender.settings.general.language;
+   this.languageHelper = JScriptRender.language[language];   
 }
 
 JScriptRender.validator.MathExpression.prototype =
 {    
-   Messages: {},
-
    isValid: function(string)
    {
       // Remove whitespaces
@@ -84,7 +88,7 @@ JScriptRender.validator.MathExpression.prototype =
 
       if (string.length && !(string.match(this[this.mode])))
       {
-         this.Messages.malformed = "Malformed expression";
+         this.messages.malformedMathExpression = this.languageHelper.malformedMathExpression;
          return false;
       }
 
@@ -92,7 +96,7 @@ JScriptRender.validator.MathExpression.prototype =
    },
    getMessages: function()
    {
-      return this.Messages;
+      return this.messages;
    },
    getMode: function()
    {

@@ -23,9 +23,9 @@ if (!JScriptRender.hasOwnProperty('jquery'))
 JScriptRender.jquery.Ajax = function()
 {
    // API's
-   JScriptRender.jquery.Ajax.UI = new $j.jquery.UI();
-   JScriptRender.jquery.Ajax.Debug = new $j.jquery.Debug();
-   JScriptRender.jquery.Ajax.Animation = new $j.jquery.Animation();
+   JScriptRender.jquery.Ajax.UI = new $jS.jquery.UI();
+   JScriptRender.jquery.Ajax.Debug = new $jS.jquery.Debug();
+   JScriptRender.jquery.Ajax.Animation = new $jS.jquery.Animation();
 };
 
 JScriptRender.jquery.Ajax.prototype  = 
@@ -68,7 +68,7 @@ JScriptRender.jquery.Ajax.prototype  =
                 });
         }
 
-        var loader = new $j.html.Loader({ context: view });
+        var loader = new $jS.html.Loader({ context: view });
 
         $.ajax({
             url: url,
@@ -131,7 +131,7 @@ JScriptRender.jquery.Ajax.prototype  =
         set.ajaxCallback.post.success = set.ajaxCallback.post.success || new Function();
         set.ajaxCallback.post.complete = set.ajaxCallback.post.complete || new Function();
 
-        var loader = new $j.html.Loader();
+        var loader = new $jS.html.Loader();
 
         $("body").delegate(delegateButton, "click", function(event)
         {
@@ -268,7 +268,7 @@ JScriptRender.jquery.Ajax.prototype  =
         set.ajaxCallback.post = (set.ajaxCallback.post instanceof Object) ? set.ajaxCallback.post: {};
         set.ajaxCallback.post.success = set.ajaxCallback.post.success || new Function();
 
-        var loader = new $j.html.Loader();
+        var loader = new $jS.html.Loader();
 
         $("body").delegate(editSelectionButton, "click", function(event)
         {
@@ -427,7 +427,7 @@ JScriptRender.jquery.Ajax.prototype  =
         set.ajaxCallback.success = set.ajaxCallback.success || new Function();
         set.ajaxCallback.complete = set.ajaxCallback.complete || new Function();
 
-        var loader = new $j.html.Loader();
+        var loader = new $jS.html.Loader();
 
         $("body").delegate(delegateButton, "click", function(event)
         {
@@ -523,7 +523,7 @@ JScriptRender.jquery.Ajax.prototype  =
             var container = $(context);
             container.empty();
 
-            var loader = new $j.html.Loader({ context: container });
+            var loader = new $jS.html.Loader({ context: container });
 
             $.ajax({
                 url: url,
