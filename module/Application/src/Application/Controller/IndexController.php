@@ -374,13 +374,12 @@ class IndexController extends AbstractActionController
             else {
                 // Convert the current message in HTML
                 $response['msg']  = "<p id='$currentmodif'>$last_user ~ $data_contents_message</p>";             
-
-                // Store message in the chat history
-                $hd = fopen("data/cache/conversations/history.txt", "a");
-                fwrite($hd, $response['msg'] . "\n");
-                fclose($hd);
-
             }
+
+            // Store message in the chat history
+            $hd = fopen("data/cache/conversations/history.txt", "a");
+            fwrite($hd, $response['msg'] . "\n");
+            fclose($hd);
         }
 
         $response['user'] = $last_user;
