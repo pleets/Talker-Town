@@ -111,7 +111,7 @@ $(function(){
                         {
                            // Parse message
                            if (data["msg"].substring(0,7) == 'http://')
-                              var msg = "<a target='_blank' href='" + data["msg"] + "'>" + data["msg"] + "</a>";
+                              var msg = "<p id='" + data["timestamp"] + "'>" + data["user"] + " ~ <a target='_blank' href='" + data["msg"] + "'>" + data["msg"] + "</a></p>";
                            else
                               var msg = "<p id='" + data["timestamp"] + "'>" + data["user"] + " ~ " + data["msg"] + "</p>";
 
