@@ -98,10 +98,16 @@ $(function(){
                {
                   if ($('#content').length)
                   {
-                     if (data["firstTimestamp"] == 0 || data["user"] !== $("#current-session").val())
+                     if (data["firstTimestamp"] == 0) 
                      {
-                        // First load page
-                        if (data["user"].trim() !== '' && data["msg"].trim() !== '')
+                        var msg = data["msg"];      // Get history messages
+
+                        $('#content').append(msg);
+                        $('#content')[0].scrollTop = 9999999;                        
+                     }
+                     else if (data["user"] !== $("#current-session").val())
+                     {
+                        if (data["user"].trim() !== '' && data["msg"].trim() !== '') 
                         {
                            // Parse message
                            if (data["msg"].substring(0,7) == 'http://')
@@ -110,7 +116,7 @@ $(function(){
                               var msg = "<p id='" + data["timestamp"] + "'>" + data["user"] + " ~ " + data["msg"] + "</p>";
 
                            $('#content').append(msg);
-                           $('#content')[0].scrollTop = 9999999;                           
+                           $('#content')[0].scrollTop = 9999999;
                         }
                      }
 

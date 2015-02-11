@@ -249,6 +249,9 @@ class IndexController extends AbstractActionController
         if (!file_exists('data/cache/conversations'))
             mkdir('data/cache/conversations');
 
+        if (!file_exists('data/cache/conversations/timestamp'))
+            mkdir('data/cache/conversations/timestamp');
+
         if (!file_exists('data/cache/users'))
             mkdir('data/cache/users');
 
@@ -278,6 +281,10 @@ class IndexController extends AbstractActionController
         $lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;     # The first time the timestamp is equal to zero
         $data_id = $currentmodif = filemtime($message_file);
 
+        // Timestamp file
+        $timestamp_file = "data/cache/conversations/timestamp/" . $currentmodif . ".txt";
+
+
         // If you are logged
         if (!is_null($username) && !empty($username))
         {
@@ -286,6 +293,9 @@ class IndexController extends AbstractActionController
                 // Store message and username
                 file_put_contents($message_file, $message);
                 file_put_contents($username_file, $username);
+
+                // Store timestamp file
+                file_put_contents($timestamp_file, $message);
             }
 
             file_put_contents("data/cache/users/" . $username, date("Y-m-d H:i:s"));
@@ -355,9 +365,9 @@ class IndexController extends AbstractActionController
         }
 
         $last_user = file_get_contents($username_file);
-        
+
         if (isset($_GET["doRequest"]))
-            $data_contents_message = file_get_contents($message_file);
+                $data_contents_message = file_get_contents($timestamp_file);
         # First request when the timestamp is zero
         else if ($lastmodif == 0) {
             if (file_exists("data/cache/conversations/history.txt"))
@@ -368,7 +378,7 @@ class IndexController extends AbstractActionController
         else {
         # The user gets the message of other users
             if ($last_user != $username) 
-                $data_contents_message = file_get_contents($message_file);
+                $data_contents_message = ($lastmodif > $currentmodif) ? file_get_contents($timestamp_file) : file_get_contents("data/cache/conversations/timestamp/" . $lastmodif . ".txt");
             else
                 $data_contents_message = '';
         }
@@ -386,7 +396,7 @@ class IndexController extends AbstractActionController
             }
             else {
                 // Convert the current message in HTML
-                $response['msg']  = "<p id='$currentmodif'>$last_user ~ $data_contents_message</p>";             
+                $response['msg']  = "<p id='$currentmodif'>$last_user ~ $data_contents_message</p>";
             }
 
             // Store message in the chat history
