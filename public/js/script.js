@@ -370,12 +370,12 @@ $(function(){
                prompt : 'Please enter a username'
             },
             {
-               type   : 'length[4]',
-               prompt : 'Your username must be at least 4 characters'
+               type   : 'length[3]',
+               prompt : 'Your username must be at least 3 characters'
             },
             {
-               type   : 'maxLength[20]',
-               prompt : 'Your username is more than 20 characters to long'
+               type   : 'maxLength[25]',
+               prompt : 'Your username is more than 25 characters to long'
             }
          ]
       },
