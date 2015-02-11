@@ -118,7 +118,7 @@ class IndexController extends AbstractActionController
 
     public function loginAction()
     {
-        $data = array();
+        $data = array("foo" => "bar");
 
         $request = $this->getRequest();
 
@@ -126,7 +126,11 @@ class IndexController extends AbstractActionController
             return $this->redirect()->toRoute('home');
 
         if (!is_null($this->getAnonymousIdentity()))
-            return $this->redirect()->toRoute('home');
+        {
+            $data['Exception'] = "You have other session, try reload the page or press F5";
+            $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
+            return $response;
+        }
         else
         {
             $form_data = $this->request->getPost();
@@ -148,17 +152,26 @@ class IndexController extends AbstractActionController
                         "username" => $form_data->username,
                         "avatar" => $form_data->avatar
                     );
-                    file_put_contents('data/cache/' . $form_data->username . '.json', json_encode($user_info));                    
+                    file_put_contents('data/cache/' . $form_data->username . '.json', json_encode($user_info));
 
-                    return $this->redirect()->toRoute('home');
+                    $data["user"] = $form_data->username;
+
+                    $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
+                    return $response;                    
                 }
+                else
+                    $data["formErrors"] = $form->getMessages();
             }
-            catch (\Exception $e) {
+            catch (\Exception $e) 
+            {
                 $data['Exception'] = $e->getMessage();
-                $view = new ViewModel($data);
-                return $view;
+                $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
+                return $response;
             }
         }
+
+        $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
+        return $response;
     }
 
     public function talkerAction()

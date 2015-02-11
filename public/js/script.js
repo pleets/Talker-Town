@@ -98,8 +98,6 @@ $(function(){
                {
                   if ($('#content').length)
                   {
-
-
                      if (data["firstTimestamp"] == 0 || data["user"] !== $("#current-session").val())
                      {
                         // First load page
@@ -156,8 +154,6 @@ $(function(){
                   });
                };
             }
-
-
          },
          error: function(jqXHR, textStatus, errorThrown)
          {
@@ -362,7 +358,146 @@ $(function(){
          items.last().remove();
          me.removeClass("disabled");         
       });
-
-
    });
+
+   /* Log in form */
+   $('#frmUsers').form({
+      username: {
+         identifier : 'username',
+         rules: [
+            {
+               type   : 'empty',
+               prompt : 'Please enter a username'
+            },
+            {
+               type   : 'length[4]',
+               prompt : 'Your username must be at least 4 characters'
+            },
+            {
+               type   : 'maxLength[20]',
+               prompt : 'Your username is more than 20 characters to long'
+            }
+         ]
+      },
+   }, {
+      inline    :  true,
+      on        :  'blur',
+      onSuccess :  function()
+      {
+         var frm = $(this);
+
+         $.ajax({
+            url: frm.attr('action'),
+            type: 'post',
+            dataType: 'json',
+            data: frm.serializeArray(),
+            beforeSend: function() 
+            {
+               frm.addClass('loading');
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+               var html = "<div class='ui error message'><div class='header'> " + textStatus + " </div>";
+               html += errorThrown + '</ul></div>';
+
+
+               // insert html into a modal
+
+               var modal = '<div id="frmLogInSystemError" class="ui modal"><i class="close icon"></i><div class="header">System Error</div><div class="content">';
+               modal += html + '</div><div class="actions"><div class="ui positive right labeled icon button">Ok <i class="checkmark icon"></i></div></div></div>';
+
+               if ($('#frmLogInSystemError').length)
+                  $('#frmLogInSystemError').remove();
+               
+               $("body").append(modal);
+
+               $('#frmLogInSystemError').modal('show');
+
+            },  
+            success: function(data) 
+            {
+               // Form Validation with Zend Form
+               if (typeof data.formErrors !== 'undefined')
+               {
+                  var html = "<div class='ui error message'><div class='header'> There was some errors with your submission </div><div class='content'>";
+                  html += '<ul class="list">';
+
+                  for (var input in data.formErrors)
+                  {
+                     html += '<li><strong>' + input + '</strong></li>';
+
+                     for (var inputError in data.formErrors[input])
+                     {
+                        html += '<li>' + data.formErrors[input][inputError] + '</li>';
+                     }
+                  }
+
+                  html += '</ul></div></div>';
+
+
+                  // insert html into a modal
+
+                  var modal = '<div id="frmLogInErrors" class="ui modal"><i class="close icon"></i><div class="header">Form validation</div><div class="content">';
+                  modal += html + '</div><div class="actions"><div class="ui positive right labeled icon button">Ok <i class="checkmark icon"></i></div></div></div>';
+
+                  if ($('#frmLogInErrors').length)
+                     $('#frmLogInErrors').remove();
+
+                  $("body").append(modal);
+
+                  $('#frmLogInErrors').modal('show');
+               }
+
+               // Other Exceptions
+               if (typeof data.Exception !== 'undefined')
+               {
+                  var html = "<div class='ui error message'><div class='header'> Validation exception! </div><div class='content'>";
+                  html += data.Exception + '</div></div>';
+
+
+                  // insert html into a modal
+
+                  var modal = '<div id="frmLogInException" class="ui modal"><i class="close icon"></i><div class="header">Form validation</div><div class="content">';
+                  modal += html + '</div><div class="actions"><div class="ui positive right labeled icon button">Ok <i class="checkmark icon"></i></div></div></div>';
+
+                  if ($('#frmLogInException').length)
+                     $('#frmLogInException').remove();
+
+                  $("body").append(modal);
+
+                  $('#frmLogInException').modal('show');
+               }
+
+               // Successfully log in
+               if (typeof data.user !== 'undefined')
+               {
+                  var html = "<div class='ui positive message'><div class='header'> Welcome " + data.user + " </div><div class='content'>";
+                  html += 'You will be redirected in 5 seconds ...</div></div>';
+
+
+                  // insert html into a modal
+
+                  var modal = '<div id="frmLogInSuccess" class="ui modal"><i class="close icon"></i><div class="header">Welcome to the best city on the internet</div><div class="content">';
+                  modal += html + '</div><div class="actions"><div class="ui positive right labeled icon button">Ok <i class="checkmark icon"></i></div></div></div>';
+
+                  if ($('#frmLogInSuccess').length)
+                     $('#frmLogInSuccess').remove();
+
+                  $("body").append(modal);
+
+                  $('#frmLogInSuccess').modal('show');
+
+                  setTimeout(function(){
+                     location.reload();
+                  }, 5000);
+               }
+            },
+            complete: function() 
+            {
+               frm.removeClass('loading');
+            }
+         });
+      }
+   });
+
 });
