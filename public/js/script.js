@@ -202,7 +202,7 @@ $(function(){
          var message = $('#word').val();
          $('#word').val('').attr('disabled', 'disabled');
 
-         $('#content').append("<p id='loading-message-status'>" + message + " <i class='spinner icon'></i><p>");
+         $('#content').append("<p id='loading-message-status'>" + "wait ..." + " <i class='spinner icon'></i><p>");
          $('#content')[0].scrollTop = 9999999;
 
          settings = 
