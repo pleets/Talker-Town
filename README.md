@@ -17,4 +17,10 @@ Responsive design
   <img src="http://pleets.org/public/img/talker-town-2.png" alt="Screenshot"/>
 </p>
 
+And more ...
+
+<p align="center">
+  <img src="http://pleets.org/public/img/talker-town-3.png" alt="Screenshot"/>
+</p>
+
 Please visit the [Pleets Apps project](http://pleets.org)
