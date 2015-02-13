@@ -146,7 +146,7 @@ $(function(){
                      var y = i;
 
                      bg_x = ( -32 * x ) + 3;
-                     bg_y = ( -(336/11) * y ) + 3;
+                     bg_y = ( -(336/11) * y ) + 2.3;
 
                      var nitem = "<div class='item'>" +
                                  "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
