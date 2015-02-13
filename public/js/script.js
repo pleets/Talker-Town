@@ -110,7 +110,7 @@ $(function(){
                         if (data["user"].trim() !== '' && data["msg"].trim() !== '') 
                         {
                            // Parse message
-                           if (data["msg"].substring(0,7) == 'http://')
+                           if (data["msg"].substring(0,7) == 'http://' || data["msg"].substring(0,8) == 'https://')
                               var msg = "<p id='" + data["timestamp"] + "'>" + data["user"] + " ~ <a target='_blank' href='" + data["msg"] + "'>" + data["msg"] + "</a></p>";
                            else
                               var msg = "<p id='" + data["timestamp"] + "'>" + data["user"] + " ~ " + data["msg"] + "</p>";

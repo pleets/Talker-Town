@@ -393,9 +393,9 @@ class IndexController extends AbstractActionController
         // Parse msg
         if (!empty($message))
         {
-            if (substr($response['msg'], 0, 7) == 'http://')
+            if (substr($response['msg'], 0, 7) == 'http://' || substr($response['msg'], 0, 8) == 'https://')
             {
-                $response['msg'] = "<p id='$currentmodif'>$last_user ~ <a targe='_blank' href='". $response['msg'] ."' >". $response['msg'] ."</a></p>";
+                $response['msg'] = "<p id='$currentmodif'>$last_user ~ <a target='_blank' href='". $response['msg'] ."' >". $response['msg'] ."</a></p>";
             }
             else {
                 // Convert the current message in HTML
