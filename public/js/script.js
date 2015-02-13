@@ -484,4 +484,13 @@ $(function(){
       }
    });
 
+   /* Emoticons */
+   $(".emoticonsPanel .panelCell").click(function(event){
+      event.preventDefault();
+
+      var text = $(this).children("a").attr('data-text');
+      $("#word").val($("#word").val() + text);
+      $("#word").focus();
+   });
+
 });

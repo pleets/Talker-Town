@@ -393,6 +393,7 @@ class IndexController extends AbstractActionController
         // Parse msg
         if (!empty($message))
         {
+            /* Only when start text ... */
             if (substr($response['msg'], 0, 7) == 'http://' || substr($response['msg'], 0, 8) == 'https://')
             {
                 $response['msg'] = "<p id='$currentmodif'>$last_user ~ <a target='_blank' href='". $response['msg'] ."' >". $response['msg'] ."</a></p>";

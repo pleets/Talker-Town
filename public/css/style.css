@@ -145,3 +145,146 @@ body {
 .pushable > .pusher {
 	height: 100%;
 }
+
+/* Fb sprites */
+.emoticon {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	vertical-align: top;
+}
+.emoticonsPanel .panelCell {
+	cursor: pointer;
+	display: inline-block;
+	padding: 5px;
+	border: solid 1px white;
+}
+.emoticonsPanel .panelCell:hover {
+	background: white;
+}
+.emoticonsPanel .panelCell .emoticon {
+	display: block;
+	height: 14px;
+	padding: 0 2px 2px 0;
+	width: 14px;
+}
+.emoticon_smile {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -85px -394px;
+}
+.emoticon_frown {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -544px -377px;
+}
+.emoticon_tongue {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -136px -394px;
+}
+.emoticon_grin {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -595px -377px;
+}
+.emoticon_gasp {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -561px -377px;
+}
+.emoticon_wink {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -187px -394px;
+}
+.emoticon_pacman {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: 0 -394px;
+}
+.emoticon_grumpy {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -612px -377px;
+}
+.emoticon_unsure {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -153px -394px;
+}
+.emoticon_cry {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -510px -377px;
+}
+.emoticon_kiki {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -646px -377px;
+}
+.emoticon_glasses {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -578px -377px;
+}
+.emoticon_heart {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -629px -377px;
+}
+.emoticon_devil {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -527px -377px;
+}
+.emoticon_angel {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -442px -377px;
+}
+.emoticon_squint {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -102px -394px;
+}
+.emoticon_confused {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -476px -377px;
+}
+.emoticon_upset {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -170px -394px;
+}
+.emoticon_colonthree {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -459px -377px;
+}
+.emoticon_like {
+	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: -182px -169px;
+}
