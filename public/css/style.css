@@ -7,7 +7,7 @@ body {
 }
 
 #outer-content {
-	margin: 2em 0.3em;
+	margin: 1em 0.3em;
 }
 
 @media (max-width: 768px) {
@@ -115,4 +115,19 @@ body {
 	overflow-x: initial; 
 	overflow-y: initial;
 	bottom: initial;
+}
+
+.purple-background 
+{
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0% rgb(166, 78, 162) !important;
+	height: 100%;
+}
+
+.purple-background .purple-contrast {
+	color: white;
+}
+
+/* Semantic UI modification */
+.pushable > .pusher {
+	height: 100%;
 }

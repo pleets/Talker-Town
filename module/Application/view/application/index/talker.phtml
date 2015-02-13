@@ -1,12 +1,12 @@
 <div class="ui right aligned grid">
 	<div class="left floated left aligned eight wide column">
-		<button type="button" class="ui labeled icon button" id="show-users">
+		<button type="button" class="ui labeled orange icon button" id="show-users">
 			<i class="content icon"></i>
 			Users
 		</button>			
 	</div>
 	<div class="right floated right aligned eight wide column">
-		<a href="<?= $this->url('application') . '/index/logout' ?>" class="ui labeled icon button">
+		<a href="<?= $this->url('application') . '/index/logout' ?>" class="ui labeled orange icon button">
 		 	<i class="power icon"></i>
 		 	Logout
 		</a>			
@@ -34,21 +34,24 @@
 			</div>
 		</div>
 		<div class="four wide column" style='padding-left: 1px'>
-			<button type='sumbit' class="ui small icon submit button"><i class="chevron right icon"></i></button>
+			<button type='sumbit' class="ui small icon submit orange button"><i class="chevron right icon"></i></button>
 			<!--<input type="submit" name="submit" value="Send" class="ui small submit button" />-->
 		</div>		
 	</div>
 </form>
 
-<span id="state">offline</span>
+<div class="purple-contrast">
+	<span id="state">offline</span>
 
-<input type="file" id="file-reader-onchange" value="" multiple="multiple" />
-<div id="file-reader-ondrop" class="drop" style="overflow: hidden; min-height: 50px">
-	<span style="color: #C0C0C0; font-size: 25px;">Drop files here</span>
+	<input type="file" id="file-reader-onchange" value="" multiple="multiple" />
+	<div id="file-reader-ondrop" class="drop" style="overflow: hidden; min-height: 50px">
+		<span style="color: #C0C0C0; font-size: 25px;">Drop files here</span>
+	</div>
+
+	<div id="file_reader_ondrop_response"></div>
+	<div id="file_reader_response"></div>
 </div>
 
-<div id="file_reader_ondrop_response"></div>
-<div id="file_reader_response"></div>
 
 <!-- Notification audio -->
 <audio id='notification-audio' src='<?= $this->basePath("audio/notification.wav") ?>' style='display: none'>

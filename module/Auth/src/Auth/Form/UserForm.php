@@ -104,7 +104,7 @@ class UserForm extends Form
             'name' => 'submit',
             'type' => 'submit',
             'attributes' => array(
-                'class' => 'ui large submit button',
+                'class' => 'ui large submit blue button',
                 'value' => 'Iniciar Sesión'
             ),
         ));
