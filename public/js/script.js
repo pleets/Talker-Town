@@ -419,7 +419,7 @@ $(function(){
 
                $('#frmLogInSystemError').modal('show');
 
-            },  
+            },
             success: function(data) 
             {
                // Form Validation with Zend Form
@@ -476,27 +476,7 @@ $(function(){
 
                // Successfully log in
                if (typeof data.user !== 'undefined')
-               {
-                  var html = "<div class='ui positive message'><div class='header'> Welcome " + data.user + " </div><div class='content'>";
-                  html += 'You will be redirected in 5 seconds ...</div></div>';
-
-
-                  // insert html into a modal
-
-                  var modal = '<div id="frmLogInSuccess" class="ui modal"><i class="close icon"></i><div class="header">Welcome to the best city on the internet</div><div class="content">';
-                  modal += html + '</div><div class="actions"><div class="ui positive right labeled icon button">Ok <i class="checkmark icon"></i></div></div></div>';
-
-                  if ($('#frmLogInSuccess').length)
-                     $('#frmLogInSuccess').remove();
-
-                  $("body").append(modal);
-
-                  $('#frmLogInSuccess').modal('show');
-
-                  setTimeout(function(){
-                     location.reload();
-                  }, 5000);
-               }
+                  location.reload();
             },
             complete: function() 
             {
