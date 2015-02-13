@@ -277,8 +277,6 @@ class IndexController extends AbstractActionController
         $message = isset($_GET['msg']) ? trim($_GET['msg']) : '';
         $data_username = $username = $this->getAnonymousIdentity();
 
-        // Get htmlentities
-        $message = htmlentities($message);
 
         // Get the current and last timestamp of the message file
         $lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;     # The first time the timestamp is equal to zero
@@ -298,7 +296,7 @@ class IndexController extends AbstractActionController
                 file_put_contents($username_file, $username);
 
                 // Store timestamp file
-                file_put_contents($timestamp_file, $message);
+                file_put_contents($timestamp_file, htmlentities($message));
             }
 
             file_put_contents("data/cache/users/" . $username, date("Y-m-d H:i:s"));
@@ -392,21 +390,45 @@ class IndexController extends AbstractActionController
 
         // Parse msg
         if (!empty($message))
-        {
+        { 
+            $replaced = str_replace(">:(", "<a class='emoticon emoticon_grumpy'></a>", $response['msg']);
+            $replaced = str_replace("3:)", "<a class='emoticon emoticon_devil'></a>", $replaced);
+            $replaced = str_replace("O:)", "<a class='emoticon emoticon_angel'></a>", $replaced);
+            $replaced = str_replace(">:o", "<a class='emoticon emoticon_upset'></a>", $replaced);
+
+            $replaced = str_replace(":)", "<a class='emoticon emoticon_smile'></a>", $replaced);
+            $replaced = str_replace(":(", "<a class='emoticon emoticon_frown'></a>", $replaced);
+            $replaced = str_replace(":P", "<a class='emoticon emoticon_tongue'></a>", $replaced);
+            $replaced = str_replace("=D", "<a class='emoticon emoticon_grin'></a>", $replaced);
+            $replaced = str_replace(":o", "<a class='emoticon emoticon_gasp'></a>", $replaced);
+            $replaced = str_replace(";)", "<a class='emoticon emoticon_wink'></a>", $replaced);
+            $replaced = str_replace(":v", "<a class='emoticon emoticon_pacman'></a>", $replaced);
+            $replaced = str_replace(":/", "<a class='emoticon emoticon_unsure'></a>", $replaced);
+            $replaced = str_replace(":'(", "<a class='emoticon emoticon_cry'></a>", $replaced);
+            $replaced = str_replace("^_^", "<a class='emoticon emoticon_kiki'></a>", $replaced);
+            $replaced = str_replace("8-)", "<a class='emoticon emoticon_glasses'></a>", $replaced);
+            $replaced = str_replace("<3", "<a class='emoticon emoticon_heart'></a>", $replaced);
+            $replaced = str_replace("-_-", "<a class='emoticon emoticon_squint'></a>", $replaced);
+            $replaced = str_replace("o.O", "<a class='emoticon emoticon_confused'></a>", $replaced);
+            $replaced = str_replace(":3", "<a class='emoticon emoticon_colonthree'></a>", $replaced);
+            $message = str_replace("(y)", "<a class='emoticon emoticon_like'></a>", $replaced);
+
             /* Only when start text ... */
-            if (substr($response['msg'], 0, 7) == 'http://' || substr($response['msg'], 0, 8) == 'https://')
+            if (substr($message, 0, 7) == 'http://' || substr($message, 0, 8) == 'https://')
             {
-                $response['msg'] = "<p id='$currentmodif'>$last_user ~ <a target='_blank' href='". $response['msg'] ."' >". $response['msg'] ."</a></p>";
+                $message_to_send = "<p id='$currentmodif'>$last_user ~ <a target='_blank' href='". $message ."' >". $message ."</a></p>";
             }
             else {
                 // Convert the current message in HTML
-                $response['msg']  = "<p id='$currentmodif'>$last_user ~ $data_contents_message</p>";
+                $message_to_send  = "<p id='$currentmodif'>$last_user ~ $message</p>";
             }
 
             // Store message in the chat history
             $hd = fopen("data/cache/conversations/history.txt", "a");
-            fwrite($hd, $response['msg'] . "\n");
+            fwrite($hd, $message_to_send . "\n");
             fclose($hd);
+
+            $response['msg'] = $message_to_send;
         }
 
         $response['user'] = $last_user;
