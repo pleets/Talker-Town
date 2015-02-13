@@ -418,7 +418,7 @@ $(function(){
                $("body").append(modal);
 
                $('#frmLogInSystemError').modal('show');
-
+               frm.removeClass('loading');
             },
             success: function(data) 
             {
@@ -477,10 +477,8 @@ $(function(){
                // Successfully log in
                if (typeof data.user !== 'undefined')
                   location.reload();
-            },
-            complete: function() 
-            {
-               frm.removeClass('loading');
+               else
+                  frm.removeClass('loading');
             }
          });
       }
