@@ -372,7 +372,7 @@ class IndexController extends AbstractActionController
         # First request when the timestamp is zero
         else if ($lastmodif == 0) {
             if (file_exists("data/cache/conversations/history.txt"))
-                $data_contents_message = file_get_contents("data/cache/conversations/history.txt");
+                $data_contents_message = base64_encode(file_get_contents("data/cache/conversations/history.txt"));
             else
                 $data_contents_message = "";
         }

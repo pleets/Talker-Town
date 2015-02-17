@@ -45,15 +45,41 @@ for (var i = 0; i <= size; i++)
 
 var rootPath = dirname(indexPath) + '/';
 
+var jsonpRequest = false;     /* Cross domain */
+
+var urlRequest = (jsonpRequest) ? "http://talkertown01.mywebcommunity.org/backend.php" : indexPath + "application/index/backend";
+var cacheFolder = (jsonpRequest) ? "http://talkertown01.mywebcommunity.org/data/cache/" : rootPath + 'data/cache/';
+
+
 var comet;
+
+var jsonpClient = function(data) 
+{
+   var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
+   var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
+
+   var x = j;
+   var y = i;
+
+   bg_x = ( -32 * x ) + 3;
+   bg_y = ( -(336/11) * y ) + 2.3;
+
+   var nitem = "<div class='item'>" +
+               "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
+               "<div class='content'>" +
+               "<div class='header'>" + data["username"] +  "</div>" +
+               "<div class='description'><i class='mobile icon'></i><small>3min</small></div>" +
+               "</div>" +
+               "<div>";
+
+   $("#online_users").append(nitem);
+}
 
 $(function(){
 
    comet = new jRender.ajax.Comet({
-      url: indexPath + "application/index/backend"
-      /* For remote requests (Cross domain) */
-      //url:  "http://www.example.com/backend.php",
-      //jsonp: true
+      url: urlRequest,
+      jsonp: jsonpRequest,
    });
 
    var settings =
@@ -101,8 +127,8 @@ $(function(){
                      if (data["firstTimestamp"] == 0) 
                      {
                         var msg = data["msg"];      // Get history messages
-
-                        $('#content').append(msg);
+                        //console.info(btoa(unescape(encodeURIComponent( msg ))));
+                        $('#content').append( decodeURIComponent(escape(window.atob( msg ))));
                         $('#content')[0].scrollTop = 9999999;                        
                      }
                      else if (data["user"] !== $("#current-session").val())
@@ -160,26 +186,34 @@ $(function(){
                   var bg_x, bg_y; 
 
                   // Get user's configuration
-                  $.getJSON(rootPath + 'data/cache/' + user + '.json', function(data) {
+                  $.ajax({
+                     url: cacheFolder + user + '.json',
+                     type: 'get',
+                     dataType: (jsonpRequest) ? 'jsonp' : 'json',
+                     jsonpCallback: 'jsonpClient',
+                     success: function(data) {
+                        var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
+                        var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
 
-                     var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
-                     var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
+                        var x = j;
+                        var y = i;
 
-                     var x = j;
-                     var y = i;
+                        bg_x = ( -32 * x ) + 3;
+                        bg_y = ( -(336/11) * y ) + 2.3;
 
-                     bg_x = ( -32 * x ) + 3;
-                     bg_y = ( -(336/11) * y ) + 2.3;
+                        var nitem = "<div class='item'>" +
+                                    "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
+                                    "<div class='content'>" +
+                                    "<div class='header'>" + data["username"] +  "</div>" +
+                                    "<div class='description'><i class='mobile icon'></i><small>3min</small></div>" +
+                                    "</div>" +
+                                    "<div>";
 
-                     var nitem = "<div class='item'>" +
-                                 "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
-                                 "<div class='content'>" +
-                                 "<div class='header'>" + data["username"] +  "</div>" +
-                                 "<div class='description'><i class='mobile icon'></i><small>3min</small></div>" +
-                                 "</div>" +
-                                 "<div>";
-
-                     $("#online_users").append(nitem);
+                        $("#online_users").append(nitem);
+                     },
+                     error: function(a, b ,c){
+                        console.info(b + ": " + c);
+                     }
                   });
                };
             }
@@ -296,9 +330,9 @@ $(function(){
          _files.addChangeEvent(function(files){
             _files.upload(files, function(uploadedFiles) {
                uploadedFiles = $.parseJSON(uploadedFiles);
-               //var links = "<div>";
+
                for (var i = uploadedFiles.length - 1; i >= 0; i--) {
-                  //links += "<a target='_blank' class='ui basic button' href='" + rootPath + "data/cache/files/" + uploadedFiles[i] + "'>" + uploadedFiles[i] + " </a> ";
+
                   comet.doRequest({
                      data: {
                         msg: rootPath + "data/cache/files/" + uploadedFiles[i]
@@ -326,13 +360,10 @@ $(function(){
                      }                  
                   });                  
                };
-               //links += "</div>";
-               //$("#file_reader_response").append(links);
             });
          });
       }
    });
-
 
    /* Avatar gallery */
 
