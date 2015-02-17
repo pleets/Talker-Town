@@ -38,7 +38,8 @@ $username  = dirname(__FILE__).'/username.txt';
 
 // store new message in the file
 $msg = isset($_GET['msg']) ? $_GET['msg'] : '';
-$user = getIp();
+
+$user = isset($_POST["logged_user"]) ? $_POST["logged_user"] : getIp();
 
 if (!file_exists("cache"))
    mkdir("cache");

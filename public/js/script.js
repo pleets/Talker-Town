@@ -58,7 +58,7 @@ $(function(){
 
    var settings =
    {
-      data: {},
+      data: { logged_user: $('#logged_user').text() },
       callback: {
          success: function(data) 
          {
@@ -231,7 +231,7 @@ $(function(){
          settings = 
          {
             data: {
-               msg: message
+               msg: message, logged_user: $('#logged_user').text()
             },
             callback: {
                success: function(data) 
