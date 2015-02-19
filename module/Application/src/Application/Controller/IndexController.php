@@ -211,6 +211,43 @@ class IndexController extends AbstractActionController
         $data = \Zend\Json\Json::decode( file_get_contents($buffer) );*/
     }
 
+    private function parseMessage($message, $last_user, $currentmodif, $user_color)
+    {
+        $replaced = str_replace(">:(", "<a class='emoticon emoticon_grumpy'></a>", $message);
+        $replaced = str_replace("3:)", "<a class='emoticon emoticon_devil'></a>", $replaced);
+        $replaced = str_replace("O:)", "<a class='emoticon emoticon_angel'></a>", $replaced);
+        $replaced = str_replace(">:o", "<a class='emoticon emoticon_upset'></a>", $replaced);
+
+        $replaced = str_replace(":)", "<a class='emoticon emoticon_smile'></a>", $replaced);
+        $replaced = str_replace(":(", "<a class='emoticon emoticon_frown'></a>", $replaced);
+        $replaced = str_replace(":P", "<a class='emoticon emoticon_tongue'></a>", $replaced);
+        $replaced = str_replace("=D", "<a class='emoticon emoticon_grin'></a>", $replaced);
+        $replaced = str_replace(":o", "<a class='emoticon emoticon_gasp'></a>", $replaced);
+        $replaced = str_replace(";)", "<a class='emoticon emoticon_wink'></a>", $replaced);
+        $replaced = str_replace(":v", "<a class='emoticon emoticon_pacman'></a>", $replaced);
+        $replaced = str_replace(":/", "<a class='emoticon emoticon_unsure'></a>", $replaced);
+        $replaced = str_replace(":'(", "<a class='emoticon emoticon_cry'></a>", $replaced);
+        $replaced = str_replace("^_^", "<a class='emoticon emoticon_kiki'></a>", $replaced);
+        $replaced = str_replace("8-)", "<a class='emoticon emoticon_glasses'></a>", $replaced);
+        $replaced = str_replace("<3", "<a class='emoticon emoticon_heart'></a>", $replaced);
+        $replaced = str_replace("-_-", "<a class='emoticon emoticon_squint'></a>", $replaced);
+        $replaced = str_replace("o.O", "<a class='emoticon emoticon_confused'></a>", $replaced);
+        $replaced = str_replace(":3", "<a class='emoticon emoticon_colonthree'></a>", $replaced);
+        $parsed_message = str_replace("(y)", "<a class='emoticon emoticon_like'></a>", $replaced);
+
+        /* Only when start text ... */
+        if (substr($parsed_message, 0, 7) == 'http://' || substr($parsed_message, 0, 8) == 'https://')
+        {
+            $parsed_message = "<p id='$currentmodif'><strong style='color: $user_color'>$last_user</strong>: <a target='_blank' href='". $parsed_message ."' >". $parsed_message ."</a></p>";
+        }
+        else {
+            // Convert the current message in HTML
+            $parsed_message  = "<p id='$currentmodif'><strong style='color: $user_color'>$last_user</strong>: ". $parsed_message ."</p>";
+        }
+
+        return $parsed_message;        
+    }
+
     public function backendAction()
     {
         function getFiles($path)
@@ -244,7 +281,7 @@ class IndexController extends AbstractActionController
         $response["errors"] = array();
 
 
-        /* create some folders */
+        /* create some folders and files */
 
         if (!file_exists('data/cache/conversations'))
             mkdir('data/cache/conversations');
@@ -255,26 +292,16 @@ class IndexController extends AbstractActionController
         if (!file_exists('data/cache/users'))
             mkdir('data/cache/users');
 
-
-        // Files that store the last message and its respective user
-        $message_file = 'data/cache/message.txt';
-        $username_file  = 'data/cache/username.txt';
-
-
-        /* create message_file and username_file */
-
-        if (!file_exists($message_file))
-            file_put_contents($message_file, '');
-
-        if (!file_exists($username_file))
-            file_put_contents($username_file, '');
-
         if (!file_exists('data/cache/conversations/history.txt'))
             file_put_contents('data/cache/conversations/history.txt', '');
+
+        if (!file_exists('data/cache/conversations/timestamp/1.txt'))
+            file_put_contents('data/cache/conversations/timestamp/1.txt', '');
 
 
         // Get username and message to store
         $message = isset($_GET['msg']) ? trim($_GET['msg']) : '';
+        $user_color = isset($_GET['user_color']) ? trim($_GET['user_color']) : '#2A9426';
         $data_username = $username = $this->getAnonymousIdentity();
 
         $message = base64_decode($message);
@@ -282,7 +309,7 @@ class IndexController extends AbstractActionController
 
         // Get the current and last timestamp of the message file
         $lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;     # The first time the timestamp is equal to zero
-        $data_id = $currentmodif = filemtime($message_file);
+        $data_id = $currentmodif = count(getFiles("data/cache/conversations/timestamp"));
 
         // Timestamp file
         $timestamp_file = "data/cache/conversations/timestamp/" . $currentmodif . ".txt";
@@ -290,19 +317,7 @@ class IndexController extends AbstractActionController
 
         // If you are logged
         if (!is_null($username) && !empty($username))
-        {
-            if (!empty($message))
-            {
-                // Store message and username
-                file_put_contents($message_file, $message);
-                file_put_contents($username_file, $username);
-
-                // Store timestamp file
-                file_put_contents($timestamp_file, htmlentities($message));
-            }
-
-            file_put_contents("data/cache/users/" . $username, date("Y-m-d H:i:s"));
-        }
+            file_put_contents("data/cache/users/" . $username, date("Y-m-d H:i:s"));        # persistence file
         else if (is_null($username))
             $response["errors"][] = array(
                 "code" => 101,
@@ -310,8 +325,6 @@ class IndexController extends AbstractActionController
                 "message" => "The session has been lost!"
             );
 
-
-        /* infinite loop until the data file is not modified */
 
         $last_users = getFiles("data/cache/users");
         $online_users = array();
@@ -325,7 +338,10 @@ class IndexController extends AbstractActionController
         }
 
         $current_users = getFiles("data/cache/users");
+        $latest_messages = getFiles("data/cache/conversations/timestamp");
 
+
+        /* Infinite loop until the data file is not modified */
 
         /* Check the following rules
          * - The message file has been modified
@@ -333,14 +349,18 @@ class IndexController extends AbstractActionController
          * - The session has been lost
          */
 
-        while ($currentmodif <= $lastmodif && count($current_users) == count($last_users))
+        $isFirstCall = ($lastmodif == 0);
+
+        while (!isset($_GET["doRequest"]) && $lastmodif != 0 && count($current_users) == count($last_users) && $currentmodif == count($latest_messages))
         {
             clearstatcache();
-            $currentmodif = filemtime($message_file);
             session_write_close();
 
             /* refresh identity */
             $username = $this->getAnonymousIdentity();
+
+            $latest_messages = getFiles("data/cache/conversations/timestamp");
+            //$currentmodif = count(getFiles("data/cache/conversations/timestamp"));
 
             if (!is_null($username) && !empty($username))
             {
@@ -352,7 +372,7 @@ class IndexController extends AbstractActionController
                 foreach ($current_users as $_user) {
                     if (time() - filemtime($_user) < 3)
                         $online_users[] = basename($_user);
-                    else
+                    else if (file_exists($_user))
                         unlink($_user);
                 }
             }
@@ -367,10 +387,22 @@ class IndexController extends AbstractActionController
             }
         }
 
-        $last_user = file_get_contents($username_file);
+
+        $_msg = array();
+        foreach ($latest_messages as $tmp) 
+        {
+            $_tmp = (integer) basename(substr($tmp, 0, strlen($tmp) - 4));
+
+            if ($_tmp > $lastmodif)
+                $_msg[] = base64_encode(file_get_contents($tmp));
+        }
+
+        $response["latest_messages"] = $_msg;
+        $last_user = $username;
+
 
         if (isset($_GET["doRequest"]))
-                $data_contents_message = file_get_contents($timestamp_file);
+            $data_contents_message = $message;
         # First request when the timestamp is zero
         else if ($lastmodif == 0) {
             if (file_exists("data/cache/conversations/history.txt"))
@@ -381,7 +413,7 @@ class IndexController extends AbstractActionController
         else {
         # The user gets the message of other users
             if ($last_user != $username) 
-                $data_contents_message = ($lastmodif > $currentmodif) ? file_get_contents($timestamp_file) : file_get_contents("data/cache/conversations/timestamp/" . $lastmodif . ".txt");
+                $data_contents_message = ($lastmodif > $currentmodif) ? $message : file_get_contents("data/cache/conversations/timestamp/" . $lastmodif . ".txt");
             else
                 $data_contents_message = '';
         }
@@ -392,46 +424,21 @@ class IndexController extends AbstractActionController
 
         // Parse msg
         if (!empty($message))
-        { 
-            $replaced = str_replace(">:(", "<a class='emoticon emoticon_grumpy'></a>", $response['msg']);
-            $replaced = str_replace("3:)", "<a class='emoticon emoticon_devil'></a>", $replaced);
-            $replaced = str_replace("O:)", "<a class='emoticon emoticon_angel'></a>", $replaced);
-            $replaced = str_replace(">:o", "<a class='emoticon emoticon_upset'></a>", $replaced);
+        {
+            $response['msg'] = $this->parseMessage($response['msg'], $last_user, $currentmodif, $user_color);
 
-            $replaced = str_replace(":)", "<a class='emoticon emoticon_smile'></a>", $replaced);
-            $replaced = str_replace(":(", "<a class='emoticon emoticon_frown'></a>", $replaced);
-            $replaced = str_replace(":P", "<a class='emoticon emoticon_tongue'></a>", $replaced);
-            $replaced = str_replace("=D", "<a class='emoticon emoticon_grin'></a>", $replaced);
-            $replaced = str_replace(":o", "<a class='emoticon emoticon_gasp'></a>", $replaced);
-            $replaced = str_replace(";)", "<a class='emoticon emoticon_wink'></a>", $replaced);
-            $replaced = str_replace(":v", "<a class='emoticon emoticon_pacman'></a>", $replaced);
-            $replaced = str_replace(":/", "<a class='emoticon emoticon_unsure'></a>", $replaced);
-            $replaced = str_replace(":'(", "<a class='emoticon emoticon_cry'></a>", $replaced);
-            $replaced = str_replace("^_^", "<a class='emoticon emoticon_kiki'></a>", $replaced);
-            $replaced = str_replace("8-)", "<a class='emoticon emoticon_glasses'></a>", $replaced);
-            $replaced = str_replace("<3", "<a class='emoticon emoticon_heart'></a>", $replaced);
-            $replaced = str_replace("-_-", "<a class='emoticon emoticon_squint'></a>", $replaced);
-            $replaced = str_replace("o.O", "<a class='emoticon emoticon_confused'></a>", $replaced);
-            $replaced = str_replace(":3", "<a class='emoticon emoticon_colonthree'></a>", $replaced);
-            $message = str_replace("(y)", "<a class='emoticon emoticon_like'></a>", $replaced);
+            $currentmodif++;
 
-            /* Only when start text ... */
-            if (substr($message, 0, 7) == 'http://' || substr($message, 0, 8) == 'https://')
-            {
-                $message_to_send = "<p id='$currentmodif'>$last_user ~ <a target='_blank' href='". $message ."' >". $message ."</a></p>";
-            }
-            else {
-                // Convert the current message in HTML
-                $message_to_send  = "<p id='$currentmodif'>$last_user ~ $message</p>";
-            }
+            // Store the timestamp file
+            file_put_contents("data/cache/conversations/timestamp/" . $currentmodif . ".txt", $response['msg']);
 
             // Store message in the chat history
             $hd = fopen("data/cache/conversations/history.txt", "a");
-            fwrite($hd, $message_to_send . "\n");
+            fwrite($hd, $response['msg'] . "\n");
             fclose($hd);
-
-            $response['msg'] = $message_to_send;
         }
+
+        $currentmodif = count(getFiles("data/cache/conversations/timestamp"));
 
         $response["msg"] = base64_encode($response["msg"]);
         $response['user'] = $last_user;

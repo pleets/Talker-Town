@@ -27,6 +27,12 @@
 </div>
 <form action="" method="get" id="chat" class="ui form">
 	<input type="hidden" id='current-session' value='<?= $username ?>' />
+	<?php
+		$colors = array("#2A9426", "#952EBD", "#235EB7", "#C97721", "#21C9B5", "#D0734B", "#D04BA6", "#A6B712", "#1F34BC", "#CB1851");
+		$keys = array_rand($colors, 2);
+		$color = $colors[$keys[0]];
+	?>
+	<input type="hidden" id='user-color' value='<?= $color ?>' />
 	<div class="ui grid">
 		<div class="twelve wide mobile only six wide tablet only six wide computer only six wide  large monitor only six wide widescreen only column" style='padding-right: 1px'>
 			<div class="ui small icon input">
