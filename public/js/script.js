@@ -45,7 +45,7 @@ for (var i = 0; i <= size; i++)
 
 var rootPath = dirname(indexPath) + '/';
 
-var jsonpRequest = true;      /* Cross domain */
+var jsonpRequest = false;      /* Cross domain */
 var historyLoaded = false;    /* For cross domain only, Fix repeat history ... */
 
 var urlRequest = (jsonpRequest) ? "http://talkertown01.mywebcommunity.org/backend.php" : indexPath + "application/index/backend";
@@ -124,7 +124,7 @@ $(function(){
                      }
                      else if (data["user"] !== $("#current-session").val())
                      {
-                        if (data["user"].trim() !== '' && data["msg"].trim() !== '') 
+                        if (data["user"].trim() !== '' && data["msg"].trim() !== '' && data["firstTimestamp"] != 0) 
                         {
                            var decode_message = decodeURIComponent(escape(window.atob( data["msg"] )));
 
