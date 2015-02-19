@@ -250,35 +250,73 @@ $(function(){
 
       if ($('#word').val().trim() != "")
       {
-         var message = $('#word').val();
-         $('#word').val('').attr('disabled', 'disabled');
+         var original_message = $('#word').val();
+         $('#chat').addClass('loading');
+         $('#word').attr('disabled', 'disabled').val('');
 
-         $('#content').append("<p id='loading-message-status'>" + "wait ..." + " <i class='spinner icon'></i><p>");
+         data = {};
+         data.user = $('#current-session').val();
+         data.timestamp = comet.timestamp;
+
+         var decode_message = original_message;
+
+         // Fb emoticons
+         var str = decode_message.replace(">:(", "<a class='emoticon emoticon_grumpy'></a>");
+         message = str.replace("3:)", "<a class='emoticon emoticon_devil'></a>");
+         message = message.replace("O:)", "<a class='emoticon emoticon_angel'></a>");
+         message = message.replace(">:o", "<a class='emoticon emoticon_upset'></a>");
+
+         message = message.replace(":)", "<a class='emoticon emoticon_smile'></a>");
+         message = message.replace(":(", "<a class='emoticon emoticon_frown'></a>");
+         message = message.replace(":P", "<a class='emoticon emoticon_tongue'></a>");
+         message = message.replace("=D", "<a class='emoticon emoticon_grin'></a>");
+         message = message.replace(":o", "<a class='emoticon emoticon_gasp'></a>");
+         message = message.replace(";)", "<a class='emoticon emoticon_wink'></a>");
+         message = message.replace(":v", "<a class='emoticon emoticon_pacman'></a>");
+         message = message.replace(":/", "<a class='emoticon emoticon_unsure'></a>");
+         message = message.replace(":'(", "<a class='emoticon emoticon_cry'></a>");
+         message = message.replace("^_^", "<a class='emoticon emoticon_kiki'></a>");
+         message = message.replace("8-)", "<a class='emoticon emoticon_glasses'></a>");
+         message = message.replace("<3", "<a class='emoticon emoticon_heart'></a>");
+         message = message.replace("-_-", "<a class='emoticon emoticon_squint'></a>");
+         message = message.replace("o.O", "<a class='emoticon emoticon_confused'></a>");
+         message = message.replace(":3", "<a class='emoticon emoticon_colonthree'></a>");
+         message = message.replace("(y)", "<a class='emoticon emoticon_like'></a>");
+
+         // Parse message
+         if (message.substring(0,7) == 'http://' || message.substring(0,8) == 'https://')
+            var msg = "<p id='" + data["timestamp"] + "'>" + data["user"] + " ~ <a target='_blank' href='" + message + "'>" + message + "</a></p>";
+         else
+            var msg = "<p id='" + data["timestamp"] + "'>" + data["user"] + " ~ " + message + "</p>";
+
+         $('#content').append(msg);
+
+
          $('#content')[0].scrollTop = 9999999;
 
          settings = 
          {
             data: {
-               msg: message, logged_user: $('#current-session').val()
+               msg: original_message, logged_user: $('#current-session').val()
             },
             callback: {
                success: function(data) 
                {
-                  if (typeof data != "object")
+                  /*if (typeof data != "object")
                      data = $.parseJSON(data);     
 
-                  $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );
+                  $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );*/
                },
                error: function(jqXHR, textStatus, errorThrown) {
-                  $('#loading-message-status i').attr('class', 'remove icon');
-                  $('#loading-message-status').removeAttr('id');
-                  $('#content').append("<div class='ui small compact red message'><strong>Error!</strong> The message was not sent.</div>");
+                  $("#"+data.timestamp).addClass('ui small compact red message');
+                  alert('The red messages was not sent');
                },
                complete: function()
                {
                   if ($('#loading-message-status i').attr('class') != 'remove icon')
                      $('#loading-message-status').remove();
 
+                  $('#chat').removeClass('loading');
                   $('#word').removeAttr('disabled');
 
                   $('#content')[0].scrollTop = 9999999;
