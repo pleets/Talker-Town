@@ -2,8 +2,6 @@
 
 header("Content-Type: application/javascript; charset=UTF-8");
 
-sleep(3);
-
 function getFiles($path)
 {
    $files = array();
@@ -38,7 +36,7 @@ function getIp()
 
 function getIdentity() 
 {
-   return isset($_POST["logged_user"]) ? $_POST["logged_user"] : getIp();
+   return isset($_GET["logged_user"]) ? $_GET["logged_user"] : getIp();
 }
 
 
@@ -191,7 +189,7 @@ if (isset($_GET["doRequest"]))
 # First request when the timestamp is zero
 else if ($lastmodif == 0) {
    if (file_exists("data/cache/conversations/history.txt"))
-       $data_contents_message = base64_encode(file_get_contents("data/cache/conversations/history.txt"));
+       $data_contents_message = file_get_contents("data/cache/conversations/history.txt");
    else
        $data_contents_message = "";
 }
@@ -250,6 +248,7 @@ if (!empty($message))
    $response['msg'] = $message_to_send;
 }
 
+$response["msg"] = base64_encode($response["msg"]);
 $response['user'] = $last_user;
 $response['timestamp'] = $currentmodif;
 $response['firstTimestamp'] = $lastmodif;

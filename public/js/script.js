@@ -45,7 +45,8 @@ for (var i = 0; i <= size; i++)
 
 var rootPath = dirname(indexPath) + '/';
 
-var jsonpRequest = false;     /* Cross domain */
+var jsonpRequest = true;      /* Cross domain */
+var historyLoaded = false;    /* For cross domain only, Fix repeat history ... */
 
 var urlRequest = (jsonpRequest) ? "http://talkertown01.mywebcommunity.org/backend.php" : indexPath + "application/index/backend";
 var cacheFolder = (jsonpRequest) ? "http://talkertown01.mywebcommunity.org/data/cache/" : rootPath + 'data/cache/';
@@ -55,24 +56,7 @@ var comet;
 
 var jsonpClient = function(data) 
 {
-   var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
-   var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
-
-   var x = j;
-   var y = i;
-
-   bg_x = ( -32 * x ) + 3;
-   bg_y = ( -(336/11) * y ) + 2.3;
-
-   var nitem = "<div class='item'>" +
-               "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
-               "<div class='content'>" +
-               "<div class='header'>" + data["username"] +  "</div>" +
-               "<div class='description'><i class='mobile icon'></i><small>3min</small></div>" +
-               "</div>" +
-               "<div>";
-
-   $("#online_users").append(nitem);
+   console.info('jQuery callback...');
 }
 
 $(function(){
@@ -84,13 +68,18 @@ $(function(){
 
    var settings =
    {
-      data: { logged_user: $('#logged_user').text() },
+      data: { logged_user: $('#current-session').val() },
       callback: {
          success: function(data) 
          {
             // Connection established
             if (typeof data != "object")
                data = $.parseJSON(data);
+
+            console.info("firstTimestamp->" + data.firstTimestamp  + " -----" + "timestamp->" + data.timestamp);
+
+            if (jsonpRequest)
+               comet.timestamp = data.timestamp;
 
             if (data.errors.length)
             {
@@ -124,19 +113,23 @@ $(function(){
                {
                   if ($('#content').length)
                   {
-                     if (data["firstTimestamp"] == 0) 
+                     if (data["firstTimestamp"] == 0 && !historyLoaded)
                      {
                         var msg = data["msg"];      // Get history messages
                         //console.info(btoa(unescape(encodeURIComponent( msg ))));
-                        $('#content').append( decodeURIComponent(escape(window.atob( msg ))));
-                        $('#content')[0].scrollTop = 9999999;                        
+                        $('#content').append( decodeURIComponent(escape(window.atob( msg ))) );
+                        $('#content')[0].scrollTop = 9999999;
+
+                        historyLoaded = true;
                      }
                      else if (data["user"] !== $("#current-session").val())
                      {
                         if (data["user"].trim() !== '' && data["msg"].trim() !== '') 
                         {
+                           var decode_message = decodeURIComponent(escape(window.atob( data["msg"] )));
+
                            // Fb emoticons
-                           var str = data["msg"].replace(">:(", "<a class='emoticon emoticon_grumpy'></a>");
+                           var str = decode_message.replace(">:(", "<a class='emoticon emoticon_grumpy'></a>");
                            message = str.replace("3:)", "<a class='emoticon emoticon_devil'></a>");
                            message = message.replace("O:)", "<a class='emoticon emoticon_angel'></a>");
                            message = message.replace(">:o", "<a class='emoticon emoticon_upset'></a>");
@@ -192,6 +185,7 @@ $(function(){
                      dataType: (jsonpRequest) ? 'jsonp' : 'json',
                      jsonpCallback: 'jsonpClient',
                      success: function(data) {
+
                         var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
                         var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
 
@@ -265,12 +259,15 @@ $(function(){
          settings = 
          {
             data: {
-               msg: message, logged_user: $('#logged_user').text()
+               msg: message, logged_user: $('#current-session').val()
             },
             callback: {
                success: function(data) 
                {
-                  $('#content').append(data["msg"]);
+                  if (typeof data != "object")
+                     data = $.parseJSON(data);     
+
+                  $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );
                },
                error: function(jqXHR, textStatus, errorThrown) {
                   $('#loading-message-status i').attr('class', 'remove icon');
@@ -340,7 +337,7 @@ $(function(){
                      callback: {
                         success: function(data) 
                         {
-                           $('#content').append(data["msg"]);
+                           $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
                            $('#loading-message-status i').attr('class', 'remove icon');
