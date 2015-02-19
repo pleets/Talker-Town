@@ -277,6 +277,8 @@ class IndexController extends AbstractActionController
         $message = isset($_GET['msg']) ? trim($_GET['msg']) : '';
         $data_username = $username = $this->getAnonymousIdentity();
 
+        $message = base64_decode($message);
+
 
         // Get the current and last timestamp of the message file
         $lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;     # The first time the timestamp is equal to zero

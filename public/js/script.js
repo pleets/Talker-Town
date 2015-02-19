@@ -297,7 +297,7 @@ $(function(){
          settings = 
          {
             data: {
-               msg: original_message, logged_user: $('#current-session').val()
+               msg: window.btoa(unescape(encodeURIComponent( original_message ))), logged_user: $('#current-session').val()
             },
             callback: {
                success: function(data) 
