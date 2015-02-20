@@ -77,7 +77,8 @@ body {
 
 .tk-gallery.cyclic .items
 {
-	height: 198px;
+	height: 235px;
+	overflow: hidden;
 }
 
 .tk-gallery.cyclic .controls
