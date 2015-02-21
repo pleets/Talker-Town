@@ -294,6 +294,7 @@ body {
 	position: absolute !important;
     bottom: 0;
     right: 0;
+    overflow: hidden;
 }
 
 .private-message-box {
@@ -320,4 +321,16 @@ body {
 	position: absolute;
 	bottom: 5px;
 	left: 5px;
+}
+
+.private-message-box .item.header {
+	cursor: pointer;
+}
+
+.private-message-box.hidden {
+    height: auto;
+}
+
+.private-message-box.hidden .item.content, .private-message-box.hidden form {
+    display: none;
 }

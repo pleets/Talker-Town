@@ -152,6 +152,7 @@ $(function(){
                                         <div class='private-message-box' data-user='" + user + "'> \
                                             <div class='ui vertical menu'> \
                                               <div class='header item'> \
+                                                <i class='close icon'></i> \
                                                 <i class='user icon'></i> \
                                                 " + user + " \
                                               </div> \
@@ -639,6 +640,7 @@ $(function(){
              <div class='private-message-box' data-user='" + user + "'> \
                  <div class='ui vertical menu'> \
                    <div class='header item'> \
+                     <i class='close icon'></i> \
                      <i class='user icon'></i> \
                      " + user + " \
                    </div> \
@@ -671,11 +673,14 @@ $(function(){
       event.preventDefault();
 
       var input = $(this).find("[name='word']");
-      var box = $(this).parent().parent().find('.content');
-      var _to = $(this).parent().parent().attr('data-user');
 
-      var original_message = input.val();
-      input.val('');
+      if (input.val().trim() != "")
+      {
+         var box = $(this).parent().parent().find('.content');
+         var _to = $(this).parent().parent().attr('data-user');
+
+         var original_message = input.val();
+         input.val('');
 
          data = {};
          data.user = $('#current-session').val();
@@ -714,37 +719,48 @@ $(function(){
             var msg = "<p id='" + data["timestamp"] + "' data-user='" + data["user"] + "' data-receiver='" + _to + "'><strong style='color: " + data.user_color + "'>" + data["user"] + "</strong>: " + message + "</p>";
 
 
-      box.append(msg);
-      box[0].scrollTop = 9999999;
+         box.append(msg);
+         box[0].scrollTop = 9999999;
 
-      settings = 
-      {
-         data: {
-            msg: window.btoa(unescape(encodeURIComponent( original_message ))), logged_user: $('#current-session').val(), user_color: $('#user-color').val(), receiver: _to
-         },
-         callback: {
-            success: function(data) 
-            {
-               /*if (typeof data != "object")
-                  data = $.parseJSON(data);     
+         settings = 
+         {
+            data: {
+               msg: window.btoa(unescape(encodeURIComponent( original_message ))), logged_user: $('#current-session').val(), user_color: $('#user-color').val(), receiver: _to
+            },
+            callback: {
+               success: function(data) 
+               {
+                  /*if (typeof data != "object")
+                     data = $.parseJSON(data);     
 
-               $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );*/
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-               $("#"+data.timestamp).addClass('ui small compact red message');
-               alert('The red messages was not sent');
-            },
-            complete: function()
-            {
-               box[0].scrollTop = 9999999;
-               input.focus();
+                  $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );*/
+               },
+               error: function(jqXHR, textStatus, errorThrown) {
+                  $("#"+data.timestamp).addClass('ui small compact red message');
+                  alert('The red messages was not sent');
+               },
+               complete: function()
+               {
+                  box[0].scrollTop = 9999999;
+                  input.focus();
+               }
             }
          }
+
+         comet.doRequest(settings);
       }
 
-      comet.doRequest(settings);
    });
 
+   $("body").delegate(".private-message-box .item.header", "click", function(event) {
+      if ($(this).parent().parent().hasClass('hidden'))
+         $(this).parent().parent().removeClass('hidden');
+      else
+         $(this).parent().parent().addClass('hidden');
+   });
 
+   $("body").delegate(".private-message-box .item.header .icon.close", "click", function(event) {
+      $(this).parent().parent().parent().remove();
+   });
 
 });
