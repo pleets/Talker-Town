@@ -130,17 +130,53 @@ $(function(){
                         for (var m in data["latest_messages"])
                         {
                            var html = decodeURIComponent(escape(window.atob( data["latest_messages"][m] )));
-                           var user = ($($.parseHTML(html)).find('strong').text());
+                           var user = ($($.parseHTML(html)).attr('data-user'));
+                           var receiver = ($($.parseHTML(html)).attr('data-receiver'));
 
                            // if (data["user"] !== $.cookie("username"))         $.cookie not works
                            if (user !== $("#current-session").val()) 
                            {
-                              $('#content').append( html );
+                              if (receiver == $("#current-session").val())
+                              {
+                                 if (!($("#private-messages").find(".private-message-box[data-user='" + user + "']").length))
+                                 {
+                                    $("#private-messages").prepend(" \
+                                        <div class='private-message-box' data-user='" + user + "'> \
+                                            <div class='ui vertical menu'> \
+                                              <div class='header item'> \
+                                                <i class='user icon'></i> \
+                                                " + user + " \
+                                              </div> \
+                                              <div class='content item'></div> \
+                                                <form class='ui form'> \
+                                                    <div class='ui grid'> \
+                                                        <div class='twelve wide mobile only six wide tablet only twelve wide computer only twelve wide  large monitor only six wide widescreen only column' style='padding-right: 1px'> \
+                                                            <div class='ui small icon input'> \
+                                                                <input type='text' name='word' placeholder='message' /> \
+                                                            </div> \
+                                                        </div> \
+                                                        <div class='four wide column' style='padding-left: 1px'> \
+                                                            <button type='sumbit' class='ui small icon submit inverted orange button'><i class='chevron right icon'></i></button> \
+                                                        </div> \
+                                                    </div> \
+                                                </form> \
+                                            </div> \
+                                        </div> \
+                                    ");
+                                 }
+
+                                 $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('.content').append( html );
+                                 $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('.content')[0].scrollTop = 9999999;
+                              }
+                              else {
+                                 $('#content').append( html );
+                                 $('#content')[0].scrollTop = 9999999;
+                              }
+
                               $("#notification-audio")[0].load();
                               $("#notification-audio")[0].play();                              
                            }
                         }
-                        $('#content')[0].scrollTop = 9999999;
                      }
 
                      if (data["user"].trim() !== '' && data["msg"].trim() !== '' && data["firstTimestamp"] != 0) 
@@ -176,7 +212,7 @@ $(function(){
                         bg_x = ( -32 * x ) + 3;
                         bg_y = ( -(336/11) * y ) + 2.3;
 
-                        var nitem = "<div class='item'>" +
+                        var nitem = "<div class='item' data-user='" + data["username"] +  "'>" +
                                     "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
                                     "<div class='content'>" +
                                     "<div class='header'>" + data["username"] +  "</div>" +
@@ -266,9 +302,9 @@ $(function(){
 
          // Parse message
          if (message.substring(0,7) == 'http://' || message.substring(0,8) == 'https://')
-            var msg = "<p id='" + data["timestamp"] + "'><strong style='color: " + data.user_color + "'>" + data["user"] + ":</strong> <a target='_blank' href='" + message + "'>" + message + "</a></p>";
+            var msg = "<p id='" + data["timestamp"] + "' data-user='" + data["user"] + "' data-receiver=''><strong style='color: " + data.user_color + "'>" + data["user"] + ":</strong> <a target='_blank' href='" + message + "'>" + message + "</a></p>";
          else
-            var msg = "<p id='" + data["timestamp"] + "'><strong style='color: " + data.user_color + "'>" + data["user"] + "</strong>: " + message + "</p>";
+            var msg = "<p id='" + data["timestamp"] + "' data-user='" + data["user"] + "' data-receiver=''><strong style='color: " + data.user_color + "'>" + data["user"] + "</strong>: " + message + "</p>";
 
          $('#content').append(msg);
 
@@ -556,5 +592,130 @@ $(function(){
       $("#word").val($("#word").val() + text);
       $("#word").focus();
    });
+
+
+   /* Private messages */
+   $("body").delegate("#online_users .item", "click", function(event) {
+
+      var user = $(this).attr('data-user');
+
+      var exists = false;
+      $.each($("#private-messages").children("div.private-message-box"), function(){
+         if ($(this).attr('data-user') == user)
+            exists = true;
+      });
+
+      if (exists)
+      {
+         // do nothing
+      }
+      else {
+         $("#private-messages").prepend(" \
+             <div class='private-message-box' data-user='" + user + "'> \
+                 <div class='ui vertical menu'> \
+                   <div class='header item'> \
+                     <i class='user icon'></i> \
+                     " + user + " \
+                   </div> \
+                   <div class='content item'></div> \
+                     <form class='ui form'> \
+                         <div class='ui grid'> \
+                             <div class='twelve wide mobile only six wide tablet only twelve wide computer only twelve wide  large monitor only six wide widescreen only column' style='padding-right: 1px'> \
+                                 <div class='ui small icon input'> \
+                                     <input type='text' name='word' placeholder='message' /> \
+                                 </div> \
+                             </div> \
+                             <div class='four wide column' style='padding-left: 1px'> \
+                                 <button type='sumbit' class='ui small icon submit inverted orange button'><i class='chevron right icon'></i></button> \
+                             </div> \
+                         </div> \
+                     </form> \
+                 </div> \
+             </div> \
+         ");
+      }
+
+   });
+
+   $("body").delegate(".private-message-box form", "submit", function(event) {
+
+      event.preventDefault();
+
+      var input = $(this).find("[name='word']");
+      var box = $(this).parent().parent().find('.content');
+      var _to = $(this).parent().parent().attr('data-user');
+
+      var original_message = input.val();
+      input.val('');
+
+         data = {};
+         data.user = $('#current-session').val();
+         data.user_color = $('#user-color').val() || '#2A9426';
+         data.timestamp = comet.timestamp;
+
+         var decode_message = original_message;
+
+         // Fb emoticons
+         var str = decode_message.replace(">:(", "<a class='emoticon emoticon_grumpy'></a>");
+         message = str.replace("3:)", "<a class='emoticon emoticon_devil'></a>");
+         message = message.replace("O:)", "<a class='emoticon emoticon_angel'></a>");
+         message = message.replace(">:o", "<a class='emoticon emoticon_upset'></a>");
+
+         message = message.replace(":)", "<a class='emoticon emoticon_smile'></a>");
+         message = message.replace(":(", "<a class='emoticon emoticon_frown'></a>");
+         message = message.replace(":P", "<a class='emoticon emoticon_tongue'></a>");
+         message = message.replace("=D", "<a class='emoticon emoticon_grin'></a>");
+         message = message.replace(":o", "<a class='emoticon emoticon_gasp'></a>");
+         message = message.replace(";)", "<a class='emoticon emoticon_wink'></a>");
+         message = message.replace(":v", "<a class='emoticon emoticon_pacman'></a>");
+         message = message.replace(":/", "<a class='emoticon emoticon_unsure'></a>");
+         message = message.replace(":'(", "<a class='emoticon emoticon_cry'></a>");
+         message = message.replace("^_^", "<a class='emoticon emoticon_kiki'></a>");
+         message = message.replace("8-)", "<a class='emoticon emoticon_glasses'></a>");
+         message = message.replace("<3", "<a class='emoticon emoticon_heart'></a>");
+         message = message.replace("-_-", "<a class='emoticon emoticon_squint'></a>");
+         message = message.replace("o.O", "<a class='emoticon emoticon_confused'></a>");
+         message = message.replace(":3", "<a class='emoticon emoticon_colonthree'></a>");
+         message = message.replace("(y)", "<a class='emoticon emoticon_like'></a>");
+
+         // Parse message
+         if (message.substring(0,7) == 'http://' || message.substring(0,8) == 'https://')
+            var msg = "<p id='" + data["timestamp"] + "' data-user='" + data["user"] + "' data-receiver='" + _to + "'><strong style='color: " + data.user_color + "'>" + data["user"] + ":</strong> <a target='_blank' href='" + message + "'>" + message + "</a></p>";
+         else
+            var msg = "<p id='" + data["timestamp"] + "' data-user='" + data["user"] + "' data-receiver='" + _to + "'><strong style='color: " + data.user_color + "'>" + data["user"] + "</strong>: " + message + "</p>";
+
+
+      box.append(msg);
+      box[0].scrollTop = 9999999;
+
+      settings = 
+      {
+         data: {
+            msg: window.btoa(unescape(encodeURIComponent( original_message ))), logged_user: $('#current-session').val(), user_color: $('#user-color').val(), receiver: _to
+         },
+         callback: {
+            success: function(data) 
+            {
+               /*if (typeof data != "object")
+                  data = $.parseJSON(data);     
+
+               $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );*/
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+               $("#"+data.timestamp).addClass('ui small compact red message');
+               alert('The red messages was not sent');
+            },
+            complete: function()
+            {
+               box[0].scrollTop = 9999999;
+               input.focus();
+            }
+         }
+      }
+
+      comet.doRequest(settings);
+   });
+
+
 
 });

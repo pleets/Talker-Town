@@ -289,3 +289,35 @@ body {
 	background-size: auto;
 	background-position: -182px -169px;
 }
+
+#private-messages {
+	position: absolute !important;
+    bottom: 0;
+    right: 0;
+}
+
+.private-message-box {
+	position: relative;
+	display: inline-block;
+    width: 200px;
+    height: 215px;
+    margin-right: 11px !important;
+    margin-bottom: 1px !important;
+}
+
+.private-message-box .ui.vertical.menu
+{
+	height: 100%
+}
+
+.private-message-box .ui.vertical.menu .item.content
+{
+	height: 130px !important;
+    overflow: auto;
+}
+
+.private-message-box .ui.vertical.menu form {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+}

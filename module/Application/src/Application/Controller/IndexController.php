@@ -211,7 +211,7 @@ class IndexController extends AbstractActionController
         $data = \Zend\Json\Json::decode( file_get_contents($buffer) );*/
     }
 
-    private function parseMessage($message, $last_user, $currentmodif, $user_color)
+    private function parseMessage($message, $last_user, $currentmodif, $user_color, $receiver)
     {
         $replaced = str_replace(">:(", "<a class='emoticon emoticon_grumpy'></a>", $message);
         $replaced = str_replace("3:)", "<a class='emoticon emoticon_devil'></a>", $replaced);
@@ -238,11 +238,11 @@ class IndexController extends AbstractActionController
         /* Only when start text ... */
         if (substr($parsed_message, 0, 7) == 'http://' || substr($parsed_message, 0, 8) == 'https://')
         {
-            $parsed_message = "<p id='$currentmodif'><strong style='color: $user_color'>$last_user</strong>: <a target='_blank' href='". $parsed_message ."' >". $parsed_message ."</a></p>";
+            $parsed_message = "<p id='$currentmodif' data-user='$last_user' data-receiver='$receiver'><strong style='color: $user_color'>$last_user</strong>: <a target='_blank' href='". $parsed_message ."' >". $parsed_message ."</a></p>";
         }
         else {
             // Convert the current message in HTML
-            $parsed_message  = "<p id='$currentmodif'><strong style='color: $user_color'>$last_user</strong>: ". $parsed_message ."</p>";
+            $parsed_message  = "<p id='$currentmodif' data-user='$last_user' data-receiver='$receiver'><strong style='color: $user_color'>$last_user</strong>: ". $parsed_message ."</p>";
         }
 
         return $parsed_message;        
@@ -302,6 +302,7 @@ class IndexController extends AbstractActionController
         // Get username and message to store
         $message = isset($_GET['msg']) ? trim($_GET['msg']) : '';
         $user_color = isset($_GET['user_color']) ? trim($_GET['user_color']) : '#2A9426';
+        $receiver = isset($_GET['receiver']) ? trim($_GET['receiver']) : '';
         $data_username = $username = $this->getAnonymousIdentity();
 
         $message = base64_decode($message);
@@ -425,7 +426,7 @@ class IndexController extends AbstractActionController
         // Parse msg
         if (!empty($message))
         {
-            $response['msg'] = $this->parseMessage($response['msg'], $last_user, $currentmodif, $user_color);
+            $response['msg'] = $this->parseMessage($response['msg'], $last_user, $currentmodif, $user_color, $receiver);
 
             $currentmodif++;
 

@@ -95,11 +95,13 @@
                     </button>
                 </div>
 
-            </div><br />
-
-            <?php if (!$xmlHttpRequest): ?>
-                <?= $this->formSubmit($form->get('submit')) ?>
-            <?php endif; ?>
+            </div>
+            
+            <div class="ui center aligned basic segment">
+                <?php if (!$xmlHttpRequest): ?>
+                    <?= $this->formSubmit($form->get('submit')) ?>
+                <?php endif; ?>
+            </div>
 
         <?= $this->form()->closeTag() ?>
 
