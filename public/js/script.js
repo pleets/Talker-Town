@@ -156,9 +156,9 @@ $(function(){
                                                 " + user + " \
                                               </div> \
                                               <div class='content item'></div> \
-                                                <form class='ui form'> \
+                                                <form class='ui form' autocomplete='off'> \
                                                     <div class='ui grid'> \
-                                                        <div class='twelve wide mobile only six wide tablet only twelve wide computer only twelve wide  large monitor only six wide widescreen only column' style='padding-right: 1px'> \
+                                                        <div class='twelve wide mobile only twelve wide tablet only twelve wide computer only twelve wide large monitor only twelve wide widescreen only column' style='padding-right: 1px'> \
                                                             <div class='ui small icon input'> \
                                                                 <input type='text' name='word' placeholder='message' /> \
                                                             </div> \
@@ -629,9 +629,9 @@ $(function(){
                      " + user + " \
                    </div> \
                    <div class='content item'></div> \
-                     <form class='ui form'> \
+                     <form class='ui form' autocomplete='off'> \
                          <div class='ui grid'> \
-                             <div class='twelve wide mobile only six wide tablet only twelve wide computer only twelve wide  large monitor only six wide widescreen only column' style='padding-right: 1px'> \
+                             <div class='twelve wide mobile only twelve wide tablet only twelve wide computer only twelve wide large monitor only twelve wide widescreen only column' style='padding-right: 1px'> \
                                  <div class='ui small icon input'> \
                                      <input type='text' name='word' placeholder='message' /> \
                                  </div> \
