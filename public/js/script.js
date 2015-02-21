@@ -178,6 +178,10 @@ $(function(){
                                         </div> \
                                     ");
                                  }
+                                 else {
+                                    if ($("#private-messages").find(".private-message-box[data-user='" + user + "']").hasClass('hidden'))
+                                       $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('.vertical.menu').addClass('purple inverted');
+                                 }
 
                                  $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('.content').append( html );
                                  $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('.content')[0].scrollTop = 9999999;
@@ -758,8 +762,13 @@ $(function(){
    });
 
    $("body").delegate(".private-message-box .item.header", "click", function(event) {
-      if ($(this).parent().parent().hasClass('hidden'))
+      if ($(this).parent().parent().hasClass('hidden')) 
+      {
          $(this).parent().parent().removeClass('hidden');
+         
+         if ($(this).parent().hasClass('purple inverted'))
+            $(this).parent().removeClass('purple inverted');
+      }
       else
          $(this).parent().parent().addClass('hidden');
    });
