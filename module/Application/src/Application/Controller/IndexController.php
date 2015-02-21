@@ -394,8 +394,13 @@ class IndexController extends AbstractActionController
         {
             $_tmp = (integer) basename(substr($tmp, 0, strlen($tmp) - 4));
 
-            if ($_tmp > $lastmodif)
-                $_msg[] = base64_encode(file_get_contents($tmp));
+            if ($_tmp > $lastmodif) {
+                
+                $_msg_decoded = base64_encode(file_get_contents($tmp));
+
+                if (!empty($_msg_decoded))
+                    $_msg[] = $_msg_decoded;
+            }
         }
 
         $response["latest_messages"] = $_msg;
@@ -406,8 +411,22 @@ class IndexController extends AbstractActionController
             $data_contents_message = $message;
         # First request when the timestamp is zero
         else if ($lastmodif == 0) {
-            if (file_exists("data/cache/conversations/history.txt"))
-                $data_contents_message = file_get_contents("data/cache/conversations/history.txt");
+            if (file_exists("data/cache/conversations/history.txt")) 
+            {
+                /* Filter only public messages */
+                $file = fopen("data/cache/conversations/history.txt",'r');
+                
+                $data_contents_message = "";
+                
+                while(!feof($file)) 
+                { 
+                    $row = fgets($file);
+
+                    if (strpos($row, "data-receiver=''") !== false)
+                        $data_contents_message .= $row;
+                }
+                fclose($file);
+            }
             else
                 $data_contents_message = "";
         }
