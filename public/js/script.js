@@ -136,6 +136,14 @@ $(function(){
                            // if (data["user"] !== $.cookie("username"))         $.cookie not works
                            if (user !== $("#current-session").val()) 
                            {
+                              if (receiver.trim() == "")
+                              {
+                                 $('#content').append( html );
+                                 $('#content')[0].scrollTop = 9999999;
+
+                                 $("#notification-audio")[0].load();
+                                 $("#notification-audio")[0].play();                                 
+                              }
                               if (receiver == $("#current-session").val())
                               {
                                  if (!($("#private-messages").find(".private-message-box[data-user='" + user + "']").length))
@@ -167,14 +175,13 @@ $(function(){
 
                                  $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('.content').append( html );
                                  $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('.content')[0].scrollTop = 9999999;
+
+                                 $("#notification-audio")[0].load();
+                                 $("#notification-audio")[0].play();                                 
                               }
                               else {
-                                 $('#content').append( html );
-                                 $('#content')[0].scrollTop = 9999999;
-                              }
-
-                              $("#notification-audio")[0].load();
-                              $("#notification-audio")[0].play();                              
+                                 // this message is private (other user)
+                              }                          
                            }
                         }
                      }
@@ -212,15 +219,19 @@ $(function(){
                         bg_x = ( -32 * x ) + 3;
                         bg_y = ( -(336/11) * y ) + 2.3;
 
-                        var nitem = "<div class='item' data-user='" + data["username"] +  "'>" +
-                                    "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
-                                    "<div class='content'>" +
-                                    "<div class='header'>" + data["username"] +  "</div>" +
-                                    "<div class='description'><i class='mobile icon'></i><small>3min</small></div>" +
-                                    "</div>" +
-                                    "<div>";
+                        if ($("#current-session").val() != data["username"])
+                        {
+                           var nitem = "<div class='item' data-user='" + data["username"] +  "'>" +
+                                       "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
+                                       "<div class='content'>" +
+                                       "<div class='header'>" + data["username"] +  "</div>" +
+                                       "<div class='description'><i class='mobile icon'></i><small>3min</small></div>" +
+                                       "</div>" +
+                                       "<div>";
 
-                        $("#online_users").append(nitem);
+                           $("#online_users").append(nitem);
+                        }
+
                      },
                      error: function(a, b ,c){
                         console.info(b + ": " + c);
@@ -633,7 +644,11 @@ $(function(){
                  </div> \
              </div> \
          ");
+
       }
+
+      $('.left.sidebar').sidebar('toggle');
+      $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('input').focus();
 
    });
 
