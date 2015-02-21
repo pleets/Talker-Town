@@ -156,7 +156,7 @@ $(function(){
                                                 " + user + " \
                                               </div> \
                                               <div class='content item'></div> \
-                                                <form class='ui form' autocomplete='off'> \
+                                                   <form class='ui form' autocomplete='off'> \
                                                     <div class='ui grid'> \
                                                         <div class='twelve wide mobile only twelve wide tablet only twelve wide computer only twelve wide large monitor only twelve wide widescreen only column' style='padding-right: 1px'> \
                                                             <div class='ui small icon input'> \
@@ -197,47 +197,61 @@ $(function(){
 
                $("#online_users").empty();
 
-               for (var i = data["online_users"].length - 1; i >= 0; i--)
+
+               if (!data["online_users"].length || (data["online_users"].length == 1 && data["online_users"][0] == $("#current-session").val() ) ) {
+                  $("#online_users").append(" \
+                     <div class='ui warning message'> \
+                       <div class='header'> \
+                         Where is the users ? \
+                       </div> \
+                       In this moment there are not users! \
+                     </div> \
+                     ");
+               }
+               else
                {
-                  var user = data["online_users"][i];
-                  var bg_x, bg_y; 
+                  for (var i = data["online_users"].length - 1; i >= 0; i--)
+                  {
+                     var user = data["online_users"][i];
+                     var bg_x, bg_y;
 
-                  // Get user's configuration
-                  $.ajax({
-                     url: cacheFolder + user + '.json',
-                     type: 'get',
-                     dataType: (jsonpRequest) ? 'jsonp' : 'json',
-                     jsonpCallback: 'jsonpClient',
-                     success: function(data) {
+                     // Get user's configuration
+                     $.ajax({
+                        url: cacheFolder + user + '.json',
+                        type: 'get',
+                        dataType: (jsonpRequest) ? 'jsonp' : 'json',
+                        jsonpCallback: 'jsonpClient',
+                        success: function(data) {
 
-                        var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
-                        var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
+                           var i = parseInt(data["avatar"].toString().charAt(0)) - 1;
+                           var j = parseInt(data["avatar"].toString().charAt(1)) - 1;
 
-                        var x = j;
-                        var y = i;
+                           var x = j;
+                           var y = i;
 
-                        bg_x = ( -32 * x ) + 3;
-                        bg_y = ( -(336/11) * y ) + 2.3;
+                           bg_x = ( -32 * x ) + 3;
+                           bg_y = ( -(336/11) * y ) + 2.3;
 
-                        if ($("#current-session").val() != data["username"])
-                        {
-                           var nitem = "<div class='item' data-user='" + data["username"] +  "'>" +
-                                       "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
-                                       "<div class='content'>" +
-                                       "<div class='header'>" + data["username"] +  "</div>" +
-                                       "<div class='description'><i class='mobile icon'></i><small>3min</small></div>" +
-                                       "</div>" +
-                                       "<div>";
+                           if ($("#current-session").val() != data["username"])
+                           {
+                              var nitem = "<div class='item' data-user='" + data["username"] +  "'>" +
+                                          "<img class='ui avatar image' style='background-position: " + bg_x + "px " + bg_y + "px' />" +
+                                          "<div class='content'>" +
+                                          "<div class='header'>" + data["username"] +  "</div>" +
+                                          "<div class='description'><i class='mobile icon'></i><small>3min</small></div>" +
+                                          "</div>" +
+                                          "<div>";
 
-                           $("#online_users").append(nitem);
+                              $("#online_users").append(nitem);
+                           }
+
+                        },
+                        error: function(a, b ,c){
+                           console.info(b + ": " + c);
                         }
-
-                     },
-                     error: function(a, b ,c){
-                        console.info(b + ": " + c);
-                     }
-                  });
-               };
+                     });
+                  };
+               }
             }
          },
          error: function(jqXHR, textStatus, errorThrown)
