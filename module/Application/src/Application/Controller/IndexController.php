@@ -248,6 +248,25 @@ class IndexController extends AbstractActionController
         return $parsed_message;        
     }
 
+    private function getLatestMessages($latest_messages, $lastmodif)
+    {
+        $_msg = array();
+        foreach ($latest_messages as $tmp) 
+        {
+            $_tmp = (integer) basename(substr($tmp, 0, strlen($tmp) - 4));
+
+            if ($_tmp > $lastmodif) {
+                
+                $_msg_decoded = base64_encode(file_get_contents($tmp));
+
+                if (!empty($_msg_decoded))
+                    $_msg[] = $_msg_decoded;
+            }
+        }
+
+        return $_msg;
+    }
+
     public function backendAction()
     {
         function getFiles($path)
@@ -351,8 +370,10 @@ class IndexController extends AbstractActionController
          */
 
         $isFirstCall = ($lastmodif == 0);
+        $itsForYou = false;
+        $_messages = array();
 
-        while (!isset($_GET["doRequest"]) && $lastmodif != 0 && count($current_users) == count($last_users) && $currentmodif == count($latest_messages))
+        while (!isset($_GET["doRequest"]) && $lastmodif != 0 && count($current_users) == count($last_users) && ($currentmodif == count($latest_messages) || !$itsForYou) )
         {
             clearstatcache();
             session_write_close();
@@ -361,7 +382,29 @@ class IndexController extends AbstractActionController
             $username = $this->getAnonymousIdentity();
 
             $latest_messages = getFiles("data/cache/conversations/timestamp");
-            //$currentmodif = count(getFiles("data/cache/conversations/timestamp"));
+
+
+            /* Filter private messages of other users */
+            
+            $array = $this->getLatestMessages($latest_messages, $lastmodif);
+
+            if (isset($_messags))
+                $_messags = array();
+            foreach ($array as $_msg) 
+            {
+                $_msg = base64_decode($_msg);
+                if (strpos($_msg, "data-receiver=''") !== false || strpos($_msg, "data-receiver='$username'") !== false) 
+                {
+                    if (!in_array(base64_encode($_msg), $_messages))
+                        $_messages[] = base64_encode($_msg);
+                    $itsForYou = true;
+                }
+            }
+            $response["itsForYou"] = $itsForYou;
+
+
+            if ($currentmodif != $lastmodif)
+                break;
 
             if (!is_null($username) && !empty($username))
             {
@@ -388,20 +431,7 @@ class IndexController extends AbstractActionController
             }
         }
 
-
-        $_msg = array();
-        foreach ($latest_messages as $tmp) 
-        {
-            $_tmp = (integer) basename(substr($tmp, 0, strlen($tmp) - 4));
-
-            if ($_tmp > $lastmodif) {
-                
-                $_msg_decoded = base64_encode(file_get_contents($tmp));
-
-                if (!empty($_msg_decoded))
-                    $_msg[] = $_msg_decoded;
-            }
-        }
+        $_msg = $_messages;
 
         $response["latest_messages"] = $_msg;
         $last_user = $username;
