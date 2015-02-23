@@ -2,7 +2,7 @@ body {
 	font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 #content {
-	height: 300px;
+	height: 500px;
 	overflow: auto;
 }
 
@@ -15,6 +15,10 @@ body {
 	{
 		width: 10000%;
 		height: auto !important;
+	}
+	#content {
+		height: 300px;
+		overflow: auto;
 	}
 }
 @media (max-width: 360px) {

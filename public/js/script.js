@@ -277,6 +277,10 @@ $(function(){
             // For each request
             if (comet.state)
                $("#state").text("Online");
+         },
+         disconnect: function()
+         {
+            $('#reconnect-message').modal('show');
          }
       }
    }

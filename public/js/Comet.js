@@ -57,6 +57,7 @@ jRender.ajax.Comet.prototype =
       set.callback.error = set.callback.error || new Function();
       set.callback.complete = set.callback.complete || new Function();
       set.callback.beforeSend = set.callback.beforeSend || new Function();
+      set.callback.disconnect = set.callback.disconnect || new Function();
 
       this.successConnection = set.callback.success;
 
@@ -112,6 +113,7 @@ jRender.ajax.Comet.prototype =
                      }
                      else {
                         console.info("Exceeded the maximum number of requests");
+                        set.callback.disconnect();
                         that.disconnect();
                      }
 
@@ -195,6 +197,7 @@ jRender.ajax.Comet.prototype =
    },
 
    reconnect: function() {
+      this.attemps = 0;
       this.aborted = false;
       this.connect();
    }
