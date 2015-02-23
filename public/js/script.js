@@ -315,35 +315,38 @@ $(function(){
          data.timestamp = comet.timestamp;
 
          var decode_message = original_message;
-
-         // Fb emoticons
-         var str = decode_message.replaceAll(">:(", "<a class='emoticon emoticon_grumpy'></a>");
-         message = str.replaceAll("3:)", "<a class='emoticon emoticon_devil'></a>");
-         message = message.replaceAll("O:)", "<a class='emoticon emoticon_angel'></a>");
-         message = message.replaceAll(">:o", "<a class='emoticon emoticon_upset'></a>");
-
-         message = message.replaceAll(":)", "<a class='emoticon emoticon_smile'></a>");
-         message = message.replaceAll(":(", "<a class='emoticon emoticon_frown'></a>");
-         message = message.replaceAll(":P", "<a class='emoticon emoticon_tongue'></a>");
-         message = message.replaceAll("=D", "<a class='emoticon emoticon_grin'></a>");
-         message = message.replaceAll(":o", "<a class='emoticon emoticon_gasp'></a>");
-         message = message.replaceAll(";)", "<a class='emoticon emoticon_wink'></a>");
-         message = message.replaceAll(":v", "<a class='emoticon emoticon_pacman'></a>");
-         message = message.replaceAll(":/", "<a class='emoticon emoticon_unsure'></a>");
-         message = message.replaceAll(":'(", "<a class='emoticon emoticon_cry'></a>");
-         message = message.replaceAll("^_^", "<a class='emoticon emoticon_kiki'></a>");
-         message = message.replaceAll("8-)", "<a class='emoticon emoticon_glasses'></a>");
-         message = message.replaceAll("<3", "<a class='emoticon emoticon_heart'></a>");
-         message = message.replaceAll("-_-", "<a class='emoticon emoticon_squint'></a>");
-         message = message.replaceAll("o.O", "<a class='emoticon emoticon_confused'></a>");
-         message = message.replaceAll(":3", "<a class='emoticon emoticon_colonthree'></a>");
-         message = message.replaceAll("(y)", "<a class='emoticon emoticon_like'></a>");
+         var message = original_message;
 
          // Parse message
          if (message.substring(0,7) == 'http://' || message.substring(0,8) == 'https://')
             var msg = "<p id='" + data["timestamp"] + "' data-user='" + data["user"] + "' data-receiver=''><strong style='color: " + data.user_color + "'>" + data["user"] + ":</strong> <a target='_blank' href='" + message + "'>" + message + "</a></p>";
-         else
+         else {
+
+            // Fb emoticons
+            var str = decode_message.replaceAll(">:(", "<a class='emoticon emoticon_grumpy'></a>");
+            message = str.replaceAll("3:)", "<a class='emoticon emoticon_devil'></a>");
+            message = message.replaceAll("O:)", "<a class='emoticon emoticon_angel'></a>");
+            message = message.replaceAll(">:o", "<a class='emoticon emoticon_upset'></a>");
+
+            message = message.replaceAll(":)", "<a class='emoticon emoticon_smile'></a>");
+            message = message.replaceAll(":(", "<a class='emoticon emoticon_frown'></a>");
+            message = message.replaceAll(":P", "<a class='emoticon emoticon_tongue'></a>");
+            message = message.replaceAll("=D", "<a class='emoticon emoticon_grin'></a>");
+            message = message.replaceAll(":o", "<a class='emoticon emoticon_gasp'></a>");
+            message = message.replaceAll(";)", "<a class='emoticon emoticon_wink'></a>");
+            message = message.replaceAll(":v", "<a class='emoticon emoticon_pacman'></a>");
+            message = message.replaceAll(":/", "<a class='emoticon emoticon_unsure'></a>");
+            message = message.replaceAll(":'(", "<a class='emoticon emoticon_cry'></a>");
+            message = message.replaceAll("^_^", "<a class='emoticon emoticon_kiki'></a>");
+            message = message.replaceAll("8-)", "<a class='emoticon emoticon_glasses'></a>");
+            message = message.replaceAll("<3", "<a class='emoticon emoticon_heart'></a>");
+            message = message.replaceAll("-_-", "<a class='emoticon emoticon_squint'></a>");
+            message = message.replaceAll("o.O", "<a class='emoticon emoticon_confused'></a>");
+            message = message.replaceAll(":3", "<a class='emoticon emoticon_colonthree'></a>");
+            message = message.replaceAll("(y)", "<a class='emoticon emoticon_like'></a>");
+
             var msg = "<p id='" + data["timestamp"] + "' data-user='" + data["user"] + "' data-receiver=''><strong style='color: " + data.user_color + "'>" + data["user"] + "</strong>: " + message + "</p>";
+         }
 
          $('#content').append(msg);
 
