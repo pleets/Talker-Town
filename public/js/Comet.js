@@ -47,7 +47,10 @@ jRender.ajax.Comet.prototype =
 {
    connect: function(settings)
    {
-      var set = settings || (this.connectSettings) || {};
+      if (this.connectSettings == null)
+         this.connectSettings = settings;
+
+      var set = settings || this.connectSettings || {};
       set.url = set.url || this.url;
       set.data = set.data || {};
 
@@ -199,7 +202,7 @@ jRender.ajax.Comet.prototype =
    reconnect: function() {
       this.attemps = 0;
       this.aborted = false;
-      this.connect();
+      this.connect(this.connectSettings);
    }
 
 }
