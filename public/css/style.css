@@ -334,3 +334,14 @@ body {
 .private-message-box.hidden .item.content, .private-message-box.hidden form {
     display: none;
 }
+
+
+.responsive-image {
+	max-width: 100%;
+}
+
+@media (max-width: 768px) {
+	.responsive-image {
+		width: 100%;
+	}
+}

@@ -416,7 +416,7 @@ $(function(){
 
                   comet.doRequest({
                      data: {
-                        msg: rootPath + "data/cache/files/" + uploadedFiles[i]
+                        msg: window.btoa(unescape(encodeURIComponent( rootPath + "data/cache/files/" + uploadedFiles[i] )))
                      },
                      callback: {
                         success: function(data) 
