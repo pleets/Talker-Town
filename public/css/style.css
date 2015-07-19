@@ -10,6 +10,20 @@ body {
 	margin: 1em 0.3em;
 }
 
+@media (max-height: 1200px) {
+	#content {
+		height: 300px;
+		overflow: auto;
+	}
+}
+
+@media (max-width: 1600px) {
+	#content {
+		height: 400px;
+		overflow: auto;
+	}
+}
+
 @media (max-width: 768px) {
 	.tk-gallery.cyclic .items
 	{
@@ -21,6 +35,7 @@ body {
 		overflow: auto;
 	}
 }
+
 @media (max-width: 360px) {
 	#content {
 		height: 230px;
@@ -41,13 +56,6 @@ body {
 	}
 	#footer-mobile {
 		display: none;
-	}
-}
-
-@media (max-height: 1200px) {
-	#content {
-		height: 300px;
-		overflow: auto;
 	}
 }
 
