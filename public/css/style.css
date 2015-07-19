@@ -44,6 +44,13 @@ body {
 	}
 }
 
+@media (max-height: 1200px) {
+	#content {
+		height: 300px;
+		overflow: auto;
+	}
+}
+
 .ui.avatar.image { background-image: url('../img/face_avatars.min.png'); background-position: 94px -112.89px; }
 
 .tk-gallery 
@@ -126,20 +133,14 @@ body {
 {
 	position: relative;
 	background: #834790; /* Old browsers */
-	background: -moz-linear-gradient(top,  #834790 2%, #c86caf 48%, #a56caf 100%, #2989d8 100%, #7db9e8 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,#834790), color-stop(48%,#c86caf), color-stop(100%,#a56caf), color-stop(100%,#2989d8), color-stop(100%,#7db9e8)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%); /* W3C */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -moz-linear-gradient(top,  #834790 2%, #c86caf 48%, #a56caf 100%, #2989d8 100%, #7db9e8 100%); /* FF3.6+ */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -webkit-gradient(linear, left top, left bottom, color-stop(2%,#834790), color-stop(48%,#c86caf), color-stop(100%,#a56caf), color-stop(100%,#2989d8), color-stop(100%,#7db9e8)); /* Chrome,Safari4+ */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -webkit-linear-gradient(top,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%); /* Chrome10+,Safari5.1+ */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -o-linear-gradient(top,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%); /* Opera 11.10+ */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -ms-linear-gradient(top,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%); /* IE10+ */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 linear-gradient(to bottom,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#834790', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
-	height: 100%;
-}
-
-.purple-background-image 
-{
-	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0% transparent;
-	height: 100%;
+	min-height: 100%;
 }
 
 .purple-background .purple-contrast {
