@@ -31,7 +31,7 @@
             <div class="fields">
                 <div class="required ten wide field">
                     <?= $formLabel->openTag() . $username->getOption('label') . $formLabel->closeTag() ?>
-                    <div class="ui large left icon input">
+                    <div class="ui left icon input">
                         <?= $this->formInput($username) ?>
                         <?= $this->formElementErrors($username) ?>
                         <i class="user icon"></i>
@@ -42,18 +42,13 @@
                     <label><?= $this->translate("Gender") ?></label>
                     <?php if (isset($genders)): ?>
                         <?php if (count($genders)): ?>
-                            <div class="ui selection dropdown">
-                                <input name="genders_id" type="hidden">
-                                <div class="default text"><?= $this->translate("Gender") ?></div>
-                                <i class="dropdown icon"></i>
-                                <div class="menu">
-                                    <?php
-                                        foreach ($genders as $gender) {
-                                            ?><div class="item" data-value="<?= $gender["genders_id"] ?>"><?= $this->translate($gender["name"]) ?></div><?php
-                                        }
-                                    ?>
-                                </div>
-                            </div>
+                            <select name="genders_id" class="ui fluid search dropdown">
+                                <?php
+                                    foreach ($genders as $gender) {
+                                        ?><option value="<?= $gender["genders_id"] ?>"><?= $this->translate($gender["name"]) ?></div><?php
+                                    }
+                                ?>                                
+                            </select>
                         <?php else: ?>
                             <?= $this->translate("Genders table is empty!") ?>
                         <?php endif; ?>

@@ -510,27 +510,25 @@ $(function(){
 
    /* Log in form */
    $('#frmUsers').form({
-      username: {
-         identifier : 'username',
-         rules: [
-            {
-               type   : 'empty',
-               prompt : 'Please enter a username'
-            },
-            {
-               type   : 'length[3]',
-               prompt : 'Your username must be at least 3 characters'
-            },
-            {
-               type   : 'maxLength[25]',
-               prompt : 'Your username is more than 25 characters to long'
-            }
-         ]
+      fields: {
+         username: {
+            identifier : 'username',
+            optional: false,
+            rules: [
+               {
+                  type   : 'minLength[3]',
+                  prompt : 'Your username must be at least 3 characters'
+               },
+               {
+                  type   : 'maxLength[25]',
+                  prompt : 'Your username is more than 25 characters to long'
+               }
+            ]
+         }
       },
-   }, {
-      inline    :  true,
-      on        :  'blur',
-      onSuccess :  function()
+      inline: true,
+      on: 'blur',
+      onSuccess: function()
       {
          var frm = $(this);
 
@@ -622,7 +620,7 @@ $(function(){
                else
                   frm.removeClass('loading');
             }
-         });
+         });         
       }
    });
 
