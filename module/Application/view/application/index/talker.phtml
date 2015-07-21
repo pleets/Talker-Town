@@ -1,3 +1,27 @@
+<?php if (isset($Exception)): ?>
+<div class="ui negative message">
+    <i class="close icon"></i>
+    <?= $Exception ?>
+</div>
+<?php endif; ?>
+
+<?php $title = $this->translate('Chat - Talker Town'); $this->headTitle($title); ?>
+
+<?php
+    $formLabel = $this->plugin('formLabel');
+    $word = $form->get('word');
+
+    $form = $this->form->prepare();
+
+    $form->setAttributes(array(
+        'action' => $this->url('application') . '/index/login',
+        'class' => 'ui form',
+        'autocomplete' => 'off',
+        'method' => 'get',
+        'id' => 'chat'
+    ));
+?>
+
 <div class="ui right aligned grid">
 	<div class="left floated left aligned eight wide column">
 		<button type="button" class="ui labeled orange icon button" id="show-users">
@@ -25,7 +49,7 @@
 <div class="ui piled segment" id="outer-content">
 	<div id="content"></div>
 </div>
-<form action="" method="get" id="chat" class="ui form" autocomplete="off">
+<?= $this->form()->openTag($form) ?>
 	<input type="hidden" id='current-session' value='<?= $username ?>' />
 	<?php
 		$colors = array("#2A9426", "#952EBD", "#235EB7", "#C97721", "#21C9B5", "#D0734B", "#D04BA6", "#A6B712", "#1F34BC", "#CB1851");
@@ -37,15 +61,14 @@
 		<div class="twelve wide mobile only six wide tablet only six wide computer only six wide  large monitor only six wide widescreen only column" style='padding-right: 1px'>
 			<div class="ui small icon input">
 				<button type="button" class="ui icon teal button" id="btn-emoticons"><i class="smile icon"></i></button>
-		   		<input type="text" name="word" id="word" autofocus="autofocus" placeholder="message" />
+				<?= $this->formInput($word) ?>
 			</div>
 		</div>
 		<div class="four wide column" style='padding-left: 1px'>
 			<button type='sumbit' class="ui icon submit orange button"><i class="chevron right icon"></i></button>
-			<!--<input type="submit" name="submit" value="Send" class="ui small submit button" />-->
 		</div>
 	</div>
-</form><br />
+<?= $this->form()->closeTag() ?><br />
 
 <div class="purple-contrast">
 	<span id="state">offline</span>
@@ -100,7 +123,7 @@
 <div class="semantic ui modal" id="emoticons-box">
 	<i class="close icon"></i>
 	<div class="header">
-		Emoticonos
+		Emoticons
 	</div>
 	<div class="content">
 		<div class="purple-contrast emoticonsPanel" style='margin-top: 5px'>

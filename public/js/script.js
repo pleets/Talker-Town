@@ -314,7 +314,7 @@ $(function(){
          data.user_color = $('#user-color').val() || '#2A9426';
          data.timestamp = comet.timestamp;
 
-         var decode_message = original_message;
+         var decode_message = original_message.replace(/(<([^>]+)>)/ig,"");
          var message = original_message;
 
          // Parse message

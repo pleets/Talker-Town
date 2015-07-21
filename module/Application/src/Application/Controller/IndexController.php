@@ -17,6 +17,9 @@ use Zend\View\Model\ViewModel;
 use Auth\Form\UserForm;
 use Auth\Model\Entity\User;
 
+use Application\Form\MessageForm;
+use Application\Model\Entity\Message;
+
 use Zend\Authentication\AuthenticationService;
 use Zend\Session\Container;
 
@@ -182,6 +185,20 @@ class IndexController extends AbstractActionController
         $data = array();
         $data["username"] = $this->getAnonymousIdentity();
 
+        try {
+            $form = new MessageForm();
+            $data['form'] = $form;
+        }
+        catch (\Exception $e) {
+
+            $data['Exception'] = $e->getMessage();
+            $view = new ViewModel($data);
+
+            if ($xmlHttpRequest)
+                $view->setTerminal(true);
+            return $view;
+        }
+
         $view = new ViewModel($data);
         return $view;
     }
@@ -295,10 +312,8 @@ class IndexController extends AbstractActionController
            return $files;
         }
 
-
         /*$basePath = $this->getServiceLocator()->get('Zend\ServiceManager\ServiceManager')->get('ViewHelperManager')->get('basePath');   
         $file = $basePath->getView()->basePath('foo');*/
-
 
         // return a json array
         $response = array();
@@ -330,6 +345,24 @@ class IndexController extends AbstractActionController
         $data_username = $username = $this->getAnonymousIdentity();
 
         $message = base64_decode($message);
+
+
+        // Zend Filters (prevent HTML injection)
+
+        $messageObject = new Message();
+        $form = new MessageForm($this);
+
+        $form->setValidationGroup('word');
+        $messageObject->exchangeArray(array("word" => $message));
+        $form->setInputFilter($messageObject->getInputFilter());
+
+        $form->setData($messageObject->getArrayCopy());
+
+        if ($form->isValid()) 
+        {
+            $messageObject->exchangeArray($form->getData());
+            $message = $messageObject->word;
+        }
 
 
         // Get the current and last timestamp of the message file
