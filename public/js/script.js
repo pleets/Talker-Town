@@ -212,7 +212,7 @@ $(function(){
                   $("#online_users").append(" \
                      <div class='ui warning message'> \
                        <div class='header'> \
-                         Where is the users ? \
+                         Where are the users ? \
                        </div> \
                        In this moment there are not users! \
                      </div> \
