@@ -96,7 +96,7 @@ body {
 
 .tk-gallery.cyclic .items
 {
-	height: 235px;
+	height: 233px;
 	overflow: hidden;
 }
 
@@ -171,16 +171,16 @@ body {
 	cursor: pointer;
 	display: inline-block;
 	padding: 5px;
-	border: solid 1px white;
+	border: solid 1px silver;
 }
 .emoticonsPanel .panelCell:hover {
-	background: white;
+	background: silver;
 }
 .emoticonsPanel .panelCell .emoticon {
 	display: block;
-	height: 14px;
+	height: 16px;
 	padding: 0 2px 2px 0;
-	width: 14px;
+	width: 16px;
 }
 .emoticon_smile {
 	background-image: url("../img/fb-sprite-KM2wagmDD8i.png");

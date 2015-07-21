@@ -782,4 +782,9 @@ $(function(){
       $(this).parent().parent().parent().remove();
    });
 
+   // Show emoticons
+   $("#btn-emoticons").click(function(){
+      $('#emoticons-box').modal('show');
+   });
+
 });
