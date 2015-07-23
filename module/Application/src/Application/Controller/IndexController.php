@@ -555,4 +555,25 @@ class IndexController extends AbstractActionController
         $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $files ));
         return $response;        
     }
+
+    public function sendPhotoAction()
+    {
+        $files = array();
+
+        $state = 0;
+
+        define('UPLOAD_DIR', 'data/cache');
+        $img = $_POST['imgBase64'];
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $data = base64_decode($img);
+        $file = UPLOAD_DIR ."/". uniqid() . '.png';
+        $success = file_put_contents($file, $data);
+
+        if ($success !== false)
+            $state = 1;
+
+        $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( array("state" => $state, "file" => $file) ));
+        return $response;        
+    }    
 }

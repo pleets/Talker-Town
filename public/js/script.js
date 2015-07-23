@@ -56,6 +56,9 @@ var historyLoaded = false;    /* For cross domain only, Fix repeat history ... *
 var urlRequest = (jsonpRequest) ? "http://talkertown02.mywebcommunity.org/backend.php" : indexPath + "application/index/backend";
 var cacheFolder = (jsonpRequest) ? "http://talkertown02.mywebcommunity.org/data/cache/" : rootPath + 'data/cache/';
 
+/* Streaming */
+window.URL = window.URL || window.webkitURL;
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || false;
 
 var comet;
 
@@ -442,7 +445,10 @@ $(function(){
 
                            $('#word').removeAttr('disabled');
 
-                           $('#content')[0].scrollTop = 9999999;
+                           setTimeout(function(){
+                              $('#content')[0].scrollTop = 9999999;
+                           }, 500);
+
                            $('#word').focus();
                         }
                      }                  
@@ -785,6 +791,132 @@ $(function(){
    // Show emoticons
    $("#btn-emoticons").click(function(){
       $('#emoticons-box').modal('show');
+   });
+
+   $("#btn-streaming").click(function(event) {
+      event.preventDefault();
+
+      $('#streaming').modal('show');
+
+      if (navigator.getUserMedia === false) 
+      {
+         console.info('Your browser not supports navigator.getUserMedia().');
+      }
+
+      window.videoData = 
+      {
+         'StreamVideo': null,
+         'url': null
+      }
+
+
+      /* Run camera */
+      navigator.getUserMedia({
+         'audio': false,
+         'video': true
+      }, function(streamVideo) {
+
+         videoData.StreamVideo = streamVideo;
+         videoData.url = window.URL.createObjectURL(streamVideo);
+
+         $("#video-stm").attr('src', videoData.url);
+         $("#video-stm").show();
+         $("#photo-stm").hide();
+
+      }, function() {
+         $("#photo-stm").show();
+      });
+
+   });
+
+   $("#stop-stm").click(function(event) {
+
+      if (videoData.StreamVideo) {
+         videoData.StreamVideo.stop();
+         window.URL.revokeObjectURL(videoData.url);
+      }
+   });
+
+   $("#capture-stm").click(function(event) {
+
+      var camera, foto, context, w, h;
+
+      camera = $("#video-stm");
+      foto = $("#canvas-stm");
+
+      w = camera.width();
+      h = camera.height();
+
+      foto.attr({
+         'width': w,
+         'height': h
+      });
+
+      context = foto[0].getContext('2d');
+      context.drawImage(camera[0], 0, 0, w, h);
+
+      $('#video-stm').hide();
+      $('#canvas-stm').show();
+   });
+
+   $("#send-stm").click(function(event){
+
+      event.preventDefault();
+
+      var url = $(this).attr('href');
+
+      var canvas = $("#canvas-stm")[0];
+      var dataURL = canvas.toDataURL();
+
+      $.ajax({
+         type: 'post',
+         url: url,
+         dataType: 'json',
+         data: {
+            imgBase64: dataURL
+         }
+      }).done(function(data) {
+
+         if (data.state == 0)
+         {
+
+         }
+         else if (data.state == 1)
+         {
+            comet.doRequest({
+               data: {
+                  msg: window.btoa(unescape(encodeURIComponent( rootPath + data.file )))
+               },
+               callback: {
+                  success: function(data) 
+                  {
+                     $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );
+                  },
+                  error: function(jqXHR, textStatus, errorThrown) {
+                     $('#loading-message-status i').attr('class', 'remove icon');
+                     $('#loading-message-status').removeAttr('id');
+                     $('#content').append("<div class='ui small compact red message'><strong>Error!</strong> The file was not sent.</div>");
+                  },
+                  complete: function()
+                  {
+                     if ($('#loading-message-status i').attr('class') != 'remove icon')
+                        $('#loading-message-status').remove();
+
+                     $('#word').removeAttr('disabled');
+
+                     setTimeout(function(){
+                        $('#content')[0].scrollTop = 9999999;
+                     }, 500);
+
+                     $('#word').focus();
+                     $("#streaming").modal('hide');
+                  }
+               }                  
+            });
+         }
+
+      });
+
    });
 
 });

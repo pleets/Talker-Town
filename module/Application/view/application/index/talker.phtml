@@ -5,7 +5,7 @@
 </div>
 <?php endif; ?>
 
-<?php $title = $this->translate('Chat - Talker Town'); $this->headTitle($title); ?>
+<?php $title = $this->translate('Chat'); $this->headTitle($title); ?>
 
 <?php
     $formLabel = $this->plugin('formLabel');
@@ -27,7 +27,10 @@
 		<button type="button" class="ui labeled orange icon button" id="show-users">
 			<i class="content icon"></i>
 			Users
-		</button>			
+		</button>
+		<button class="ui teal icon button" id="btn-streaming">
+			<i class="photo icon"></i>
+		</button>				
 	</div>
 	<div class="right floated right aligned eight wide column">
 		<a href="<?= $this->url('application') . '/index/logout' ?>" class="ui labeled orange icon button">
@@ -115,7 +118,7 @@
 		</div>
 	</div>
 	<div class="actions">
-		<div class="ui button">Cancel</div>
+		<div class="ui button" onclick="$('#streaming').modal('hide')">Cancel</div>
 		<div class="ui button" onclick="comet.reconnect()">OK</div>
 	</div>
 </div>
@@ -151,5 +154,31 @@
 	</div>
 	<div class="actions">
 		<div class="ui button" onclick="$('#emoticons-box').modal('hide'); setTimeout(function(){ $('#word').focus(); },1000)">Ok</div>
+	</div>
+</div>
+
+<div class="semantic ui modal" id="streaming">
+	<i class="close icon"></i>
+	<div class="header">
+		Camera
+	</div>
+	<div class="content">
+		<div class="ui grid">
+			<div class="ui eight wide column">		
+				<img id='photo-stm' src='<?= $this->basePath('img/image.png') ?>' style='width: 100%' alt='image.png' />
+				<video id='video-stm' autoplay controls style="display: none; width: 100%"></video>
+				<canvas id='canvas-stm' style='display: none'></canvas>
+			</div>
+			<div class="ui eight wide column">		
+				<button class="ui button" id="capture-stm" type="button">Capture</button>
+				<button class="ui icon button" id="btn-streaming">
+					<i class="play icon"></i>
+				</button>
+				<a class="ui button" id="send-stm" type="button" href="<?= $this->url('application') . '/index/sendPhoto' ?>">Send</a>
+			</div>
+		</div>
+	</div>
+	<div class="actions">
+		<div class="ui button" onclick="$('#streaming').modal('hide')">Cancel</div>
 	</div>
 </div>
