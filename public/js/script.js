@@ -534,8 +534,10 @@ $(function(){
       },
       inline: true,
       on: 'blur',
-      onSuccess: function()
+      onSuccess: function(event)
       {
+         event.preventDefault();
+
          var frm = $(this);
 
          $.ajax({
