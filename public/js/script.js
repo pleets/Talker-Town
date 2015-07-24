@@ -793,39 +793,52 @@ $(function(){
       $('#emoticons-box').modal('show');
    });
 
-   $("#btn-streaming").click(function(event) {
+   $("#btn-streaming").click(function(event) 
+   {
       event.preventDefault();
 
       $('#streaming').modal('show');
+      $("#btn-start").trigger("click");
+   });
+
+   $("#btn-start").click(function(event) 
+   {
+      event.preventDefault();
+
+      $("#photo-stm").show();
+      $("#video-stm").hide();
+      $("#canvas-stm").hide();
 
       if (navigator.getUserMedia === false) 
       {
-         console.info('Your browser not supports navigator.getUserMedia().');
+         console.info('Your browser not supports navigator.getUserMedia()');
       }
+      else {
 
-      window.videoData = 
-      {
-         'StreamVideo': null,
-         'url': null
+         window.videoData = 
+         {
+            'StreamVideo': null,
+            'url': null
+         }
+
+         /* Run camera */
+         navigator.getUserMedia({
+            'audio': false,
+            'video': true
+         }, function(streamVideo) {
+
+            videoData.StreamVideo = streamVideo;
+            videoData.url = window.URL.createObjectURL(streamVideo);
+
+            $("#video-stm").attr('src', videoData.url);
+            $("#video-stm").show();
+            $("#photo-stm").hide();
+
+         }, function() {
+            $("#photo-stm").show();
+            alert('Error starting camera!');
+         });
       }
-
-
-      /* Run camera */
-      navigator.getUserMedia({
-         'audio': false,
-         'video': true
-      }, function(streamVideo) {
-
-         videoData.StreamVideo = streamVideo;
-         videoData.url = window.URL.createObjectURL(streamVideo);
-
-         $("#video-stm").attr('src', videoData.url);
-         $("#video-stm").show();
-         $("#photo-stm").hide();
-
-      }, function() {
-         $("#photo-stm").show();
-      });
 
    });
 

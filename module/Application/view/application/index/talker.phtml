@@ -23,7 +23,7 @@
 ?>
 
 <div class="ui right aligned grid">
-	<div class="left floated left aligned eight wide column">
+	<div class="left floated left aligned ten wide column">
 		<button type="button" class="ui labeled orange icon button" id="show-users">
 			<i class="content icon"></i>
 			Users
@@ -32,7 +32,7 @@
 			<i class="photo icon"></i>
 		</button>				
 	</div>
-	<div class="right floated right aligned eight wide column">
+	<div class="right floated right aligned six wide column">
 		<a href="<?= $this->url('application') . '/index/logout' ?>" class="ui labeled orange icon button">
 		 	<i class="power icon"></i>
 		 	Logout
@@ -164,17 +164,24 @@
 	</div>
 	<div class="content">
 		<div class="ui grid">
-			<div class="ui eight wide column">		
+			<div class="sixteen wide mobile only ten wide tablet only ten wide computer only eigth wide  large monitor only eigth wide widescreen only column">		
 				<img id='photo-stm' src='<?= $this->basePath('img/image.png') ?>' style='width: 100%' alt='image.png' />
 				<video id='video-stm' autoplay controls style="display: none; width: 100%"></video>
 				<canvas id='canvas-stm' style='display: none'></canvas>
 			</div>
-			<div class="ui eight wide column">		
-				<button class="ui button" id="capture-stm" type="button">Capture</button>
-				<button class="ui icon button" id="btn-streaming">
+			<div class="sixteen wide mobile only six wide tablet only six wide computer only eigth wide  large monitor only eigth wide widescreen only column">		
+				<button class="ui icon button" id="capture-stm" type="button">
+					<i class="camera icon"></i>
+				</button>
+				<a class="ui button" id="send-stm" type="button" href="<?= $this->url('application') . '/index/sendPhoto' ?>">
+					Send
+				</a>
+				<button class="ui icon button" id="stop-stm">
+					<i class="stop icon"></i>
+				</button>
+				<button class="ui icon button" id="btn-start">
 					<i class="play icon"></i>
 				</button>
-				<a class="ui button" id="send-stm" type="button" href="<?= $this->url('application') . '/index/sendPhoto' ?>">Send</a>
 			</div>
 		</div>
 	</div>
