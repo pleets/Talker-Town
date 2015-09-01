@@ -242,8 +242,8 @@ $(function(){
                            var x = j;
                            var y = i;
 
-                           bg_x = ( -32 * x ) + 3;
-                           bg_y = ( -(336/11) * y ) + 2.3;
+                           bg_x = ( -32 * x ) - 1;
+                           bg_y = ( -(336/11) * y ) + 0;
 
                            if ($("#current-session").val() != data["username"])
                            {
