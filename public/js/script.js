@@ -653,9 +653,17 @@ $(function(){
             exists = true;
       });
 
-      if (exists)
+      if (exists) 
       {
-         // do nothing
+         var tab = $(".private-message-box[data-user='" + user + "'] .item.header");
+
+         if (tab.parent().parent().hasClass('hidden')) 
+         {
+            tab.parent().parent().removeClass('hidden');
+            
+            if (tab.parent().hasClass('purple inverted'))
+               tab.parent().removeClass('purple inverted');
+         }         
       }
       else {
          $("#private-messages").prepend(" \
