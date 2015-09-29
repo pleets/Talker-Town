@@ -5,104 +5,10 @@
 </div>
 <?php endif; ?>
 
-<?php $title = $this->translate('User Login'); $this->headTitle($title); ?>
+<?php $title = $this->translate('Talker Town'); $this->headTitle($title); ?>
 
-<?php 
-    $formLabel = $this->plugin('formLabel');
-    $username = $form->get('username');
+<h1 class="ui header">
+    Welcome to <?= $this->escapeHtml($title) ?>
+</h1>
 
-    $form = $this->form->prepare();
-
-    $form->setAttributes(array(
-        'action' => $this->url('application') . '/index/login',
-        'class' => 'ui large form',
-        'method' => 'post',
-    ));
-?>
-
-<div class="ui segment">
-
-    <h2 class="ui basic header center aligned"><?= $this->escapeHtml($title) ?></h2>
-
-    <?php if (isset($form)): ?>
-        
-        <?= $this->form()->openTag($form) ?>
-            
-            <div class="fields">
-                <div class="required ten wide field">
-                    <?= $formLabel->openTag() . $username->getOption('label') . $formLabel->closeTag() ?>
-                    <div class="ui left icon input">
-                        <?= $this->formInput($username) ?>
-                        <?= $this->formElementErrors($username) ?>
-                        <i class="user icon"></i>
-                    </div>
-                </div>
-
-                <div class="six wide field">
-                    <label><?= $this->translate("Gender") ?></label>
-                    <?php if (isset($genders)): ?>
-                        <?php if (count($genders)): ?>
-                            <select name="genders_id" class="ui fluid search dropdown">
-                                <?php
-                                    foreach ($genders as $gender) {
-                                        ?><option value="<?= $gender["genders_id"] ?>"><?= $this->translate($gender["name"]) ?></div><?php
-                                    }
-                                ?>                                
-                            </select>
-                        <?php else: ?>
-                            <?= $this->translate("Genders table is empty!") ?>
-                        <?php endif; ?>
-                    <?php else: ?>
-                        <i class="cancel icon"></i><?= $this->translate("No genders available") ?>         
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <input type="hidden" name="avatar" id="avatar" value="11">
-            <div class="tk-gallery selectable cyclic" data-input="avatar">
-                <div class="items">
-                    <?php for($k = 1; $k<=11; $k++): ?>
-                        <?php for($i = 1; $i<=8; $i++): ?>
-                            <div class="item" data-value="<?= $k.$i ?>" style="background-position: calc(-<?= ($i - 1) ?>*77.4px) calc(-<?= ($k - 1) ?>*74px);"></div>
-                        <?php endfor; ?>
-                    <?php endfor; ?>                    
-                </div>
-
-                <div class="controls">
-                    <button class="ui left labeled icon orange button control-left" type="button">
-                        <i class="left arrow icon"></i>
-                        <?= $this->translate("Prev") ?>
-                    </button>
-
-                    <button class="ui right labeled icon orange button control-right" type="button">
-                        <i class="right arrow icon"></i>
-                        <?= $this->translate("Next") ?>
-                    </button>                    
-                </div>
-
-                <div class="mobile controls">
-                    <button class="ui icon button control-left" type="button">
-                        <i class="left arrow icon"></i>
-                    </button>
-
-                    <button class="ui icon button control-right" type="button">
-                        <i class="right arrow icon"></i>
-                    </button>
-                </div>
-
-            </div>
-            
-            <div class="ui center aligned basic segment">
-                <?php if (!$xmlHttpRequest): ?>
-                    <?= $this->formSubmit($form->get('submit')) ?>
-                <?php endif; ?>
-            </div>
-
-        <?= $this->form()->closeTag() ?>
-
-        <div class="ui basic center aligned segment">
-            <p><?= $this->translate("The best city on the Internet") ?></p>
-        </div>        
-    <?php endif; ?>
-
-</div>
+<a href="<?= $this->url('auth') . '/index/login' ?>" class="ui button">Go to App</a>

@@ -47,41 +47,9 @@ class IndexController extends AbstractActionController
         $session->username = $username;        
     }
 
-    public function indexAction()
+    public function indexAction() 
     {
-        $data = array();
-
-        $xmlHttpRequest = $this->getRequest()->isXmlHttpRequest();
-        $data['xmlHttpRequest'] = $xmlHttpRequest;
-
-        if (!is_null($this->getAnonymousIdentity()))
-            return $this->redirect()->toRoute('application/talker');
-
-        try {
-            $form = new UserForm();
-            $form->get('submit')->setValue('Login');
-            $data['form'] = $form;
-
-            $data["genders"] = array(
-                array("genders_id" => 1, "name" => "Male"),
-                array("genders_id" => 2, "name" => "Female")
-            );
-        }
-        catch (\Exception $e) {
-
-            $data['Exception'] = $e->getMessage();
-            $view = new ViewModel($data);
-
-            if ($xmlHttpRequest)
-                $view->setTerminal(true);
-            return $view;
-        }
-
-        $view = new ViewModel($data);
-
-        if ($xmlHttpRequest)
-            $view->setTerminal(true);
-        return $view;
+        return new ViewModel();
     }
 
     public function databaseAction()
@@ -119,64 +87,6 @@ class IndexController extends AbstractActionController
         return $view;
     }
 
-    public function loginAction()
-    {
-        $data = array("foo" => "bar");
-
-        $request = $this->getRequest();
-
-        if (!$request->isPost())
-            return $this->redirect()->toRoute('home');
-
-        if (!is_null($this->getAnonymousIdentity()))
-        {
-            $data['Exception'] = "You have other session, try reload the page or press F5";
-            $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
-            return $response;
-        }
-        else
-        {
-            $form_data = $this->request->getPost();
-
-            try {
-                $user = new User();
-                $form = new UserForm($this);
-
-                $form->setValidationGroup('username', 'genders_id');
-                $form->setInputFilter($user->getInputFilter());
-                $form->setData($request->getPost());
-
-                if ($form->isValid())
-                {
-                    $this->setAnonymousIdentity($form_data->username);
-
-                    /* create json file with users settings */
-                    $user_info = array(
-                        "username" => $form_data->username,
-                        "avatar" => $form_data->avatar
-                    );
-                    file_put_contents('data/cache/' . $form_data->username . '.json', json_encode($user_info));
-
-                    $data["user"] = $form_data->username;
-
-                    $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
-                    return $response;                    
-                }
-                else
-                    $data["formErrors"] = $form->getMessages();
-            }
-            catch (\Exception $e) 
-            {
-                $data['Exception'] = $e->getMessage();
-                $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
-                return $response;
-            }
-        }
-
-        $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
-        return $response;
-    }
-
     public function talkerAction()
     {
         if (is_null($this->getAnonymousIdentity()))
@@ -205,10 +115,14 @@ class IndexController extends AbstractActionController
 
     public function logoutAction()
     {
-        $session = new Container('anonymous_identity');
-        $session->getManager()->getStorage()->clear();
+        $auth = new AuthenticationService();
 
-        return $this->redirect()->toRoute('home');
+        if ($auth->hasIdentity())
+            $auth->clearIdentity();
+
+        return $this->redirect()->toRoute('auth', array(
+            'action' => 'login'
+        ));
     }
 
     public function getIdentityInformationAction()
@@ -540,7 +454,6 @@ class IndexController extends AbstractActionController
 
     public function fileUploadAction()
     {
-
         $files = array();
 
         foreach ($_FILES as $file) 

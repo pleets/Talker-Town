@@ -3,7 +3,7 @@
 return array(
 	'controllers' => array(
 		'invokables' => array(
-			'Auth\Controller\Manage' => 'Auth\Controller\ManageController',
+			'Auth\Controller\Index' => 'Auth\Controller\IndexController',
 		),
 	),
 	'router' => array(
@@ -17,7 +17,7 @@ return array(
 						'id' => '[a-zA-Z0-9_-][a-zA-Z0-9_-]*',
 					),
 					'defaults' => array(
-						'controller' => 'Auth\Controller\Manage',
+						'controller' => 'Auth\Controller\Index',
 						'action' => 'index',
 					),
 				),
