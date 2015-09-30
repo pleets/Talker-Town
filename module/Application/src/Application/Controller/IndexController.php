@@ -117,8 +117,13 @@ class IndexController extends AbstractActionController
     {
         $auth = new AuthenticationService();
 
-        if ($auth->hasIdentity())
+        if ($auth->hasIdentity() || !is_null($this->getAnonymousIdentity()))
+        {
+			$session = new Container('anonymous_identity');
+
             $auth->clearIdentity();
+        	$session->offsetUnset('username');
+        }
 
         return $this->redirect()->toRoute('auth', array(
             'action' => 'login'
