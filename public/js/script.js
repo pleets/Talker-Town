@@ -10,10 +10,10 @@ function dirname(dir)
 {
    if (dir.lastIndexOf("/") == dir.length - 1)
       dir = dir.substring(0, dir.lastIndexOf("/"));
-   
+
    if (dir.lastIndexOf("/") == -1)
       return "";
-   
+
    return dir.substring(0, dir.lastIndexOf("/"));
 }
 
@@ -37,7 +37,7 @@ var indexPath = '';
 
 var size = me.path.length - 1;
 
-for (var i = 0; i <= size; i++) 
+for (var i = 0; i <= size; i++)
 {
 	if (me.path[i] == document.URL[i])
 		indexPath += me.path[i];
@@ -62,7 +62,7 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 
 var comet;
 
-var jsonpClient = function(data) 
+var jsonpClient = function(data)
 {
    console.info('jQuery callback...');
 }
@@ -81,7 +81,7 @@ $(function(){
    {
       data: { logged_user: $('#current-session').val(), user_color: $('#user-color').val() },
       callback: {
-         success: function(data) 
+         success: function(data)
          {
             // Connection established
             if (typeof data != "object")
@@ -96,7 +96,7 @@ $(function(){
             {
                for (var i = data.errors.length - 1; i >= 0; i--) {
                   var code = data.errors[i].code;
-                  
+
                   /* Lost session */
                   if (parseInt(code) == 101)
                   {
@@ -110,12 +110,12 @@ $(function(){
                      }, 5000);
 
                      comet.disconnect();
-                  } 
+                  }
                   else {
                      //
                   }
                };
-            } 
+            }
             else {
 
                $("#state").text("Online");
@@ -142,7 +142,7 @@ $(function(){
                            var receiver = ($($.parseHTML(html)).attr('data-receiver'));
 
                            // if (data["user"] !== $.cookie("username"))         $.cookie not works
-                           if (user !== $("#current-session").val()) 
+                           if (user !== $("#current-session").val())
                            {
                               if (receiver.trim() == "")
                               {
@@ -150,7 +150,7 @@ $(function(){
                                  $('#content')[0].scrollTop = 9999999;
 
                                  $("#notification-audio")[0].load();
-                                 $("#notification-audio")[0].play();                                 
+                                 $("#notification-audio")[0].play();
                               }
                               if (receiver == $("#current-session").val())
                               {
@@ -183,23 +183,23 @@ $(function(){
                                  }
                                  else {
                                     if ($("#private-messages").find(".private-message-box[data-user='" + user + "']").hasClass('hidden'))
-                                       $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('.vertical.menu').addClass('purple inverted');
+                                       $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('.vertical.menu').addClass('teal inverted');
                                  }
 
                                  $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('.content').append( html );
                                  $("#private-messages").find(".private-message-box[data-user='" + user + "']").find('.content')[0].scrollTop = 9999999;
 
                                  $("#notification-audio")[0].load();
-                                 $("#notification-audio")[0].play();                                 
+                                 $("#notification-audio")[0].play();
                               }
                               else {
                                  // this message is private (other user)
-                              }                          
+                              }
                            }
                         }
                      }
 
-                     if (data["user"].trim() !== '' && data["msg"].trim() !== '' && data["firstTimestamp"] != 0) 
+                     if (data["user"].trim() !== '' && data["msg"].trim() !== '' && data["firstTimestamp"] != 0)
                      {
                         var decode_message = decodeURIComponent(escape(window.atob( data["msg"] )));
                         console.info(decode_message);
@@ -275,7 +275,7 @@ $(function(){
                   $("#state").text("Offline");
             }, 3000);
          },
-         complete: function() 
+         complete: function()
          {
             // For each request
             if (comet.state)
@@ -293,7 +293,7 @@ $(function(){
    	url: indexPath +  'application/index/getIdentityInformation',
    	dataType: 'json',
    	success: function(data) {
-            
+
          if (typeof data != "object")
          	data = $.parseJSON(data);
 
@@ -356,16 +356,16 @@ $(function(){
 
          $('#content')[0].scrollTop = 9999999;
 
-         settings = 
+         settings =
          {
             data: {
                msg: window.btoa(unescape(encodeURIComponent( original_message ))), logged_user: $('#current-session').val(), user_color: $('#user-color').val()
             },
             callback: {
-               success: function(data) 
+               success: function(data)
                {
                   /*if (typeof data != "object")
-                     data = $.parseJSON(data);     
+                     data = $.parseJSON(data);
 
                   $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );*/
                },
@@ -429,7 +429,7 @@ $(function(){
                         msg: window.btoa(unescape(encodeURIComponent( rootPath + "data/cache/files/" + uploadedFiles[i] )))
                      },
                      callback: {
-                        success: function(data) 
+                        success: function(data)
                         {
                            $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );
                         },
@@ -451,8 +451,8 @@ $(function(){
 
                            $('#word').focus();
                         }
-                     }                  
-                  });                  
+                     }
+                  });
                };
             });
          });
@@ -463,7 +463,7 @@ $(function(){
 
    $("body").delegate(".tk-gallery.selectable .item", "click", function(event){
       event.preventDefault();
-      
+
       var input = $(this).parent().parent().attr('data-input');
 
       $(".tk-gallery.selectable").find(".item").addClass("unselected").removeClass("selected");
@@ -510,7 +510,7 @@ $(function(){
          width: parseInt(items.last().css('width'))
       }, 200, function(){
          items.last().remove();
-         me.removeClass("disabled");         
+         me.removeClass("disabled");
       });
    });
 
@@ -545,7 +545,7 @@ $(function(){
             type: 'post',
             dataType: 'json',
             data: frm.serializeArray(),
-            beforeSend: function() 
+            beforeSend: function()
             {
                frm.addClass('loading');
             },
@@ -562,13 +562,13 @@ $(function(){
 
                if ($('#frmLogInSystemError').length)
                   $('#frmLogInSystemError').remove();
-               
+
                $("body").append(modal);
 
                $('#frmLogInSystemError').modal('show');
                frm.removeClass('loading');
             },
-            success: function(data) 
+            success: function(data)
             {
                // Form Validation with Zend Form
                if (typeof data.formErrors !== 'undefined')
@@ -628,7 +628,7 @@ $(function(){
                else
                   frm.removeClass('loading');
             }
-         });         
+         });
       }
    });
 
@@ -653,17 +653,17 @@ $(function(){
             exists = true;
       });
 
-      if (exists) 
+      if (exists)
       {
          var tab = $(".private-message-box[data-user='" + user + "'] .item.header");
 
-         if (tab.parent().parent().hasClass('hidden')) 
+         if (tab.parent().parent().hasClass('hidden'))
          {
             tab.parent().parent().removeClass('hidden');
-            
-            if (tab.parent().hasClass('purple inverted'))
-               tab.parent().removeClass('purple inverted');
-         }         
+
+            if (tab.parent().hasClass('teal inverted'))
+               tab.parent().removeClass('teal inverted');
+         }
       }
       else {
          $("#private-messages").prepend(" \
@@ -752,16 +752,16 @@ $(function(){
          box.append(msg);
          box[0].scrollTop = 9999999;
 
-         settings = 
+         settings =
          {
             data: {
                msg: window.btoa(unescape(encodeURIComponent( original_message ))), logged_user: $('#current-session').val(), user_color: $('#user-color').val(), receiver: _to
             },
             callback: {
-               success: function(data) 
+               success: function(data)
                {
                   /*if (typeof data != "object")
-                     data = $.parseJSON(data);     
+                     data = $.parseJSON(data);
 
                   $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );*/
                },
@@ -783,12 +783,12 @@ $(function(){
    });
 
    $("body").delegate(".private-message-box .item.header", "click", function(event) {
-      if ($(this).parent().parent().hasClass('hidden')) 
+      if ($(this).parent().parent().hasClass('hidden'))
       {
          $(this).parent().parent().removeClass('hidden');
-         
-         if ($(this).parent().hasClass('purple inverted'))
-            $(this).parent().removeClass('purple inverted');
+
+         if ($(this).parent().hasClass('teal inverted'))
+            $(this).parent().removeClass('teal inverted');
       }
       else
          $(this).parent().parent().addClass('hidden');
@@ -803,7 +803,7 @@ $(function(){
       $('#emoticons-box').modal('show');
    });
 
-   $("#btn-streaming").click(function(event) 
+   $("#btn-streaming").click(function(event)
    {
       event.preventDefault();
 
@@ -811,7 +811,7 @@ $(function(){
       $("#btn-start").trigger("click");
    });
 
-   $("#btn-start").click(function(event) 
+   $("#btn-start").click(function(event)
    {
       event.preventDefault();
 
@@ -819,13 +819,13 @@ $(function(){
       $("#video-stm").hide();
       $("#canvas-stm").hide();
 
-      if (navigator.getUserMedia === false) 
+      if (navigator.getUserMedia === false)
       {
          console.info('Your browser not supports navigator.getUserMedia()');
       }
       else {
 
-         window.videoData = 
+         window.videoData =
          {
             'StreamVideo': null,
             'url': null
@@ -911,7 +911,7 @@ $(function(){
                   msg: window.btoa(unescape(encodeURIComponent( rootPath + data.file )))
                },
                callback: {
-                  success: function(data) 
+                  success: function(data)
                   {
                      $('#content').append( decodeURIComponent(escape(window.atob( data["msg"] ))) );
                   },
@@ -934,7 +934,7 @@ $(function(){
                      $('#word').focus();
                      $("#streaming").modal('hide');
                   }
-               }                  
+               }
             });
          }
 
