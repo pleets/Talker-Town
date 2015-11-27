@@ -1,4 +1,4 @@
-body { 
+body {
 	font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 #content {
@@ -8,6 +8,10 @@ body {
 
 #outer-content {
 	margin: 1em 0.3em;
+}
+
+#outer-content p {
+	margin: 0;
 }
 
 @media (max-height: 1200px) {
@@ -61,15 +65,15 @@ body {
 
 .ui.avatar.image { background-image: url('../img/face_avatars.min.png'); background-position: 94px -112.89px; }
 
-.tk-gallery 
+.tk-gallery
 {
 	position: relative;
 }
 
 .tk-gallery .item
-{ 
-	height: 74px; width: 77.5px; 
-	border: solid 1px rgb(230,230,230); border-radius: 5px; box-shadow: 0 0 2px rgb(230,230,230); 
+{
+	height: 74px; width: 77.5px;
+	border: solid 1px rgb(230,230,230); border-radius: 5px; box-shadow: 0 0 2px rgb(230,230,230);
 	background-image: url('../img/face_avatars.png'); background-position: 0px -0px; cursor: pointer;
 	display: inline-block;
 }
@@ -89,7 +93,7 @@ body {
 	opacity: 0.4;
 }
 
-.tk-gallery.cyclic 
+.tk-gallery.cyclic
 {
 	overflow: hidden;
 }
@@ -110,7 +114,7 @@ body {
 	float: left;
 }
 
-.tk-gallery.cyclic .control-right 
+.tk-gallery.cyclic .control-right
 {
 	float: right;
 }
@@ -124,7 +128,7 @@ body {
 	.tk-gallery.cyclic .controls {
 		display: none;
 	}
-	
+
 	.tk-gallery.cyclic .controls.mobile {
 		display: block;
 	}
@@ -132,14 +136,17 @@ body {
 }
 
 .semantic.ui.modal {
-	overflow-x: initial; 
+	overflow-x: initial;
 	overflow-y: initial;
 	bottom: initial;
 }
 
-.purple-background 
+.purple-background
 {
-	position: relative;
+	position: fixed;
+	width: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
 	background: #834790; /* Old browsers */
 	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -moz-linear-gradient(top,  #834790 2%, #c86caf 48%, #a56caf 100%, #2989d8 100%, #7db9e8 100%); /* FF3.6+ */
 	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -webkit-gradient(linear, left top, left bottom, color-stop(2%,#834790), color-stop(48%,#c86caf), color-stop(100%,#a56caf), color-stop(100%,#2989d8), color-stop(100%,#7db9e8)); /* Chrome,Safari4+ */
@@ -148,16 +155,29 @@ body {
 	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -ms-linear-gradient(top,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%); /* IE10+ */
 	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 linear-gradient(to bottom,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#834790', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
-	min-height: 100%;
+	height: 100% !important;
+}
+
+body.purple-background.pushable
+{
+	position: relative;
+	background: #834790 !important; /* Old browsers */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -moz-linear-gradient(top,  #834790 2%, #c86caf 48%, #a56caf 100%, #2989d8 100%, #7db9e8 100%) !important; /* FF3.6+ */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -webkit-gradient(linear, left top, left bottom, color-stop(2%,#834790), color-stop(48%,#c86caf), color-stop(100%,#a56caf), color-stop(100%,#2989d8), color-stop(100%,#7db9e8)) !important; /* Chrome,Safari4+ */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -webkit-linear-gradient(top,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%) !important; /* Chrome10+,Safari5.1+ */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -o-linear-gradient(top,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%) !important; /* Opera 11.10+ */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 -ms-linear-gradient(top,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%) !important; /* IE10+ */
+	background: url("../img/purple-wallpaper.jpg") repeat scroll 0% 0%, #834790 linear-gradient(to bottom,  #834790 2%,#c86caf 48%,#a56caf 100%,#2989d8 100%,#7db9e8 100%) !important; /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#834790', endColorstr='#7db9e8',GradientType=0 ) !important; /* IE6-9 */
+	min-height: 100% !important;
+}
+
+body.pushable > .pusher {
+	background: transparent !important;
 }
 
 .purple-background .purple-contrast {
 	color: white;
-}
-
-/* Semantic UI modification */
-.pushable > .pusher {
-	height: 100%;
 }
 
 /* Fb sprites */
@@ -330,10 +350,16 @@ body {
     overflow: auto;
 }
 
+.private-message-box .ui.vertical.menu .item.content p
+{
+	margin: 0;
+}
+
 .private-message-box .ui.vertical.menu form {
 	position: absolute;
 	bottom: 5px;
 	left: 5px;
+	width: 100%;
 }
 
 .private-message-box .item.header {

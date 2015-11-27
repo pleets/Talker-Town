@@ -30,23 +30,14 @@
 		</button>
 		<button class="ui teal icon button" id="btn-streaming">
 			<i class="photo icon"></i>
-		</button>				
+		</button>
 	</div>
 	<div class="right floated right aligned six wide column">
 		<a href="<?= $this->url('application') . '/index/logout' ?>" class="ui labeled orange icon button">
 		 	<i class="power icon"></i>
 		 	Logout
-		</a>			
+		</a>
 	</div>
-</div>
-
-<div class="ui purple segment sidebar">
- 	<div class="ui selection list" id="online_users">
-		<div class="item">
-			<img class="ui avatar image" style="background-position: 0px 1px">
-			<div class="content"><div class="header"><?= $username ?></div></div>
-		</div> 		
- 	</div>	
 </div>
 
 <div class="ui piled segment" id="outer-content">
@@ -77,8 +68,8 @@
 	<span id="state">offline</span>
 
 	<input type="file" id="file-reader-onchange" value="" multiple="multiple" />
-	<div id="file-reader-ondrop" class="drop" style="overflow: hidden; min-height: 50px">
-		<span style="color: #C0C0C0; font-size: 25px;">Drop files here</span>
+	<div id="file-reader-ondrop" class="drop" style="overflow: hidden; min-height: 50px; text-align: center">
+		<span style="color: white; font-size: 25px;">Drop files here</span>
 	</div>
 
 	<div id="file_reader_ondrop_response"></div>
@@ -164,12 +155,12 @@
 	</div>
 	<div class="content">
 		<div class="ui grid">
-			<div class="sixteen wide mobile only ten wide tablet only ten wide computer only eigth wide  large monitor only eigth wide widescreen only column">		
+			<div class="sixteen wide mobile only ten wide tablet only ten wide computer only eigth wide  large monitor only eigth wide widescreen only column">
 				<img id='photo-stm' src='<?= $this->basePath('img/image.png') ?>' style='width: 100%' alt='image.png' />
 				<video id='video-stm' autoplay controls style="display: none; width: 100%"></video>
 				<canvas id='canvas-stm' style='display: none'></canvas>
 			</div>
-			<div class="sixteen wide mobile only six wide tablet only six wide computer only eigth wide  large monitor only eigth wide widescreen only column">		
+			<div class="sixteen wide mobile only six wide tablet only six wide computer only eigth wide  large monitor only eigth wide widescreen only column">
 				<button class="ui icon button" id="capture-stm" type="button">
 					<i class="camera icon"></i>
 				</button>
