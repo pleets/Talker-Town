@@ -29,7 +29,12 @@ class Module
         $session = $e->getApplication()
                      ->getServiceManager()
                      ->get('Zend\Session\SessionManager');
-        $session->start();
+
+        try {
+            $session->start(true);
+        } catch (\Zend\Session\Exception\RuntimeException $e) {
+            // -- Nothing ...
+        }
 
         $container = new Container('initialized');
         if (!isset($container->init)) {
@@ -130,7 +135,7 @@ class Module
                     }
                     Container::setDefaultManager($sessionManager);
                     return $sessionManager;
-                },                
+                },
             ),
         );
     }
