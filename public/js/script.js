@@ -129,6 +129,11 @@ $(function(){
                      $('#content').append( decodeURIComponent(escape(window.atob( msg ))) );
                      $('#content')[0].scrollTop = 9999999;
 
+                     setTimeout(function()
+                     {
+                        $('#content')[0].scrollTop = 9999999;
+                     }, 100);
+
                      historyLoaded = true;
                   }
                   else
@@ -809,6 +814,27 @@ $(function(){
 
       $('#streaming').modal('show');
       $("#btn-start").trigger("click");
+   });
+
+   $("#btn-upload-files").click(function(event)
+   {
+      event.preventDefault();
+
+      $('#mdl-upload-files').modal('show');
+   });
+
+   $("#btn-logout-1").click(function(event)
+   {
+      event.preventDefault();
+
+      $('#mdl-logout').modal('show');
+   });
+
+   $("#btn-logout-2").click(function(event)
+   {
+      event.preventDefault();
+
+      $('#mdl-logout').modal('show');
    });
 
    $("#btn-start").click(function(event)
