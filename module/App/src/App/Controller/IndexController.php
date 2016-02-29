@@ -9,7 +9,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-namespace Application\Controller;
+namespace App\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -17,23 +17,15 @@ use Zend\View\Model\ViewModel;
 use Auth\Form\UserForm;
 use Auth\Model\Entity\User;
 
-use Application\Form\MessageForm;
-use Application\Model\Entity\Message;
+use App\Form\MessageForm;
+use App\Model\Entity\Message;
 
 use Zend\Authentication\AuthenticationService;
 use Zend\Session\Container;
 
 class IndexController extends AbstractActionController
 {
-    private $gendersTable;
     private $anonymousIdentity;
-
-    private function getGendersTable()
-    {
-        if (!$this->gendersTable)
-            $this->gendersTable = $this->getServiceLocator()->get('Application\Model\Entity\GendersTable');
-        return $this->gendersTable;
-    }
 
     private function getAnonymousIdentity()
     {
@@ -44,47 +36,12 @@ class IndexController extends AbstractActionController
     private function setAnonymousIdentity($username)
     {
         $session = new Container('anonymous_identity');
-        $session->username = $username;        
+        $session->username = $username;
     }
 
-    public function indexAction() 
+    public function indexAction()
     {
         return new ViewModel();
-    }
-
-    public function databaseAction()
-    {
-        $data = array();
-
-        $xmlHttpRequest = $this->getRequest()->isXmlHttpRequest();
-        $data['xmlHttpRequest'] = $xmlHttpRequest;
-
-        if (!is_null($this->getAnonymousIdentity()))
-            return $this->redirect()->toRoute('application/talker');
-
-        try {
-            $form = new UserForm();
-            $form->get('submit')->setValue('Login');
-            $data['form'] = $form;
-
-            $gendersTable = $this->getGendersTable();
-            $data["genders"] = $gendersTable->fetchAll()->toArray();
-        }
-        catch (\Exception $e) {
-
-            $data['Exception'] = $e->getMessage();
-            $view = new ViewModel($data);
-
-            if ($xmlHttpRequest)
-                $view->setTerminal(true);
-            return $view;
-        }
-
-        $view = new ViewModel($data);
-
-        if ($xmlHttpRequest)
-            $view->setTerminal(true);
-        return $view;
     }
 
     public function talkerAction()
@@ -138,13 +95,6 @@ class IndexController extends AbstractActionController
 
         $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
         return $response;
-
-        /*$response = \Zend\Json\Json::encode( $data );
-
-        if (file_put_contents($buffer, $response) === false)
-            throw new \Exception("Processing error!", 1);
-
-        $data = \Zend\Json\Json::decode( file_get_contents($buffer) );*/
     }
 
     private function parseMessage($message, $last_user, $currentmodif, $user_color, $receiver)
@@ -186,18 +136,18 @@ class IndexController extends AbstractActionController
             $parsed_message  = "<p id='$currentmodif' data-user='$last_user' data-receiver='$receiver'><strong style='color: $user_color'>$last_user</strong>: ". $parsed_message ."</p>";
         }
 
-        return $parsed_message;        
+        return $parsed_message;
     }
 
     private function getLatestMessages($latest_messages, $lastmodif)
     {
         $_msg = array();
-        foreach ($latest_messages as $tmp) 
+        foreach ($latest_messages as $tmp)
         {
             $_tmp = (integer) basename(substr($tmp, 0, strlen($tmp) - 4));
 
             if ($_tmp > $lastmodif) {
-                
+
                 $_msg_decoded = base64_encode(file_get_contents($tmp));
 
                 if (!empty($_msg_decoded))
@@ -231,7 +181,7 @@ class IndexController extends AbstractActionController
            return $files;
         }
 
-        /*$basePath = $this->getServiceLocator()->get('Zend\ServiceManager\ServiceManager')->get('ViewHelperManager')->get('basePath');   
+        /*$basePath = $this->getServiceLocator()->get('Zend\ServiceManager\ServiceManager')->get('ViewHelperManager')->get('basePath');
         $file = $basePath->getView()->basePath('foo');*/
 
         // return a json array
@@ -277,7 +227,7 @@ class IndexController extends AbstractActionController
 
         $form->setData($messageObject->getArrayCopy());
 
-        if ($form->isValid()) 
+        if ($form->isValid())
         {
             $messageObject->exchangeArray($form->getData());
             $message = $messageObject->word;
@@ -342,15 +292,15 @@ class IndexController extends AbstractActionController
 
 
             /* Filter private messages of other users */
-            
+
             $array = $this->getLatestMessages($latest_messages, $lastmodif);
 
             if (isset($_messags))
                 $_messags = array();
-            foreach ($array as $_msg) 
+            foreach ($array as $_msg)
             {
                 $_msg = base64_decode($_msg);
-                if (strpos($_msg, "data-receiver=''") !== false || strpos($_msg, "data-receiver='$username'") !== false) 
+                if (strpos($_msg, "data-receiver=''") !== false || strpos($_msg, "data-receiver='$username'") !== false)
                 {
                     if (!in_array(base64_encode($_msg), $_messages))
                         $_messages[] = base64_encode($_msg);
@@ -377,7 +327,7 @@ class IndexController extends AbstractActionController
                         unlink($_user);
                 }
             }
-            else if (is_null($username)) 
+            else if (is_null($username))
             {
                 $response["errors"][] = array(
                     "code" => 101,
@@ -398,15 +348,15 @@ class IndexController extends AbstractActionController
             $data_contents_message = $message;
         # First request when the timestamp is zero
         else if ($lastmodif == 0) {
-            if (file_exists("data/cache/conversations/history.txt")) 
+            if (file_exists("data/cache/conversations/history.txt"))
             {
                 /* Filter only public messages */
                 $file = fopen("data/cache/conversations/history.txt",'r');
-                
+
                 $data_contents_message = "";
-                
-                while(!feof($file)) 
-                { 
+
+                while(!feof($file))
+                {
                     $row = fgets($file);
 
                     if (strpos($row, "data-receiver=''") !== false)
@@ -419,7 +369,7 @@ class IndexController extends AbstractActionController
         }
         else {
         # The user gets the message of other users
-            if ($last_user != $username) 
+            if ($last_user != $username)
                 $data_contents_message = ($lastmodif > $currentmodif) ? $message : file_get_contents("data/cache/conversations/timestamp/" . $lastmodif . ".txt");
             else
                 $data_contents_message = '';
@@ -461,7 +411,7 @@ class IndexController extends AbstractActionController
     {
         $files = array();
 
-        foreach ($_FILES as $file) 
+        foreach ($_FILES as $file)
         {
             if (!file_exists('data/cache/files'))
                 mkdir('data/cache/files');
@@ -471,7 +421,7 @@ class IndexController extends AbstractActionController
         }
 
         $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $files ));
-        return $response;        
+        return $response;
     }
 
     public function sendPhotoAction()
@@ -492,6 +442,6 @@ class IndexController extends AbstractActionController
             $state = 1;
 
         $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( array("state" => $state, "file" => $file) ));
-        return $response;        
-    }    
+        return $response;
+    }
 }

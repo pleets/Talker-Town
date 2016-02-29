@@ -8,6 +8,11 @@
  */
 
 return array(
+    'controllers' => array(
+        'invokables' => array(
+            'App\Controller\Index' => 'App\Controller\IndexController'
+        ),
+    ),
     'router' => array(
         'routes' => array(
             'home' => array(
@@ -15,7 +20,7 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
+                        'controller' => 'App\Controller\Index',
                         'action'     => 'index',
                     ),
                     'constraints' => array(
@@ -24,16 +29,12 @@ return array(
                     )
                 ),
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
-            'application' => array(
+            'app' => array(
                 'type'    => 'Literal',
                 'options' => array(
-                    'route'    => '/application',
+                    'route'    => '/app',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
+                        '__NAMESPACE__' => 'App\Controller',
                         'controller'    => 'Index',
                         'action'        => 'index',
                     ),
@@ -89,11 +90,6 @@ return array(
             ),
         ),
     ),
-    'controllers' => array(
-        'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
-        ),
-    ),
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
@@ -129,5 +125,5 @@ return array(
             'Zend\Session\Validator\RemoteAddr',
             'Zend\Session\Validator\HttpUserAgent',
         ),
-    ),      
+    ),
 );

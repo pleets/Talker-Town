@@ -7,7 +7,7 @@
 
 <?php $title = $this->translate('User Login'); $this->headTitle($title); ?>
 
-<?php 
+<?php
     $formLabel = $this->plugin('formLabel');
     $username = $form->get('username');
 
@@ -25,9 +25,9 @@
     <h2 class="ui basic header center aligned"><?= $this->escapeHtml($title) ?></h2>
 
     <?php if (isset($form)): ?>
-        
+
         <?= $this->form()->openTag($form) ?>
-            
+
             <div class="fields">
                 <div class="required ten wide field">
                     <?= $formLabel->openTag() . $username->getOption('label') . $formLabel->closeTag() ?>
@@ -47,13 +47,13 @@
                                     foreach ($genders as $gender) {
                                         ?><option value="<?= $gender["genders_id"] ?>"><?= $this->translate($gender["name"]) ?></div><?php
                                     }
-                                ?>                                
+                                ?>
                             </select>
                         <?php else: ?>
                             <?= $this->translate("Genders table is empty!") ?>
                         <?php endif; ?>
                     <?php else: ?>
-                        <i class="cancel icon"></i><?= $this->translate("No genders available") ?>         
+                        <i class="cancel icon"></i><?= $this->translate("No genders available") ?>
                     <?php endif; ?>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                         <?php for($i = 1; $i<=8; $i++): ?>
                             <div class="item" data-value="<?= $k.$i ?>" style="background-position: calc(-<?= ($i - 1) ?>*77.4px) calc(-<?= ($k - 1) ?>*74px);"></div>
                         <?php endfor; ?>
-                    <?php endfor; ?>                    
+                    <?php endfor; ?>
                 </div>
 
                 <div class="controls">
@@ -77,7 +77,7 @@
                     <button class="ui right labeled icon orange button control-right" type="button">
                         <i class="right arrow icon"></i>
                         <?= $this->translate("Next") ?>
-                    </button>                    
+                    </button>
                 </div>
 
                 <div class="mobile controls">
@@ -91,7 +91,7 @@
                 </div>
 
             </div>
-            
+
             <div class="ui center aligned basic segment">
                 <?php if (!$xmlHttpRequest): ?>
                     <?= $this->formSubmit($form->get('submit')) ?>
@@ -102,7 +102,7 @@
 
         <div class="ui basic center aligned segment">
             <p><?= $this->translate("The best city on the Internet") ?></p>
-        </div>        
+        </div>
     <?php endif; ?>
 
 </div>

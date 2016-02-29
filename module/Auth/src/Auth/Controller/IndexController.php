@@ -11,8 +11,8 @@ use Zend\Session\Container;
 
 use Auth\Form\UserForm;
 use Auth\Model\Entity\User;
-use Application\Form\MessageForm;
-use Application\Model\Entity\Message;
+use App\Form\MessageForm;
+use App\Model\Entity\Message;
 use Auth\Model\AclAdapter;
 
 class IndexController extends AbstractActionController
@@ -26,7 +26,7 @@ class IndexController extends AbstractActionController
     private function getGendersTable()
     {
         if (!$this->gendersTable)
-            $this->gendersTable = $this->getServiceLocator()->get('Application\Model\Entity\GendersTable');
+            $this->gendersTable = $this->getServiceLocator()->get('App\Model\Entity\GendersTable');
         return $this->gendersTable;
     }
 
@@ -39,7 +39,7 @@ class IndexController extends AbstractActionController
     private function setAnonymousIdentity($username)
     {
         $session = new Container('anonymous_identity');
-        $session->username = $username;        
+        $session->username = $username;
     }
 
     private function authentication()
@@ -102,7 +102,7 @@ class IndexController extends AbstractActionController
 	public function indexAction()
 	{
         /*$auth = new AuthenticationService();
-        
+
         if ($auth->hasIdentity())
             return new ViewModel();*/
 
@@ -119,7 +119,7 @@ class IndexController extends AbstractActionController
         $data['xmlHttpRequest'] = $xmlHttpRequest;
 
         if (!is_null($this->getAnonymousIdentity()))
-            return $this->redirect()->toRoute('application/talker');
+            return $this->redirect()->toRoute('app/talker');
 
         try {
             $form = new UserForm();
@@ -175,24 +175,28 @@ class IndexController extends AbstractActionController
 
                     if ($form->isValid())
                     {
-                        $this->setAnonymousIdentity($form_data->username);
-
                         /* create json file with users settings */
                         $user_info = array(
                             "username" => $form_data->username,
                             "avatar" => $form_data->avatar
                         );
-                        file_put_contents('data/cache/' . $form_data->username . '.json', json_encode($user_info));
+
+                        $persistent_file = 'data/cache/' . $form_data->username . '.json';
+
+                        if (@file_put_contents($persistent_file, json_encode($user_info)) === false)
+                            throw new \Exception("Could not create persistent file " . $persistent_file);
+
+                        $this->setAnonymousIdentity($form_data->username);
 
                         $data["user"] = $form_data->username;
 
                         $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
-                        return $response;                    
+                        return $response;
                     }
                     else
                         $data["formErrors"] = $form->getMessages();
                 }
-                catch (\Exception $e) 
+                catch (\Exception $e)
                 {
                     $data['Exception'] = $e->getMessage();
                     $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
@@ -202,6 +206,6 @@ class IndexController extends AbstractActionController
 
             $response = $this->getResponse()->setContent(\Zend\Json\Json::encode( $data ));
             return $response;
-        }     
+        }
     }
 }

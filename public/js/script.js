@@ -53,7 +53,7 @@ var rootPath = dirname(indexPath) + '/';
 var jsonpRequest = false;      /* Cross domain */
 var historyLoaded = false;    /* For cross domain only, Fix repeat history ... */
 
-var urlRequest = (jsonpRequest) ? "http://talkertown02.mywebcommunity.org/backend.php" : indexPath + "application/index/backend";
+var urlRequest = (jsonpRequest) ? "http://talkertown02.mywebcommunity.org/backend.php" : indexPath + "app/index/backend";
 var cacheFolder = (jsonpRequest) ? "http://talkertown02.mywebcommunity.org/data/cache/" : rootPath + 'data/cache/';
 
 /* Streaming */
@@ -295,7 +295,7 @@ $(function(){
 
    // Get identity information and connect if identityInformatin is not null
    $.ajax({
-   	url: indexPath +  'application/index/getIdentityInformation',
+   	url: indexPath +  'app/index/getIdentityInformation',
    	dataType: 'json',
    	success: function(data) {
 
@@ -610,7 +610,7 @@ $(function(){
                // Other Exceptions
                if (typeof data.Exception !== 'undefined')
                {
-                  var html = "<div class='ui error message'><div class='header'> Validation exception! </div><div class='content'>";
+                  var html = "<div class='ui error message'><div class='header'> Exception! </div><div class='content'>";
                   html += data.Exception + '</div></div>';
 
 

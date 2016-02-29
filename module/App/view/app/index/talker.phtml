@@ -14,7 +14,7 @@
     $form = $this->form->prepare();
 
     $form->setAttributes(array(
-        'action' => $this->url('application') . '/index/login',
+        'action' => $this->url('app') . '/index/login',
         'class' => 'ui form',
         'autocomplete' => 'off',
         'method' => 'get',
@@ -40,7 +40,7 @@
 	</div>
 
 	<div class="right floated right aligned six wide column">
-	    
+
 
 		<a id="btn-logout-2" class="ui labeled orange icon button no-mobile-item">
 		 	<i class="power icon"></i>
@@ -161,7 +161,7 @@
 				<button class="ui icon button" id="capture-stm" type="button">
 					<i class="camera icon"></i>
 				</button>
-				<a class="ui button" id="send-stm" type="button" href="<?= $this->url('application') . '/index/sendPhoto' ?>">
+				<a class="ui button" id="send-stm" type="button" href="<?= $this->url('app') . '/index/sendPhoto' ?>">
 					Send
 				</a>
 				<button class="ui icon button" id="stop-stm">
@@ -210,7 +210,7 @@
 		<h2>Are you sure that you want to logout ?</h2>
 	</div>
 	<div class="actions">
-		<a href="<?= $this->url('application') . '/index/logout' ?>" class="ui button" onclick="$(this).attr('disabled', 'disabled'); $('#content-to-logout').html('<h2>Closing your session!...</h2>'); setTimeout(function(){ $('#mdl-logout').modal('hide'); }, 500)">Yes</a>
+		<a href="<?= $this->url('app') . '/index/logout' ?>" class="ui button" onclick="$(this).attr('disabled', 'disabled'); $('#content-to-logout').html('<h2>Closing your session!...</h2>'); setTimeout(function(){ $('#mdl-logout').modal('hide'); }, 500)">Yes</a>
 		<div class="ui button" onclick="$('#mdl-logout').modal('hide')">Cancel</div>
 	</div>
 </div>
