@@ -23,6 +23,8 @@ use App\Model\Entity\Message;
 use Zend\Authentication\AuthenticationService;
 use Zend\Session\Container;
 
+use Parser\Controller\MessageController;
+
 class IndexController extends AbstractActionController
 {
     private $anonymousIdentity;
@@ -110,27 +112,12 @@ class IndexController extends AbstractActionController
                 $parsed_message = "<p id='$currentmodif' data-user='$last_user' data-receiver='$receiver'><strong style='color: $user_color'>$last_user</strong>: <a target='_blank' href='". $parsed_message ."' >". $parsed_message ."</a></p>";
         }
         else {
-            $replaced = str_replace(">:(", "<a class='emoticon emoticon_grumpy'></a>", $message);
-            $replaced = str_replace("3:)", "<a class='emoticon emoticon_devil'></a>", $replaced);
-            $replaced = str_replace("O:)", "<a class='emoticon emoticon_angel'></a>", $replaced);
-            $replaced = str_replace(">:o", "<a class='emoticon emoticon_upset'></a>", $replaced);
 
-            $replaced = str_replace(":)", "<a class='emoticon emoticon_smile'></a>", $replaced);
-            $replaced = str_replace(":(", "<a class='emoticon emoticon_frown'></a>", $replaced);
-            $replaced = str_replace(":P", "<a class='emoticon emoticon_tongue'></a>", $replaced);
-            $replaced = str_replace("=D", "<a class='emoticon emoticon_grin'></a>", $replaced);
-            $replaced = str_replace(":o", "<a class='emoticon emoticon_gasp'></a>", $replaced);
-            $replaced = str_replace(";)", "<a class='emoticon emoticon_wink'></a>", $replaced);
-            $replaced = str_replace(":v", "<a class='emoticon emoticon_pacman'></a>", $replaced);
-            $replaced = str_replace(":/", "<a class='emoticon emoticon_unsure'></a>", $replaced);
-            $replaced = str_replace(":'(", "<a class='emoticon emoticon_cry'></a>", $replaced);
-            $replaced = str_replace("^_^", "<a class='emoticon emoticon_kiki'></a>", $replaced);
-            $replaced = str_replace("8-)", "<a class='emoticon emoticon_glasses'></a>", $replaced);
-            $replaced = str_replace("<3", "<a class='emoticon emoticon_heart'></a>", $replaced);
-            $replaced = str_replace("-_-", "<a class='emoticon emoticon_squint'></a>", $replaced);
-            $replaced = str_replace("o.O", "<a class='emoticon emoticon_confused'></a>", $replaced);
-            $replaced = str_replace(":3", "<a class='emoticon emoticon_colonthree'></a>", $replaced);
-            $parsed_message = $message = str_replace("(y)", "<a class='emoticon emoticon_like'></a>", $replaced);
+            $parser = new MessageController();
+            $parser->setMessage($parsed_message);
+            $parser->parseEmoticons();
+
+            $parsed_message = $parser->getMessage();
 
             // Convert the current message in HTML
             $parsed_message  = "<p id='$currentmodif' data-user='$last_user' data-receiver='$receiver'><strong style='color: $user_color'>$last_user</strong>: ". $parsed_message ."</p>";
