@@ -293,6 +293,70 @@ $(function(){
       }
    }
 
+
+var available_emoticons = {
+   ">:("   :  "emoticon emoticon_grumpy",
+   "3:)"   :  "emoticon emoticon_devil",
+   "O:)"   :  "emoticon emoticon_angel",
+   ">:o"   :  "emoticon emoticon_upset",
+   ":)"    :  "emoticon emoticon_smile",
+   ":("    :  "emoticon emoticon_frown",
+   ":P"    :  "emoticon emoticon_tongue",
+   "=D"    :  "emoticon emoticon_grin",
+   ":o"    :  "emoticon emoticon_gasp",
+   ";)"    :  "emoticon emoticon_wink",
+   ":v"    :  "emoticon emoticon_pacman",
+   ":/"    :  "emoticon emoticon_unsure",
+   ":'("   :  "emoticon emoticon_cry",
+   "^_^"   :  "emoticon emoticon_kiki",
+   "8-)"   :  "emoticon emoticon_glasses",
+   "<3"    :  "emoticon emoticon_heart",
+   "-_-"   :  "emoticon emoticon_squint",
+   "o.O"   :  "emoticon emoticon_confused",
+   ":3"    :  "emoticon emoticon_colonthree",
+   "(y)"   :  "emoticon emoticon_like",
+}
+
+var parseURLs = function(message)
+{
+   var parts = message.split(" ");
+
+   for (var i = parts.length - 1; i >= 0; i--)
+   {
+      var trimed_unity = parts[i].trim();
+
+      var unity_protocolized = trimed_unity.replace(
+         /^([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \?=.-]*)*\/?$/,
+         "http://" + trimed_unity
+      );
+
+      var parsed_unity = unity_protocolized.replace(
+         /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \?=.-]*)*\/?$/,
+         "<a href='" + unity_protocolized + "' target='_blank'>" + trimed_unity + "</a>"
+      );
+
+      message = message.replace(trimed_unity, parsed_unity);
+   }
+
+   return message;
+};
+
+var parseEmoticons = function(message)
+{
+   var parts = message.split(" ");
+
+   for (var i = parts.length - 1; i >= 0; i--)
+   {
+      for (var emoticon in available_emoticons)
+      {
+         if (parts[i].trim() == emoticon)
+            message = message.replace(parts[i].trim(), "<span class='" + available_emoticons[emoticon] + "'></span>");
+      }
+   }
+
+   return message;
+}
+
    // Get identity information and connect if identityInformatin is not null
    $.ajax({
    	url: indexPath +  'app/index/getIdentityInformation',
@@ -325,36 +389,10 @@ $(function(){
          var decode_message = original_message.replace(/(<([^>]+)>)/ig,"");
          var message = original_message;
 
-         // Parse message
-         if (message.substring(0,7) == 'http://' || message.substring(0,8) == 'https://')
-            var msg = "<p id='" + data["timestamp"] + "' data-user='" + data["user"] + "' data-receiver=''><strong style='color: " + data.user_color + "'>" + data["user"] + ":</strong> <a target='_blank' href='" + message + "'>" + message + "</a></p>";
-         else {
+         message = parseURLs(message);
+         message = parseEmoticons(message);
 
-            // Fb emoticons
-            var str = decode_message.replaceAll(">:(", "<a class='emoticon emoticon_grumpy'></a>");
-            message = str.replaceAll("3:)", "<a class='emoticon emoticon_devil'></a>");
-            message = message.replaceAll("O:)", "<a class='emoticon emoticon_angel'></a>");
-            message = message.replaceAll(">:o", "<a class='emoticon emoticon_upset'></a>");
-
-            message = message.replaceAll(":)", "<a class='emoticon emoticon_smile'></a>");
-            message = message.replaceAll(":(", "<a class='emoticon emoticon_frown'></a>");
-            message = message.replaceAll(":P", "<a class='emoticon emoticon_tongue'></a>");
-            message = message.replaceAll("=D", "<a class='emoticon emoticon_grin'></a>");
-            message = message.replaceAll(":o", "<a class='emoticon emoticon_gasp'></a>");
-            message = message.replaceAll(";)", "<a class='emoticon emoticon_wink'></a>");
-            message = message.replaceAll(":v", "<a class='emoticon emoticon_pacman'></a>");
-            message = message.replaceAll(":/", "<a class='emoticon emoticon_unsure'></a>");
-            message = message.replaceAll(":'(", "<a class='emoticon emoticon_cry'></a>");
-            message = message.replaceAll("^_^", "<a class='emoticon emoticon_kiki'></a>");
-            message = message.replaceAll("8-)", "<a class='emoticon emoticon_glasses'></a>");
-            message = message.replaceAll("<3", "<a class='emoticon emoticon_heart'></a>");
-            message = message.replaceAll("-_-", "<a class='emoticon emoticon_squint'></a>");
-            message = message.replaceAll("o.O", "<a class='emoticon emoticon_confused'></a>");
-            message = message.replaceAll(":3", "<a class='emoticon emoticon_colonthree'></a>");
-            message = message.replaceAll("(y)", "<a class='emoticon emoticon_like'></a>");
-
-            var msg = "<p id='" + data["timestamp"] + "' data-user='" + data["user"] + "' data-receiver=''><strong style='color: " + data.user_color + "'>" + data["user"] + "</strong>: " + message + "</p>";
-         }
+         var msg = "<p id='" + data["timestamp"] + "' data-user='" + data["user"] + "' data-receiver=''><strong style='color: " + data.user_color + "'>" + data["user"] + "</strong>: " + message + "</p>";
 
          $('#content').append(msg);
 
@@ -724,28 +762,8 @@ $(function(){
 
          var decode_message = original_message;
 
-         // Fb emoticons
-         var str = decode_message.replaceAll(">:(", "<a class='emoticon emoticon_grumpy'></a>");
-         message = str.replaceAll("3:)", "<a class='emoticon emoticon_devil'></a>");
-         message = message.replaceAll("O:)", "<a class='emoticon emoticon_angel'></a>");
-         message = message.replaceAll(">:o", "<a class='emoticon emoticon_upset'></a>");
-
-         message = message.replaceAll(":)", "<a class='emoticon emoticon_smile'></a>");
-         message = message.replaceAll(":(", "<a class='emoticon emoticon_frown'></a>");
-         message = message.replaceAll(":P", "<a class='emoticon emoticon_tongue'></a>");
-         message = message.replaceAll("=D", "<a class='emoticon emoticon_grin'></a>");
-         message = message.replaceAll(":o", "<a class='emoticon emoticon_gasp'></a>");
-         message = message.replaceAll(";)", "<a class='emoticon emoticon_wink'></a>");
-         message = message.replaceAll(":v", "<a class='emoticon emoticon_pacman'></a>");
-         message = message.replaceAll(":/", "<a class='emoticon emoticon_unsure'></a>");
-         message = message.replaceAll(":'(", "<a class='emoticon emoticon_cry'></a>");
-         message = message.replaceAll("^_^", "<a class='emoticon emoticon_kiki'></a>");
-         message = message.replaceAll("8-)", "<a class='emoticon emoticon_glasses'></a>");
-         message = message.replaceAll("<3", "<a class='emoticon emoticon_heart'></a>");
-         message = message.replaceAll("-_-", "<a class='emoticon emoticon_squint'></a>");
-         message = message.replaceAll("o.O", "<a class='emoticon emoticon_confused'></a>");
-         message = message.replaceAll(":3", "<a class='emoticon emoticon_colonthree'></a>");
-         message = message.replaceAll("(y)", "<a class='emoticon emoticon_like'></a>");
+         message = parseURLs(decode_message);
+         message = parseEmoticons(message);
 
          // Parse message
          if (message.substring(0,7) == 'http://' || message.substring(0,8) == 'https://')

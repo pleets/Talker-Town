@@ -18,7 +18,30 @@ class MessageController
 
     public function parseURLs()
     {
-        return $this->message();
+        $message = $this->message;
+
+        $parts = explode(" ", $message);
+
+        foreach ($parts as $unity)
+        {
+            $trimed_unity = trim($unity);
+
+            $unity_protocolized = preg_replace(
+                "/^([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \?=.-]*)*\/?$/",
+                "http://" . $trimed_unity, $trimed_unity
+            );
+
+            $parsed_unity = preg_replace(
+                "/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \?=.-]*)*\/?$/",
+                "<a href='$unity_protocolized' target='_blank'>$trimed_unity</a>", $unity_protocolized
+            );
+
+            $message = str_replace($trimed_unity, $parsed_unity, $message);
+        }
+
+        $this->message = $message;
+
+        return $this->message;
     }
 
     public function parseEmoticons()
@@ -50,11 +73,14 @@ class MessageController
             "(y)"   =>  "emoticon emoticon_like",
         );
 
-        foreach ($emoticons as $needle => $class)
+        $parts = explode(" ", $message);
+
+        foreach ($parts as $unity)
         {
-            while (strpos($message, $needle) !== false)
+            foreach ($emoticons as $needle => $class)
             {
-                $message = str_replace($needle, "<a class='$class'></a>", $message);
+                if (trim($unity) == $needle)
+                    $message = str_replace(trim($unity), "<span class='$class'></span>", $message);
             }
         }
 
