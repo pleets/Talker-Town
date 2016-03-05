@@ -103,13 +103,22 @@ class IndexController extends AbstractActionController
     {
         $parsed_message = $message;
 
-        $parser = new MessageController();
+        /* Only when start text ... */
+        if (substr($parsed_message, 0, 7) == 'http://' || substr($parsed_message, 0, 8) == 'https://')
+        {
+            if (in_array(strtolower(substr($parsed_message, strlen($parsed_message) - 4, strlen($parsed_message))), array(".png", ".jpg", ".jpeg", ".ico")))
+                $parsed_message = "<p id='$currentmodif' data-user='$last_user' data-receiver='$receiver'><strong style='color: $user_color'>$last_user</strong>: <br /> <img class='responsive-image' src='". $parsed_message ."' alt='image' /></p>";
+        }
+        else {
+            $parser = new MessageController();
 
-        $parser->setMessage($parsed_message);
-        $parser->parseURLs();
-        $parser->parseEmoticons();
+            $parser->setMessage($parsed_message);
+            $parser->parseURLs();
+            $parser->parseEmoticons();
 
-        $parsed_message = $parser->getMessage();
+            $parsed_message = $parser->getMessage();
+        }
+
 
         // Convert the current message in HTML
         $parsed_message  = "<p id='$currentmodif' data-user='$last_user' data-receiver='$receiver'><strong style='color: $user_color'>$last_user</strong>: ". $parsed_message ."</p>";
