@@ -385,6 +385,7 @@ body.pushable > .pusher {
 
 .responsive-image {
 	width: 200px;
+	max-width: 100%;
 	border: solid 1px white;
 	box-shadow: 0 0 3px black;
 }
