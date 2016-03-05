@@ -66,8 +66,8 @@ body {
 	.no-mobile-item {
 		display: none !important;
 	}
-	.mobile-item { 
-		display: inline-block !important; 
+	.mobile-item {
+		display: inline-block !important;
 	}
 }
 
@@ -384,10 +384,12 @@ body.pushable > .pusher {
 
 
 .responsive-image {
-	max-width: 100%;
+	width: 200px;
+	border: solid 1px white;
+	box-shadow: 0 0 3px black;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 320px) {
 	.responsive-image {
 		width: 100%;
 	}
